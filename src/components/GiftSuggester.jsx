@@ -3,7 +3,7 @@ import { GIFTS, GIFT_CATEGORIES, VIBES } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { pickTopGift } from '../utils/plan'
-import { giftLink } from '../utils/links'
+import { giftLink, giftPhoto } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 import { burstHearts } from '../utils/fx'
@@ -85,10 +85,18 @@ export default function GiftSuggester() {
             const added = giftIds.includes(g.id)
             const isTop = top && top.id === g.id
             const link = giftLink(g)
+            const photo = giftPhoto(g)
             return (
               <article key={g.id} className={`gift-card glass tilt rise ${added ? 'is-selected' : ''}`} style={{ '--i': index % 8 }}>
                 {isTop && <span className="badge badge--lime gift-card__flag"><Icon name="sparkles" size={12} /> Top pick</span>}
-                <span className="gift-card__emoji" aria-hidden="true">{g.emoji}</span>
+                {photo ? (
+                  <div className="gift-card__photo">
+                    <img src={photo} alt={g.name} loading="lazy" />
+                    <span className="gift-card__emoji-badge" aria-hidden="true">{g.emoji}</span>
+                  </div>
+                ) : (
+                  <span className="gift-card__emoji" aria-hidden="true">{g.emoji}</span>
+                )}
                 <h3 className="gift-card__name">{g.name}</h3>
                 <p className="gift-card__note">{g.note}</p>
                 <a

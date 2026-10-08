@@ -61,6 +61,13 @@ export const cityPhoto = (cityId) => {
 
 export const cityCredit = (cityId) => CITY_PHOTO_CREDITS[cityId] || null
 
+const giftFiles = import.meta.glob('../assets/gifts/*.jpg', { eager: true, query: '?url', import: 'default' })
+
+export const giftPhoto = (gift) => {
+  const hit = Object.entries(giftFiles).find(([path]) => path.split('/').pop().replace(/\.[^.]+$/, '') === gift.id)
+  return hit ? hit[1] : ''
+}
+
 export const venueCredit = (venue) => PHOTO_CREDITS[venue.id] || null
 
 export const venuePhoto = (venue) => {
