@@ -1,10 +1,19 @@
-# VibeDate
+# VibeDate v2
 
 A budget-aware date planner for Bhopal and India's metro cities (Delhi, Mumbai, Bengaluru, Hyderabad, Chennai, Kolkata, Pune) — React + Vite single-page app, deployable to GitHub Pages.
 
 **Features:** budget slider that drives venue/menu/gift suggestions · 9 Bhopal venues by vibe with menus · live cost calculator
 with budget meter and over-budget warning · gift suggester · itinerary builder · outfit coordinator · message writer (4 tones) ·
 conversation deck · AI Wingman chat (built-in answers, optional Gemini).
+
+## What's in v2
+
+- 20 Bhopal venues plus 28 in Delhi, Mumbai, Bengaluru, Hyderabad, Chennai, Kolkata and Pune, each with a menu
+- Search and sort venues, price-level badges, Google Maps links, venue photos with credits
+- Polished dark design: intro splash, scroll reveals, parallax, card tilt and spotlight, toasts, back-to-top, animated stats
+- Soothing background music (toggle in the navbar): Erik Satie's Gymnopédie No. 1 and No. 3, classical-guitar recordings by
+  Michael Laucke, public domain, via Wikimedia Commons (`public/audio/`). Browsers only allow sound after the first click or tap,
+  so it starts on your first interaction; your on/off choice is remembered.
 
 ## Run locally
 

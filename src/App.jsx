@@ -11,6 +11,10 @@ import SummaryPanel from './components/SummaryPanel.jsx'
 import MobileSummaryBar from './components/MobileSummaryBar.jsx'
 import WingmanChat from './components/WingmanChat.jsx'
 import Footer from './components/Footer.jsx'
+import HowItWorks from './components/HowItWorks.jsx'
+import BackToTop from './components/BackToTop.jsx'
+import IntroSplash from './components/IntroSplash.jsx'
+import { ToastProvider } from './components/Toast.jsx'
 import ScrollProgress from './components/ScrollProgress.jsx'
 import Marquee from './components/Marquee.jsx'
 import { usePointerFx } from './utils/fx'
@@ -20,6 +24,9 @@ export default function App() {
 
   return (
     <DateProvider>
+      <ToastProvider>
+      <IntroSplash />
+      <div className="cursor-glow" aria-hidden="true" />
       <div className="bg-blobs" aria-hidden="true">
         <span className="blob blob--a" />
         <span className="blob blob--b" />
@@ -29,6 +36,9 @@ export default function App() {
       <Navbar />
       <Hero />
       <Marquee />
+      <div className="container">
+        <HowItWorks />
+      </div>
       <div className="container layout">
         <main className="layout__main">
           <VenueExplorer />
@@ -45,6 +55,8 @@ export default function App() {
       <Footer />
       <MobileSummaryBar />
       <WingmanChat />
+      <BackToTop />
+      </ToastProvider>
     </DateProvider>
   )
 }

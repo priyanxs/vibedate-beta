@@ -5,6 +5,7 @@
 ------------------------------------------------------------------- */
 
 import { items } from './venueHelpers'
+import { BHOPAL_MORE } from './venues/bhopalMore'
 import { METRO_VENUES } from './venues/metros'
 
 export const BUDGET = { min: 500, max: 10000, step: 100, default: 3000 }
@@ -427,7 +428,7 @@ export const CITIES = [
 export const DEFAULT_CITY = 'bhopal'
 export const CITY_BY_ID = Object.fromEntries(CITIES.map((c) => [c.id, c]))
 
-export const VENUES = [...BHOPAL_VENUES, ...METRO_VENUES]
+export const VENUES = [...BHOPAL_VENUES, ...BHOPAL_MORE, ...METRO_VENUES]
 
 export const VENUE_BY_ID = Object.fromEntries(VENUES.map((v) => [v.id, v]))
 

@@ -7,9 +7,11 @@ import { giftLink } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 import { burstHearts } from '../utils/fx'
+import { useToast } from './Toast.jsx'
 
 export default function GiftSuggester() {
   const { vibe, venue, budget, remaining, giftIds, toggleGift } = useDate()
+  const toast = useToast()
   const [category, setCategory] = useState('all')
   const [showStretch, setShowStretch] = useState(false)
 
@@ -106,6 +108,7 @@ export default function GiftSuggester() {
                     onClick={(e) => {
                       if (!added) burstHearts(e.currentTarget)
                       toggleGift(g.id)
+                      toast(added ? `Removed ${g.name}` : `Added ${g.name} to your plan`, added ? 'warn' : 'ok')
                     }}
                     aria-pressed={added}
                   >

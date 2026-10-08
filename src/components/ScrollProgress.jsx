@@ -11,6 +11,8 @@ export default function ScrollProgress() {
       const max = document.documentElement.scrollHeight - window.innerHeight
       const pct = max > 0 ? Math.min(1, window.scrollY / max) : 0
       if (bar.current) bar.current.style.transform = `scaleX(${pct})`
+      // Used by CSS for the gentle hero parallax
+      document.documentElement.style.setProperty('--scroll', String(Math.round(Math.min(window.scrollY, 1200))))
     }
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update)

@@ -9,27 +9,38 @@ import Icon from './Icon.jsx'
 import MenuPanel from './MenuPanel.jsx'
 import VenueBanner from './VenueBanner.jsx'
 import { burstHearts } from '../utils/fx'
+import { useToast } from './Toast.jsx'
+
+// 1–4 rupee signs, from "very affordable" to "special occasion"
+const priceTier = (min) => (min < 600 ? 1 : min < 1500 ? 2 : min < 3000 ? 3 : 4)
 
 export default function VenueExplorer() {
   const { budget, vibeFilter, setVibeFilter, venueId, selectVenue, venue, cityInfo, cityVenues } = useDate()
   const [showStretch, setShowStretch] = useState(false)
+  const [query, setQuery] = useState('')
+  const [sort, setSort] = useState('best')
+  const toast = useToast()
 
   const { visible, hiddenCount } = useMemo(() => {
-    const all = cityVenues.filter((v) => vibeFilter === 'All' || v.vibe === vibeFilter).map((v) => ({
+    const needle = query.trim().toLowerCase()
+    const matches = (v) => !needle || `${v.name} ${v.cuisine} ${v.tagline}`.toLowerCase().includes(needle)
+    const all = cityVenues.filter((v) => (vibeFilter === 'All' || v.vibe === vibeFilter) && matches(v)).map((v) => ({
       venue: v,
       min: minDateCost(v),
     }))
-    const fits = all.filter((x) => x.min <= budget).sort((a, b) => b.min - a.min)
+    const byPrice = sort === 'low' ? (a, b) => a.min - b.min : (a, b) => b.min - a.min
+    const fits = all.filter((x) => x.min <= budget).sort(byPrice)
     const stretch = all.filter((x) => x.min > budget).sort((a, b) => a.min - b.min)
     const keepSelected = stretch.filter((x) => x.venue.id === venueId)
     return {
       visible: showStretch ? [...fits, ...stretch] : [...fits, ...keepSelected],
       hiddenCount: stretch.length - (showStretch ? 0 : keepSelected.length),
     }
-  }, [cityVenues, budget, vibeFilter, venueId, showStretch])
+  }, [cityVenues, budget, vibeFilter, venueId, showStretch, query, sort])
 
-  const choose = (id) => {
-    selectVenue(id)
+  const choose = (v) => {
+    selectVenue(v.id)
+    toast(`${v.name} chosen — build your menu below`)
     setTimeout(() => {
       const el = document.getElementById('menu')
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -56,6 +67,27 @@ export default function VenueExplorer() {
               {v !== 'All' && <span aria-hidden="true">{VIBES[v].emoji}</span>} {v}
             </button>
           ))}
+        </div>
+
+        <div className="toolbar">
+          <label className="search">
+            <Icon name="search" size={16} />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={`Search ${cityInfo.name} venues or cuisines`}
+              aria-label="Search venues"
+            />
+          </label>
+          <label className="sort">
+            <span className="sr-only">Sort venues</span>
+            <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort venues">
+              <option value="best">Best fit for budget</option>
+              <option value="low">Price: low to high</option>
+            </select>
+          </label>
+          <span className="toolbar__count" aria-live="polite">{visible.length} {visible.length === 1 ? 'venue' : 'venues'}</span>
         </div>
 
         {visible.length === 0 ? (
@@ -87,7 +119,12 @@ export default function VenueExplorer() {
                         <span className={`badge ${fits ? 'badge--lime' : 'badge--warn'}`}>
                           {fits ? 'Fits your budget' : 'Above budget'}
                         </span>
-                        <p className="venue-card__price">From {formatINR(min)} for two</p>
+                        <p className="venue-card__price">
+                          From {formatINR(min)} for two{' '}
+                          <span className="rupee-tier" role="img" aria-label={`Price level ${priceTier(min)} of 4`}>
+                            <b>{'₹'.repeat(priceTier(min))}</b>{'₹'.repeat(4 - priceTier(min))}
+                          </span>
+                        </p>
                         <a
                           className="map-link"
                           href={mapsViewUrl(v)}
@@ -103,7 +140,7 @@ export default function VenueExplorer() {
                         className={`btn ${selected ? 'btn--success' : 'btn--primary'} btn--sm`}
                         onClick={(e) => {
                           if (!selected) burstHearts(e.currentTarget)
-                          choose(v.id)
+                          choose(v)
                         }}
                         aria-pressed={selected}
                       >

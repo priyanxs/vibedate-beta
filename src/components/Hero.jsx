@@ -1,14 +1,23 @@
 import { useMemo } from 'react'
-import { BUDGET, CITIES, VIBES, VIBE_LIST, budgetTier } from '../data'
+import { BUDGET, CITIES, GIFTS, VIBES, VIBE_LIST, budgetTier } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { minDateCost } from '../utils/plan'
 import Icon from './Icon.jsx'
 import AnimatedNumber from './AnimatedNumber.jsx'
 import FloatingHearts from './FloatingHearts.jsx'
+import { useToast } from './Toast.jsx'
+
+const whole = (n) => String(Math.round(n))
+
+const Words = ({ words, from = 0 }) =>
+  words.map((w, i) => (
+    <span key={w} className="word" style={{ '--w': from + i }}>{w}</span>
+  ))
 
 export default function Hero() {
   const { budget, setBudget, vibeFilter, setVibeFilter, city, setCity, cityInfo, cityVenues } = useDate()
+  const toast = useToast()
 
   const pct = ((budget - BUDGET.min) / (BUDGET.max - BUDGET.min)) * 100
   const fitCount = useMemo(() => cityVenues.filter((v) => minDateCost(v) <= budget).length, [cityVenues, budget])
@@ -19,17 +28,18 @@ export default function Hero() {
       <div className="container hero__inner">
         <div className="hero__copy">
           <p className="eyebrow rise" style={{ '--i': 0 }}>{cityInfo.name} date planner</p>
-          <h1 className="hero__title rise" style={{ '--i': 1 }}>
-            Plan the date.<br />
-            <span className="hero__accent">Keep the vibe.</span>
+          <h1 className="hero__title" aria-label="Plan the date. Keep the vibe.">
+            <span className="hero__line" aria-hidden="true"><Words words={['Plan', 'the', 'date.']} /></span>
+            <span className="hero__line hero__accent" aria-hidden="true"><Words words={['Keep', 'the', 'vibe.']} from={3} /></span>
           </h1>
           <p className="hero__lead rise" style={{ '--i': 2 }}>
             Pick your city, set a budget and VibeDate lines up the right venues, menus and gifts — plus an itinerary,
             outfit ideas, ready-to-send messages and an AI wingman.
           </p>
           <ul className="hero__stats rise" style={{ '--i': 3 }}>
-            <li><strong>{cityVenues.length}</strong> {cityInfo.name} venues</li>
-            <li><strong>4</strong> vibes</li>
+            <li><strong><AnimatedNumber value={cityVenues.length} format={whole} duration={700} /></strong> {cityInfo.name} venues</li>
+            <li><strong>{CITIES.length}</strong> cities</li>
+            <li><strong>{GIFTS.length}</strong> gift ideas</li>
             <li><strong>Live</strong> budget tracker</li>
           </ul>
         </div>
@@ -65,7 +75,11 @@ export default function Hero() {
 
           <label className="city-picker" htmlFor="city">
             <span className="budget-card__hint">City</span>
-            <select id="city" value={city} onChange={(e) => setCity(e.target.value)}>
+            <select id="city" value={city} onChange={(e) => {
+                setCity(e.target.value)
+                const picked = CITIES.find((c) => c.id === e.target.value)
+                if (picked) toast(`Showing ${picked.name} venues`)
+              }}>
               {CITIES.map((c) => (
                 <option key={c.id} value={c.id}>{c.emoji} {c.name}</option>
               ))}

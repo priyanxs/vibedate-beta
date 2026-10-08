@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import Icon from './Icon.jsx'
+import MusicPlayer from './MusicPlayer.jsx'
+import { useDate } from '../context/DateContext.jsx'
 
 const LINKS = [
   { href: '#venues', label: 'Venues' },
@@ -12,6 +14,7 @@ const LINKS = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const { cityInfo } = useDate()
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState('')
 
@@ -66,6 +69,15 @@ export default function Navbar() {
             </a>
           ))}
         </nav>
+
+        <div className="navbar__actions">
+          <a className="city-pill" href="#city" title="Change city">
+            <Icon name="pin" size={14} /> {cityInfo.name}
+          </a>
+          <a className="btn btn--primary btn--sm navbar__cta" href="#venues">Plan my date</a>
+        </div>
+
+        <MusicPlayer />
 
         <button
           type="button"

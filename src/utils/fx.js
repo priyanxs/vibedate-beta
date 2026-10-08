@@ -45,6 +45,8 @@ export const usePointerFx = () => {
       const { target, clientX, clientY } = e
       frame = requestAnimationFrame(() => {
         frame = 0
+        document.documentElement.style.setProperty('--cx', `${clientX}px`)
+        document.documentElement.style.setProperty('--cy', `${clientY}px`)
         if (!(target instanceof Element)) return
         const glass = target.closest('.glass')
         if (glass) {

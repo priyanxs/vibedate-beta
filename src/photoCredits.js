@@ -4,6 +4,7 @@
    and update (or delete) its entry here. Images were cropped and resized. */
 
 export const PHOTO_CREDITS = {
+  za: { note: "Noor-Us-Sabah Palace, the heritage hotel that houses Za-aiqa", author: "BijuJohn", license: "CC BY-SA 3.0", source: "https://commons.wikimedia.org/wiki/File:NoorUsSabahPalaceHeritageHotel-Bhopal.jpg" },
   umt: { note: "A candlelit table setting (another restaurant)", author: "PattayaPatrol", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:DZ6_2628_Cozy_candlelit_dinner_for_two_elegant_Thai_restaurant_setting_with_twinkling_lights_and_a_delicate_orchid_centerpiece.jpg" },
   ww: { note: "Sunset over the Upper Lake, Bhopal", author: "SUBHASH E", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Sunset_in_Upper_lake,_Bhopal.jpg" },
   jnp: { note: "Noor-Us-Sabah Palace, another heritage hotel in Bhopal", author: "BijuJohn", license: "CC BY-SA 3.0", source: "https://commons.wikimedia.org/wiki/File:NoorUsSabahPalaceHeritageHotel-Bhopal.jpg" },
