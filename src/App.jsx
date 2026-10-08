@@ -15,6 +15,7 @@ import HowItWorks from './components/HowItWorks.jsx'
 import CityRing from './components/CityRing.jsx'
 import BackToTop from './components/BackToTop.jsx'
 import IntroSplash from './components/IntroSplash.jsx'
+import BackgroundMusic from './components/BackgroundMusic.jsx'
 import { ToastProvider } from './components/Toast.jsx'
 import ScrollProgress from './components/ScrollProgress.jsx'
 import Marquee from './components/Marquee.jsx'
@@ -58,6 +59,7 @@ export default function App() {
       <MobileSummaryBar />
       <WingmanChat />
       <BackToTop />
+      <BackgroundMusic />
       </ToastProvider>
     </DateProvider>
   )
