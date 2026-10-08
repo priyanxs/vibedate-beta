@@ -4423,3 +4423,28 @@ h1, h2, h3, .section__title, .hero__title, .brand__name {
   .bgm { width: 210px; }
 }
 @media (max-width: 520px) { .bgm { width: 180px; } .bgm__title small { display: none; } }
+
+
+/* ---------- Split the bill ---------- */
+.split { margin: 14px 0 4px; padding: 12px 14px; border-radius: 14px; border: 1px dashed var(--border, rgba(255, 255, 255, 0.18)); }
+.split__toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem; }
+.split__toggle input { width: 18px; height: 18px; accent-color: var(--brand); cursor: pointer; }
+.split__toggle span { display: inline-flex; align-items: center; gap: 8px; }
+.split__toggle .icon { color: var(--brand); }
+.split__body { display: grid; gap: 10px; margin-top: 12px; animation: pop-in 0.25s var(--ease); }
+.split__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.84rem; color: var(--muted); }
+.split__tips { margin: 0; gap: 6px; }
+.split__result { display: grid; gap: 6px; margin: 4px 0 0; padding-top: 10px; border-top: 1px solid var(--border, rgba(255, 255, 255, 0.12)); }
+.split__result > div { display: flex; justify-content: space-between; gap: 10px; font-size: 0.86rem; }
+.split__result dd { margin: 0; font-weight: 700; }
+.split__each { font-size: 1rem !important; }
+.split__each dt { font-weight: 700; color: var(--text); }
+.split__each dd { color: var(--brand); font-size: 1.25rem; }
+
+.footer__links { margin-top: 10px; font-size: 0.82rem; color: var(--muted); }
+.footer__links a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+.footer__links a:hover { color: var(--text); }
+
+.crash { display: grid; place-content: center; justify-items: center; gap: 12px; min-height: 100vh; padding: 24px; text-align: center; }
+.crash h1 { font-size: 2rem; }
+.crash p { color: var(--muted); }

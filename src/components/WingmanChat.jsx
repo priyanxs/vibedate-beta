@@ -118,7 +118,8 @@ export default function WingmanChat() {
           {showSettings && (
             <div className="chat__settings">
               <p>
-                The assistant works with no setup. For live AI you can paste your own <strong>Gemini API key</strong> — it stays in this browser and is sent only to Google. (Site owners: use the proxy in <code>/worker</code> so no key is ever exposed.)
+                The assistant works with no setup and answers on your device. For live AI answers, paste your own free <strong>Gemini API key</strong> (get one in a minute at{' '}
+                <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">aistudio.google.com/apikey</a>). The key stays in this browser, and with a key your chat messages are sent to Google.
               </p>
               <div className="chat__key-row">
                 <input

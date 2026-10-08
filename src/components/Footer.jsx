@@ -97,6 +97,10 @@ export default function Footer() {
           Photos are from Wikimedia Commons contributors under their licences (credited in the app).
           Be kind, be honest and respect boundaries. Plans are saved only on this device.
         </p>
+        <p className="footer__links">
+          © {new Date().getFullYear()} VibeDate · <a href={`${import.meta.env.BASE_URL}privacy.html`}>Privacy policy</a> ·{' '}
+          <a href="https://github.com/priyanxs/vibedate-beta/issues" target="_blank" rel="noopener noreferrer">Report a problem</a>
+        </p>
       </div>
     </footer>
   )

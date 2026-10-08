@@ -1,6 +1,6 @@
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR, useCopy } from '../utils/format'
-import { MAX_QTY, buildPlanText } from '../utils/plan'
+import { MAX_QTY, MAX_SPLIT, TIP_OPTIONS, buildPlanText } from '../utils/plan'
 import Icon from './Icon.jsx'
 import AnimatedNumber from './AnimatedNumber.jsx'
 
@@ -13,7 +13,7 @@ export default function SummaryPanel() {
   const status = overBudget ? 'over' : 'ok'
 
   const onCopy = () =>
-    copy(buildPlanText({ venue, cartLines, giftLines, budget, foodTotal, giftTotal, total, dateISO: d.dateISO, startMin: d.startMin }))
+    copy(buildPlanText({ venue, cartLines, giftLines, budget, foodTotal, giftTotal, total, dateISO: d.dateISO, startMin: d.startMin, split: d.split }))
 
   return (
     <div className="glass summary" data-status={status}>
@@ -115,6 +115,46 @@ export default function SummaryPanel() {
         <div><dt>Gifts</dt><dd>{formatINR(giftTotal)}</dd></div>
         <div className="totals__grand"><dt>Total</dt><dd><AnimatedNumber value={total} format={formatINR} /></dd></div>
       </dl>
+
+
+      <section className="split" aria-label="Split the bill">
+        <label className="split__toggle">
+          <input type="checkbox" checked={d.splitOn} onChange={(e) => d.setSplitOn(e.target.checked)} />
+          <span><Icon name="users" size={16} /> Split the bill</span>
+        </label>
+        {d.splitOn && (
+          <div className="split__body">
+            <div className="split__row">
+              <span id="split-people-label">People</span>
+              <span className="mini-stepper" role="group" aria-labelledby="split-people-label">
+                <button type="button" onClick={() => d.setSplitCount(d.splitCount - 1)} disabled={d.splitCount <= 2} aria-label="Fewer people">
+                  <Icon name="minus" size={12} />
+                </button>
+                <span key={d.splitCount} className="pop" aria-live="polite">{d.splitCount}</span>
+                <button type="button" onClick={() => d.setSplitCount(d.splitCount + 1)} disabled={d.splitCount >= MAX_SPLIT} aria-label="More people">
+                  <Icon name="plus" size={12} />
+                </button>
+              </span>
+            </div>
+            <div className="split__row">
+              <span id="split-tip-label">Tip</span>
+              <span className="chips split__tips" role="group" aria-labelledby="split-tip-label">
+                {TIP_OPTIONS.map((t) => (
+                  <button key={t} type="button" className={`chip chip--sm ${d.tipPct === t ? 'is-active' : ''}`} aria-pressed={d.tipPct === t} onClick={() => d.setTipPct(t)}>
+                    {t === 0 ? 'None' : `${t}%`}
+                  </button>
+                ))}
+              </span>
+            </div>
+            <dl className="split__result">
+              {d.split.tip > 0 && <div><dt>Tip (not counted in your budget)</dt><dd>{formatINR(d.split.tip)}</dd></div>}
+              <div><dt>Bill with tip</dt><dd>{formatINR(d.split.grand)}</dd></div>
+              <div className="split__each"><dt>Each person pays</dt><dd><AnimatedNumber value={d.split.perPerson} format={formatINR} /></dd></div>
+            </dl>
+            {d.split.collected > d.split.grand && <p className="fine-print">Rounded up to the next rupee ({formatINR(d.split.collected - d.split.grand)} extra in total).</p>}
+          </div>
+        )}
+      </section>
 
       <div className="summary__actions">
         <button type="button" className="btn btn--primary btn--block" onClick={onCopy}>

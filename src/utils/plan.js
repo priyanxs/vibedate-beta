@@ -161,7 +161,21 @@ export const buildItinerary = ({ venue, cartLines, giftLines, startMin, total })
 }
 
 /** Plain-text summary used for "Copy plan". */
-export const buildPlanText = ({ venue, cartLines, giftLines, budget, foodTotal, giftTotal, total, dateISO, startMin }) => {
+export const MAX_SPLIT = 12
+export const TIP_OPTIONS = [0, 5, 10, 15]
+
+/** Splits a bill equally. Each person's share is rounded up to the next rupee so the table never comes up short. */
+export const splitBill = ({ total, people, tipPct }) => {
+  const n = Math.min(MAX_SPLIT, Math.max(1, Math.round(Number(people)) || 1))
+  const pct = TIP_OPTIONS.includes(Number(tipPct)) ? Number(tipPct) : 0
+  const base = Math.max(0, Math.round(Number(total) || 0))
+  const tip = Math.round((base * pct) / 100)
+  const grand = base + tip
+  const perPerson = Math.ceil(grand / n)
+  return { people: n, tipPct: pct, tip, grand, perPerson, collected: perPerson * n }
+}
+
+export const buildPlanText = ({ venue, cartLines, giftLines, budget, foodTotal, giftTotal, total, dateISO, startMin, split }) => {
   const lines = ['VibeDate plan', '']
   lines.push(`When: ${formatDay(dateISO) || 'TBD'} at ${minutesToLabel(startMin)}`)
   lines.push(`Where: ${venue ? `${venue.name}, ${(CITY_BY_ID[venue.city] || {}).name || ''}` : 'TBD'}`)
@@ -180,5 +194,9 @@ export const buildPlanText = ({ venue, cartLines, giftLines, budget, foodTotal, 
   lines.push(`Menu ${formatINR(foodTotal)} + Gifts ${formatINR(giftTotal)} = ${formatINR(total)}`)
   const left = budget - total
   lines.push(left >= 0 ? `Remaining: ${formatINR(left)}` : `Over budget by ${formatINR(-left)}`)
+  if (split && split.people > 1) {
+    lines.push('')
+    lines.push(`Split ${split.people} ways${split.tipPct ? ` with ${split.tipPct}% tip (${formatINR(split.tip)})` : ''}: ${formatINR(split.perPerson)} each`)
+  }
   return lines.join('\n')
 }

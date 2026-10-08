@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://priyanxs.github.io/vibedate-beta/sitemap.xml

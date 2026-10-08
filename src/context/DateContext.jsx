@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { BUDGET, CITY_BY_ID, DEFAULT_CITY, GIFT_BY_ID, VENUES, VENUE_BY_ID, VIBE_LIST } from '../data'
 import { nextSaturdayISO, parseISODate, todayISO } from '../utils/format'
-import { MAX_QTY, buildCartLines, flattenMenu, suggestMenu } from '../utils/plan'
+import { MAX_QTY, MAX_SPLIT, TIP_OPTIONS, buildCartLines, flattenMenu, splitBill, suggestMenu } from '../utils/plan'
 
 const STORAGE_KEY = 'vibedate:plan:v1'
 
@@ -51,12 +51,15 @@ const loadInitialState = () => {
     theirName: typeof saved.theirName === 'string' ? saved.theirName.slice(0, 40) : '',
     dateISO: dateOk ? saved.dateISO : nextSaturdayISO(),
     startMin: Number.isInteger(saved.startMin) && saved.startMin >= 0 && saved.startMin < 1440 ? saved.startMin : 18 * 60,
+    splitOn: saved.splitOn === true,
+    splitCount: Number.isInteger(saved.splitCount) && saved.splitCount >= 2 && saved.splitCount <= MAX_SPLIT ? saved.splitCount : 2,
+    tipPct: TIP_OPTIONS.includes(saved.tipPct) ? saved.tipPct : 0,
   }
 }
 
 export function DateProvider({ children }) {
   const [state, setState] = useState(loadInitialState)
-  const { budget, city, vibeFilter, venueId, cart, giftIds, yourName, theirName, dateISO, startMin } = state
+  const { budget, city, vibeFilter, venueId, cart, giftIds, yourName, theirName, dateISO, startMin, splitOn, splitCount, tipPct } = state
 
   // Persist the plan on this device only.
   useEffect(() => {
@@ -84,6 +87,7 @@ export function DateProvider({ children }) {
   const remaining = budget - total
   const usedPct = budget > 0 ? Math.min(100, (total / budget) * 100) : 0
   const overBudget = total > budget
+  const split = useMemo(() => splitBill({ total, people: splitOn ? splitCount : 1, tipPct: splitOn ? tipPct : 0 }), [total, splitOn, splitCount, tipPct])
 
   /* ---- actions ---- */
   const setBudget = useCallback((value) => {
@@ -129,6 +133,10 @@ export function DateProvider({ children }) {
     patch({ cart: suggestMenu(venue, Math.max(0, budget - reserve)) })
   }, [venue, giftTotal, budget, patch])
 
+  const setSplitOn = useCallback((on) => patch({ splitOn: Boolean(on) }), [patch])
+  const setSplitCount = useCallback((n) => patch({ splitCount: Math.min(MAX_SPLIT, Math.max(2, Math.round(Number(n)) || 2)) }), [patch])
+  const setTipPct = useCallback((n) => patch({ tipPct: TIP_OPTIONS.includes(Number(n)) ? Number(n) : 0 }), [patch])
+
   const resetPlan = useCallback(() => patch({ venueId: null, cart: {}, giftIds: [] }), [patch])
 
   const value = useMemo(
@@ -144,6 +152,9 @@ export function DateProvider({ children }) {
       theirName,
       dateISO,
       startMin,
+      splitOn,
+      splitCount,
+      tipPct,
       // derived
       cityInfo,
       cityVenues,
@@ -157,6 +168,7 @@ export function DateProvider({ children }) {
       remaining,
       usedPct,
       overBudget,
+      split,
       // actions
       setBudget,
       setVibeFilter,
@@ -167,15 +179,18 @@ export function DateProvider({ children }) {
       toggleGift,
       autoPlanMenu,
       resetPlan,
+      setSplitOn,
+      setSplitCount,
+      setTipPct,
       setYourName: (v) => patch({ yourName: v.slice(0, 40) }),
       setTheirName: (v) => patch({ theirName: v.slice(0, 40) }),
       setDateISO: (v) => patch({ dateISO: v }),
       setStartMin: (v) => patch({ startMin: Number(v) }),
     }),
     [
-      budget, city, vibeFilter, venueId, cart, giftIds, yourName, theirName, dateISO, startMin,
+      budget, city, vibeFilter, venueId, cart, giftIds, yourName, theirName, dateISO, startMin, splitOn, splitCount, tipPct, split,
       cityInfo, cityVenues, venue, vibe, cartLines, giftLines, foodTotal, giftTotal, total, remaining, usedPct, overBudget,
-      setBudget, setVibeFilter, setCity, selectVenue, changeQty, clearCart, toggleGift, autoPlanMenu, resetPlan, patch,
+      setBudget, setVibeFilter, setCity, selectVenue, changeQty, clearCart, toggleGift, autoPlanMenu, resetPlan, setSplitOn, setSplitCount, setTipPct, patch,
     ],
   )
 
