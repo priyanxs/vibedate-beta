@@ -79,10 +79,10 @@ rupee. The tip is shown separately and is not counted against your budget. The s
 
 - [x] Works on GitHub Pages and Vercel (`vercel.json` adds security headers and caching).
 - [x] SEO and sharing: title, description, canonical, Open Graph / Twitter tags, `robots.txt`, `sitemap.xml`, web-app manifest, 404 page.
-      These use the GitHub Pages address (`https://priyanxs.github.io/vibedate-beta/`) — **if you use your own domain, replace that address in
+      These use the Vercel address (`https://vibedate-priyanxs.vercel.app/`) — **if you move to your own domain, replace that address in
       `index.html`, `public/robots.txt` and `public/sitemap.xml`.**
 - [x] Privacy policy at `/privacy.html` (linked in the footer) — required by Google AdSense.
 - [x] `ads.txt` (works only at the root of a domain, e.g. your Vercel domain) and the AdSense loader in `index.html`.
 - [ ] If you serve visitors in the EEA, UK or Switzerland, switch on Google's consent message in your AdSense account (Privacy & messaging).
-- [ ] Vercel: Settings → Deployment Protection → disable **Vercel Authentication** so visitors can open the site.
+- [x] Vercel: Deployment Protection → Vercel Authentication disabled, so visitors can open the site.
 - [ ] Optional live AI: visitors can paste their own free Gemini key in the Wingman settings (https://aistudio.google.com/apikey). No key is stored in this repository.
