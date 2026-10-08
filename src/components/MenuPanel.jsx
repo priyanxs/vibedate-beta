@@ -3,8 +3,10 @@ import { MENU_CATEGORIES } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { MAX_QTY } from '../utils/plan'
+import { mapsDirectionsUrl, mapsViewUrl } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
+import VenueBanner from './VenueBanner.jsx'
 
 export default function MenuPanel({ venue }) {
   const { cart, changeQty, remaining, autoPlanMenu, clearCart, cartLines } = useDate()
@@ -38,6 +40,25 @@ export default function MenuPanel({ venue }) {
         </div>
       }
     >
+      <div className="glass venue-head">
+        <VenueBanner venue={venue} className="venue-head__banner" />
+        <div className="venue-head__body">
+          <div>
+            <h3 className="venue-head__name">{venue.name}</h3>
+            <p className="venue-head__meta">{venue.vibe} · {venue.cuisine}</p>
+            <p className="venue-head__meta">Dress code: {venue.dressCode}</p>
+          </div>
+          <div className="venue-head__actions">
+            <a className="btn btn--primary btn--sm" href={mapsViewUrl(venue)} target="_blank" rel="noopener noreferrer">
+              <Icon name="pin" size={16} /> Open in Google Maps
+            </a>
+            <a className="btn btn--ghost btn--sm" href={mapsDirectionsUrl(venue)} target="_blank" rel="noopener noreferrer">
+              <Icon name="navigation" size={16} /> Directions
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div className="glass menu-panel">
         <div className="tabs" role="tablist" aria-label="Menu categories">
           {MENU_CATEGORIES.map(({ key, label }) => {

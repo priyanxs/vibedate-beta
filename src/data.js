@@ -66,6 +66,7 @@ const items = (prefix, rows) =>
 export const VENUES = [
   {
     id: 'umt',
+    mapsQuery: "Under the Mango Tree restaurant, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Under the Mango Tree',
     vibe: 'Romantic',
     emoji: '🌳',
@@ -104,6 +105,7 @@ export const VENUES = [
   },
   {
     id: 'ww',
+    mapsQuery: "Wind and Waves restaurant, Upper Lake, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Wind & Waves',
     vibe: 'Romantic',
     emoji: '🌅',
@@ -141,6 +143,7 @@ export const VENUES = [
   },
   {
     id: 'jnp',
+    mapsQuery: "Jehan Numa Palace Hotel, Shamla Hills, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Jehan Numa Palace',
     vibe: 'Romantic',
     emoji: '🏰',
@@ -180,6 +183,7 @@ export const VENUES = [
   },
   {
     id: 'oliver',
+    mapsQuery: "Oliver's cafe, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: "Oliver's",
     vibe: 'Cozy',
     emoji: '☕',
@@ -217,6 +221,7 @@ export const VENUES = [
   },
   {
     id: 'ich',
+    mapsQuery: "Indian Coffee House, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Indian Coffee House',
     vibe: 'Cozy',
     emoji: '📚',
@@ -254,6 +259,7 @@ export const VENUES = [
   },
   {
     id: 'gfb',
+    mapsQuery: "Greek Food and Brewery, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Greek Food & Brewery',
     vibe: 'Vibrant',
     emoji: '🫒',
@@ -292,6 +298,7 @@ export const VENUES = [
   },
   {
     id: 'bn',
+    mapsQuery: "Barbeque Nation, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Barbeque Nation',
     vibe: 'Vibrant',
     emoji: '🔥',
@@ -327,6 +334,7 @@ export const VENUES = [
   },
   {
     id: 'sg',
+    mapsQuery: "Sagar Gaire, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Sagar Gaire',
     vibe: 'Casual',
     emoji: '🥪',
@@ -364,6 +372,7 @@ export const VENUES = [
   },
   {
     id: 'md',
+    mapsQuery: "Manohar Dairy and Restaurant, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Manohar Dairy & Restaurant',
     vibe: 'Casual',
     emoji: '🥛',
@@ -441,6 +450,18 @@ export const GIFTS = [
   { id: 'g-watch', name: 'Classic Leather-strap Watch', category: 'jewelry', price: 4200, emoji: '⌚', vibes: ['Vibrant', 'Casual', 'Cozy'], note: 'A practical keepsake with lasting value.' },
   { id: 'g-solitaire', name: 'Solitaire-style Diamond Pendant', category: 'jewelry', price: 7500, emoji: '💍', vibes: ['Romantic'], note: 'Reserved for a truly special occasion.' },
 ]
+
+/* ---- YOUR GIFT LINKS ----------------------------------------------------
+   Paste your own product / affiliate link for any gift id below. The gift card
+   then shows a "Buy" button that opens your link in a new tab. Gifts without a
+   link show "Find online", which opens a web search for that gift.
+   Example:  'g-rose': 'https://www.yourshop.com/red-rose',
+--------------------------------------------------------------------------- */
+export const GIFT_LINKS = {
+  // 'g-rose': '',
+  // 'g-rbq': '',
+  // 'g-silk': '',
+}
 
 export const GIFT_BY_ID = Object.fromEntries(GIFTS.map((g) => [g.id, g]))
 

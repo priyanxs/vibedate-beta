@@ -17,7 +17,7 @@ export default function Navbar() {
     <header className="navbar">
       <div className="container navbar__inner">
         <a href="#top" className="brand" onClick={() => setOpen(false)}>
-          <span className="brand__mark"><Icon name="heart" size={18} strokeWidth={2.2} /></span>
+          <img className="brand__logo" src={`${import.meta.env.BASE_URL}logo.png`} alt="" width="40" height="40" />
           <span className="brand__name">VibeDate</span>
         </a>
 

@@ -3,6 +3,7 @@ import { GIFTS, GIFT_CATEGORIES, VIBES } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { pickTopGift } from '../utils/plan'
+import { giftLink } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 
@@ -80,12 +81,22 @@ export default function GiftSuggester() {
           {shown.map((g) => {
             const added = giftIds.includes(g.id)
             const isTop = top && top.id === g.id
+            const link = giftLink(g)
             return (
               <article key={g.id} className={`gift-card glass ${added ? 'is-selected' : ''}`}>
                 {isTop && <span className="badge badge--lime gift-card__flag"><Icon name="sparkles" size={12} /> Top pick</span>}
                 <span className="gift-card__emoji" aria-hidden="true">{g.emoji}</span>
                 <h3 className="gift-card__name">{g.name}</h3>
                 <p className="gift-card__note">{g.note}</p>
+                <a
+                  className={`gift-card__link ${link.custom ? 'is-custom' : ''}`}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  aria-label={`${link.label}: ${g.name} (opens in a new tab)`}
+                >
+                  <Icon name="external" size={13} /> {link.label}
+                </a>
                 <div className="gift-card__foot">
                   <span className="gift-card__price">{formatINR(g.price)}</span>
                   <button

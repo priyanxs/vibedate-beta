@@ -27,6 +27,14 @@ npm run build    # outputs to dist/
 All venues, menus, gifts, outfits, cards and message templates live in `src/data.js`. They are **illustrative sample data** — confirm
 real menus and prices with each venue.
 
+## Customising
+
+- **Gift links:** in `src/data.js`, add entries to `GIFT_LINKS` (gift id → your full `https://` link). That gift's card then shows a
+  **Buy** button opening your link; gifts without one show **Find online** (a web search).
+- **Venue photos:** drop `<venue-id>.jpg` (or png/webp) into `src/assets/venues/` — see the README there for the id list.
+- **Google Maps:** venues link to a Google Maps search automatically. For an exact pin, add `mapsUrl: 'https://maps.app.goo.gl/…'` to the venue.
+- **Logo:** `public/logo.png` (navbar/footer), `public/favicon.png`, `public/apple-touch-icon.png`.
+
 ## AI Wingman / Gemini
 
 The Wingman works out of the box with built-in answers. For live answers, open the chat → gear icon → paste a Gemini API key

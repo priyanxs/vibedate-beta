@@ -3,9 +3,11 @@ import { VENUES, VIBES, VIBE_LIST } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { minDateCost } from '../utils/plan'
+import { mapsViewUrl } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 import MenuPanel from './MenuPanel.jsx'
+import VenueBanner from './VenueBanner.jsx'
 
 export default function VenueExplorer() {
   const { budget, vibeFilter, setVibeFilter, venueId, selectVenue, venue } = useDate()
@@ -67,10 +69,9 @@ export default function VenueExplorer() {
               const fits = min <= budget
               return (
                 <article key={v.id} className={`venue-card glass ${selected ? 'is-selected' : ''}`}>
-                  <div className="venue-card__banner" style={{ background: VIBES[v.vibe].gradient }}>
-                    <span className="venue-card__emoji" aria-hidden="true">{v.emoji}</span>
-                    <span className="badge badge--glass">{v.vibe}</span>
-                  </div>
+                  <VenueBanner venue={v} className="venue-card__banner">
+                    <span className="badge badge--glass venue-banner__badge">{v.vibe}</span>
+                  </VenueBanner>
                   <div className="venue-card__body">
                     <h3 className="venue-card__name">{v.name}</h3>
                     <p className="venue-card__cuisine">{v.cuisine}</p>
@@ -86,6 +87,15 @@ export default function VenueExplorer() {
                           {fits ? 'Fits your budget' : 'Above budget'}
                         </span>
                         <p className="venue-card__price">From {formatINR(min)} for two</p>
+                        <a
+                          className="map-link"
+                          href={mapsViewUrl(v)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`View ${v.name} on Google Maps (opens in a new tab)`}
+                        >
+                          <Icon name="pin" size={14} /> View on Google Maps
+                        </a>
                       </div>
                       <button
                         type="button"

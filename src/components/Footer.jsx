@@ -1,11 +1,9 @@
-import Icon from './Icon.jsx'
-
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="container footer__inner">
         <p className="brand brand--footer">
-          <span className="brand__mark"><Icon name="heart" size={16} strokeWidth={2.2} /></span>
+          <img className="brand__logo" src={`${import.meta.env.BASE_URL}logo.png`} alt="" width="40" height="40" />
           <span className="brand__name">VibeDate</span>
         </p>
         <p className="footer__note">

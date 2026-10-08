@@ -368,15 +368,12 @@ a {
   color: var(--ink);
 }
 
-.brand__mark {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, var(--crimson), #ec4e76);
-  color: #fff;
-  box-shadow: 0 6px 14px rgba(200, 16, 46, 0.3);
+.brand__logo {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(200, 16, 46, 0.22);
 }
 
 .brand__name {
@@ -688,23 +685,47 @@ a {
   box-shadow: 0 0 0 2px var(--crimson), var(--shadow-lg);
 }
 
-.venue-card__banner {
+.venue-banner {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 104px;
+  overflow: hidden;
 }
 
-.venue-card__banner .badge {
+.venue-banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.venue-banner__emoji {
+  font-size: 46px;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.18));
+}
+
+.venue-banner__badge {
   position: absolute;
   top: 12px;
   left: 12px;
 }
 
-.venue-card__emoji {
-  font-size: 46px;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.18));
+.venue-card__banner {
+  height: 150px;
+}
+
+.map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--crimson);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .venue-card__body {
@@ -762,6 +783,44 @@ a {
 }
 
 /* =============================== Menu ================================= */
+
+.venue-head {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.venue-head__banner {
+  min-height: 170px;
+}
+
+.venue-head__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+}
+
+.venue-head__name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.venue-head__meta {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.venue-head__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 
 .menu-actions {
   display: flex;
@@ -1291,6 +1350,32 @@ a {
   margin-top: 6px;
   font-size: 13px;
   color: var(--muted);
+}
+
+.gift-card__link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--pink-200);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--muted);
+}
+
+.gift-card__link:hover {
+  color: var(--crimson);
+  border-color: var(--crimson);
+}
+
+.gift-card__link.is-custom {
+  background: var(--lime-soft);
+  border-color: var(--lime-line);
+  color: #3f6212;
 }
 
 .gift-card__foot {
@@ -2004,6 +2089,10 @@ a {
 
   .budget-card__value {
     font-size: 46px;
+  }
+
+  .venue-head {
+    grid-template-columns: 1fr;
   }
 
   .outfit__cols,
