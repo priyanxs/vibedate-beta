@@ -34,8 +34,8 @@ export default function OutfitCoordinator() {
         </div>
 
         <div className="palette-grid">
-          {outfit.palettes.map((p) => (
-            <div key={p.name} className="palette">
+          {outfit.palettes.map((p, i) => (
+            <div key={p.name} className="palette rise" style={{ '--i': i }}>
               <div className="palette__swatches">
                 {p.colors.map((c) => (
                   <span key={c} className="swatch" style={{ background: c }} title={c} role="img" aria-label={`Colour ${c}`} />

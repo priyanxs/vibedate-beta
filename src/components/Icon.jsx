@@ -39,6 +39,7 @@ export default function Icon({ name, size = 20, className = '', strokeWidth = 1.
       fill="none"
       stroke="currentColor"
       strokeWidth={strokeWidth}
+      style={className.includes('fill-heart') ? { fill: 'currentColor' } : undefined}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"

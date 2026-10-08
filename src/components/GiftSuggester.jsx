@@ -6,6 +6,7 @@ import { pickTopGift } from '../utils/plan'
 import { giftLink } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
+import { burstHearts } from '../utils/fx'
 
 export default function GiftSuggester() {
   const { vibe, venue, budget, remaining, giftIds, toggleGift } = useDate()
@@ -78,12 +79,12 @@ export default function GiftSuggester() {
         </div>
       ) : (
         <div className="gift-grid">
-          {shown.map((g) => {
+          {shown.map((g, index) => {
             const added = giftIds.includes(g.id)
             const isTop = top && top.id === g.id
             const link = giftLink(g)
             return (
-              <article key={g.id} className={`gift-card glass ${added ? 'is-selected' : ''}`}>
+              <article key={g.id} className={`gift-card glass tilt rise ${added ? 'is-selected' : ''}`} style={{ '--i': index % 8 }}>
                 {isTop && <span className="badge badge--lime gift-card__flag"><Icon name="sparkles" size={12} /> Top pick</span>}
                 <span className="gift-card__emoji" aria-hidden="true">{g.emoji}</span>
                 <h3 className="gift-card__name">{g.name}</h3>
@@ -102,7 +103,10 @@ export default function GiftSuggester() {
                   <button
                     type="button"
                     className={`btn btn--sm ${added ? 'btn--success' : 'btn--soft'}`}
-                    onClick={() => toggleGift(g.id)}
+                    onClick={(e) => {
+                      if (!added) burstHearts(e.currentTarget)
+                      toggleGift(g.id)
+                    }}
                     aria-pressed={added}
                   >
                     {added ? (<><Icon name="check" size={14} /> Added</>) : (<><Icon name="plus" size={14} /> Add</>)}

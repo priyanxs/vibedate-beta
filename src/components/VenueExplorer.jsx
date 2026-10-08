@@ -8,6 +8,7 @@ import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 import MenuPanel from './MenuPanel.jsx'
 import VenueBanner from './VenueBanner.jsx'
+import { burstHearts } from '../utils/fx'
 
 export default function VenueExplorer() {
   const { budget, vibeFilter, setVibeFilter, venueId, selectVenue, venue } = useDate()
@@ -64,11 +65,11 @@ export default function VenueExplorer() {
           </div>
         ) : (
           <div className="venue-grid">
-            {visible.map(({ venue: v, min }) => {
+            {visible.map(({ venue: v, min }, index) => {
               const selected = v.id === venueId
               const fits = min <= budget
               return (
-                <article key={v.id} className={`venue-card glass ${selected ? 'is-selected' : ''}`}>
+                <article key={v.id} className={`venue-card glass tilt rise ${selected ? 'is-selected' : ''}`} style={{ '--i': index }}>
                   <VenueBanner venue={v} className="venue-card__banner">
                     <span className="badge badge--glass venue-banner__badge">{v.vibe}</span>
                   </VenueBanner>
@@ -100,7 +101,10 @@ export default function VenueExplorer() {
                       <button
                         type="button"
                         className={`btn ${selected ? 'btn--success' : 'btn--primary'} btn--sm`}
-                        onClick={() => choose(v.id)}
+                        onClick={(e) => {
+                          if (!selected) burstHearts(e.currentTarget)
+                          choose(v.id)
+                        }}
                         aria-pressed={selected}
                       >
                         {selected ? (<><Icon name="check" size={16} /> Selected</>) : 'Choose'}

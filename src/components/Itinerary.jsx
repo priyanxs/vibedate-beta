@@ -48,7 +48,7 @@ export default function Itinerary() {
 
         <ol className="timeline">
           {steps.map((s, i) => (
-            <li key={`${s.title}-${i}`} className="timeline__item">
+            <li key={`${s.title}-${i}`} className="timeline__item rise" style={{ '--i': i }}>
               <span className="timeline__dot"><Icon name={s.icon} size={16} /></span>
               <div className="timeline__card">
                 <p className="timeline__time">{s.time}</p>

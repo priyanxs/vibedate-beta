@@ -4,6 +4,8 @@ import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { minDateCost } from '../utils/plan'
 import Icon from './Icon.jsx'
+import AnimatedNumber from './AnimatedNumber.jsx'
+import FloatingHearts from './FloatingHearts.jsx'
 
 export default function Hero() {
   const { budget, setBudget, vibeFilter, setVibeFilter } = useDate()
@@ -13,31 +15,34 @@ export default function Hero() {
 
   return (
     <section className="hero" id="top">
+      <FloatingHearts />
       <div className="container hero__inner">
         <div className="hero__copy">
-          <p className="eyebrow">Bhopal date planner</p>
-          <h1 className="hero__title">
+          <p className="eyebrow rise" style={{ '--i': 0 }}>Bhopal date planner</p>
+          <h1 className="hero__title rise" style={{ '--i': 1 }}>
             Plan the date.<br />
             <span className="hero__accent">Keep the vibe.</span>
           </h1>
-          <p className="hero__lead">
+          <p className="hero__lead rise" style={{ '--i': 2 }}>
             Set a budget and VibeDate lines up the right Bhopal venues, menus and gifts — plus an itinerary,
             outfit ideas, ready-to-send messages and an AI wingman.
           </p>
-          <ul className="hero__stats">
+          <ul className="hero__stats rise" style={{ '--i': 3 }}>
             <li><strong>{VENUES.length}</strong> Bhopal venues</li>
             <li><strong>4</strong> vibes</li>
             <li><strong>Live</strong> budget tracker</li>
           </ul>
         </div>
 
-        <div className="glass budget-card">
+        <div className="glass budget-card rise" style={{ '--i': 2 }}>
           <div className="budget-card__top">
             <label htmlFor="budget" className="budget-card__label">Total date budget (for two)</label>
             <span className="badge badge--lime">{budgetTier(budget)}</span>
           </div>
 
-          <output className="budget-card__value" htmlFor="budget" aria-live="polite">{formatINR(budget)}</output>
+          <output className="budget-card__value" htmlFor="budget" aria-live="polite">
+            <AnimatedNumber value={budget} format={formatINR} duration={350} />
+          </output>
 
           <input
             id="budget"

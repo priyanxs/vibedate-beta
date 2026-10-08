@@ -7,6 +7,7 @@ import { mapsDirectionsUrl, mapsViewUrl } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 import VenueBanner from './VenueBanner.jsx'
+import { burstHearts } from '../utils/fx'
 
 export default function MenuPanel({ venue }) {
   const { cart, changeQty, remaining, autoPlanMenu, clearCart, cartLines } = useDate()
@@ -93,12 +94,12 @@ export default function MenuPanel({ venue }) {
         {list.length === 0 ? (
           <p className="empty-note">No dishes match these filters.</p>
         ) : (
-          <ul className="menu-list">
-            {list.map((item) => {
+          <ul className="menu-list" key={tab}>
+            {list.map((item, index) => {
               const qty = cart[item.id] || 0
               const tooPricey = qty === 0 && item.price > remaining
               return (
-                <li key={item.id} className={`menu-item ${qty > 0 ? 'is-selected' : ''}`}>
+                <li key={item.id} className={`menu-item rise ${qty > 0 ? 'is-selected' : ''}`} style={{ '--i': index }}>
                   <span
                     className={`diet ${item.veg ? 'diet--veg' : 'diet--nonveg'}`}
                     role="img"
@@ -120,7 +121,7 @@ export default function MenuPanel({ venue }) {
                       <button type="button" onClick={() => changeQty(item.id, -1)} aria-label={`Remove one ${item.name}`}>
                         <Icon name="minus" size={14} />
                       </button>
-                      <span aria-live="polite">{qty}</span>
+                      <span key={qty} className="pop" aria-live="polite">{qty}</span>
                       <button
                         type="button"
                         onClick={() => changeQty(item.id, 1)}
@@ -131,7 +132,10 @@ export default function MenuPanel({ venue }) {
                       </button>
                     </div>
                   ) : (
-                    <button type="button" className="btn btn--soft btn--sm" onClick={() => changeQty(item.id, 1)}>
+                    <button type="button" className="btn btn--soft btn--sm" onClick={(e) => {
+                        burstHearts(e.currentTarget)
+                        changeQty(item.id, 1)
+                      }}>
                       <Icon name="plus" size={14} /> Add
                     </button>
                   )}

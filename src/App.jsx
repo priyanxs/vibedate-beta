@@ -11,13 +11,24 @@ import SummaryPanel from './components/SummaryPanel.jsx'
 import MobileSummaryBar from './components/MobileSummaryBar.jsx'
 import WingmanChat from './components/WingmanChat.jsx'
 import Footer from './components/Footer.jsx'
+import ScrollProgress from './components/ScrollProgress.jsx'
+import Marquee from './components/Marquee.jsx'
+import { usePointerFx } from './utils/fx'
 
 export default function App() {
+  usePointerFx()
+
   return (
     <DateProvider>
-      <div className="bg-blobs" aria-hidden="true" />
+      <div className="bg-blobs" aria-hidden="true">
+        <span className="blob blob--a" />
+        <span className="blob blob--b" />
+        <span className="blob blob--c" />
+      </div>
+      <ScrollProgress />
       <Navbar />
       <Hero />
+      <Marquee />
       <div className="container layout">
         <main className="layout__main">
           <VenueExplorer />

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Icon from './Icon.jsx'
 
 const LINKS = [
@@ -12,9 +12,34 @@ const LINKS = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [active, setActive] = useState('')
+
+  useEffect(() => {
+    let frame = 0
+    const update = () => {
+      frame = 0
+      setScrolled(window.scrollY > 12)
+      let current = ''
+      LINKS.forEach(({ href }) => {
+        const el = document.getElementById(href.slice(1))
+        if (el && el.getBoundingClientRect().top <= 150) current = href.slice(1)
+      })
+      setActive(current)
+    }
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
 
   return (
-    <header className="navbar">
+    <header className={`navbar ${scrolled ? 'is-scrolled' : ''}`}>
       <div className="container navbar__inner">
         <a href="#top" className="brand" onClick={() => setOpen(false)}>
           <img className="brand__logo" src={`${import.meta.env.BASE_URL}logo.png`} alt="" width="40" height="40" />
@@ -23,7 +48,15 @@ export default function Navbar() {
 
         <nav className={`navbar__links ${open ? 'is-open' : ''}`} aria-label="Primary">
           {LINKS.map((l) => (
-            <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>
+            <a
+              key={l.href}
+              href={l.href}
+              className={active === l.href.slice(1) ? 'is-active' : ''}
+              aria-current={active === l.href.slice(1) ? 'true' : undefined}
+              onClick={() => setOpen(false)}
+            >
+              {l.label}
+            </a>
           ))}
         </nav>
 

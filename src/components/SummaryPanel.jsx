@@ -2,6 +2,7 @@ import { useDate } from '../context/DateContext.jsx'
 import { formatINR, useCopy } from '../utils/format'
 import { MAX_QTY, buildPlanText } from '../utils/plan'
 import Icon from './Icon.jsx'
+import AnimatedNumber from './AnimatedNumber.jsx'
 
 export default function SummaryPanel() {
   const d = useDate()
@@ -24,7 +25,8 @@ export default function SummaryPanel() {
       <div className="meter">
         <div className="meter__row">
           <span className="meter__label">{overBudget ? 'Over budget by' : 'Budget remaining'}</span>
-          <span className={`meter__value ${overBudget ? 'is-over' : 'is-ok'}`}>{formatINR(Math.abs(remaining))}</span>
+          <span className={`meter__value ${overBudget ? 'is-over' : 'is-ok'}`}><AnimatedNumber value={Math.abs(remaining)} format={formatINR} />
+          </span>
         </div>
         <div
           className="meter__track"
@@ -73,7 +75,7 @@ export default function SummaryPanel() {
                       <button type="button" onClick={() => d.changeQty(item.id, -1)} aria-label={`Remove one ${item.name}`}>
                         <Icon name="minus" size={12} />
                       </button>
-                      <span>{qty}</span>
+                      <span key={qty} className="pop">{qty}</span>
                       <button
                         type="button"
                         onClick={() => d.changeQty(item.id, 1)}
@@ -111,7 +113,7 @@ export default function SummaryPanel() {
       <dl className="totals">
         <div><dt>Menu</dt><dd>{formatINR(foodTotal)}</dd></div>
         <div><dt>Gifts</dt><dd>{formatINR(giftTotal)}</dd></div>
-        <div className="totals__grand"><dt>Total</dt><dd>{formatINR(total)}</dd></div>
+        <div className="totals__grand"><dt>Total</dt><dd><AnimatedNumber value={total} format={formatINR} /></dd></div>
       </dl>
 
       <div className="summary__actions">
