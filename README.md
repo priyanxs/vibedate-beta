@@ -1,4 +1,4 @@
-# VibeDate Beta
+# VibeDate
 
 A budget-aware date planner for **16 Indian cities** — Bhopal, Indore, Jabalpur, Delhi, Mumbai, Bengaluru, Hyderabad, Chennai,
 Kolkata, Pune, Ahmedabad, Jaipur, Lucknow, Chandigarh, Nagpur and Kochi — built with React, Vite and three.js.
