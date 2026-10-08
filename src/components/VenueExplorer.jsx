@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { KIND_LABELS, VIBES, VIBE_LIST, kindOf } from '../data'
+import { DIET_LABELS, KIND_LABELS, VIBES, VIBE_LIST, dietOf, kindOf } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { minDateCost } from '../utils/plan'
@@ -19,6 +19,7 @@ export default function VenueExplorer() {
   const { budget, vibeFilter, setVibeFilter, venueId, selectVenue, venue, cityInfo, cityVenues } = useDate()
   const [showStretch, setShowStretch] = useState(false)
   const [kind, setKind] = useState('all')
+  const [diet, setDiet] = useState('all')
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState('best')
   const toast = useToast()
@@ -31,7 +32,7 @@ export default function VenueExplorer() {
   const { visible, hiddenCount } = useMemo(() => {
     const needle = query.trim().toLowerCase()
     const matches = (v) => !needle || `${v.name} ${v.cuisine} ${v.tagline}`.toLowerCase().includes(needle)
-    const all = cityVenues.filter((v) => (vibeFilter === 'All' || v.vibe === vibeFilter) && (activeKind === 'all' || kindOf(v) === activeKind) && matches(v)).map((v) => ({
+    const all = cityVenues.filter((v) => (vibeFilter === 'All' || v.vibe === vibeFilter) && (activeKind === 'all' || kindOf(v) === activeKind) && (diet === 'all' || (diet === 'jain' ? v.jain : dietOf(v) === diet)) && matches(v)).map((v) => ({
       venue: v,
       min: minDateCost(v),
     }))
@@ -43,7 +44,7 @@ export default function VenueExplorer() {
       visible: showStretch ? [...fits, ...stretch] : [...fits, ...keepSelected],
       hiddenCount: stretch.length - (showStretch ? 0 : keepSelected.length),
     }
-  }, [cityVenues, budget, vibeFilter, activeKind, venueId, showStretch, query, sort])
+  }, [cityVenues, budget, vibeFilter, activeKind, diet, venueId, showStretch, query, sort])
 
   const choose = (v) => {
     selectVenue(v.id)
@@ -92,6 +93,23 @@ export default function VenueExplorer() {
           ))}
         </div>
 
+        <div className="chips chips--kind" role="group" aria-label="Filter by diet">
+          {[['all', 'Any diet'], ['veg', 'Pure veg'], ['nonveg', 'Non-veg'], ['jain', 'Jain food']].map(([k, label]) => (
+            <button
+              key={k}
+              type="button"
+              className={`chip chip--sm ${diet === k ? 'is-active' : ''}`}
+              aria-pressed={diet === k}
+              onClick={() => setDiet(k)}
+            >
+              {k === 'veg' && <span className="diet diet--veg" aria-hidden="true" />}
+              {k === 'nonveg' && <span className="diet diet--nonveg" aria-hidden="true" />}
+              {k === 'jain' && <span aria-hidden="true">🪷</span>}
+              {label}
+            </button>
+          ))}
+        </div>
+
         <div className="toolbar">
           <label className="search">
             <Icon name="search" size={16} />
@@ -130,6 +148,13 @@ export default function VenueExplorer() {
                   </VenueBanner>
                   <div className="venue-card__body">
                     <h3 className="venue-card__name">{v.name}</h3>
+                    <p className="diet-badges">
+                      <span className={`diet-badge diet-badge--${dietOf(v)}`}>
+                        <span className={`diet ${dietOf(v) === 'veg' ? 'diet--veg' : 'diet--nonveg'}`} aria-hidden="true" />
+                        {dietOf(v) === 'veg' ? DIET_LABELS.veg : 'Serves non-veg'}
+                      </span>
+                      {v.jain && <span className="diet-badge diet-badge--jain">🪷 {DIET_LABELS.jain}</span>}
+                    </p>
                     <p className="venue-card__cuisine">{v.cuisine}</p>
                     <p className="venue-card__tag">{v.tagline}</p>
                     <ul className="tag-list">

@@ -1,4 +1,5 @@
 import { CITY_BY_ID } from '../data'
+import { dishKey } from './dishes'
 import { GIFT_LINKS } from '../giftLinks'
 import { PHOTO_CREDITS } from '../photoCredits'
 import { CITY_PHOTO_CREDITS } from '../cityPhotos'
@@ -66,6 +67,16 @@ const giftFiles = import.meta.glob('../assets/gifts/*.jpg', { eager: true, query
 export const giftPhoto = (gift) => {
   const hit = Object.entries(giftFiles).find(([path]) => path.split('/').pop().replace(/\.[^.]+$/, '') === gift.id)
   return hit ? hit[1] : ''
+}
+
+const dishFiles = import.meta.glob('../assets/dishes/*.jpg', { eager: true, query: '?url', import: 'default' })
+
+/** { key, url } for a menu item's dish photo, or null when we have no photo for that kind of dish. */
+export const dishPhoto = (name) => {
+  const key = dishKey(name)
+  if (!key) return null
+  const hit = Object.entries(dishFiles).find(([path]) => path.split('/').pop().replace(/\.[^.]+$/, '') === key)
+  return hit ? { key, url: hit[1] } : null
 }
 
 export const venueCredit = (venue) => PHOTO_CREDITS[venue.id] || null

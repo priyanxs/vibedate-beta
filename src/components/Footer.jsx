@@ -2,6 +2,7 @@ import { CITIES, VENUE_BY_ID } from '../data'
 import { CITY_PHOTO_CREDITS } from '../cityPhotos'
 import { PHOTO_CREDITS } from '../photoCredits'
 import { GIFT_PHOTO_CREDITS } from '../giftPhotos'
+import { DISH_PHOTO_CREDITS } from '../dishPhotos'
 import { GIFT_BY_ID } from '../data'
 import { MUSIC_TRACKS } from '../musicConfig'
 import { useDate } from '../context/DateContext.jsx'
@@ -69,6 +70,12 @@ export default function Footer() {
             {Object.entries(CITY_PHOTO_CREDITS).map(([id, c]) => (
               <li key={`c-${id}`}>
                 {(CITIES.find((x) => x.id === id) || {}).name}: {c.landmark} — {c.author},{' '}
+                <a href={c.source} target="_blank" rel="noopener noreferrer">{c.license}</a>
+              </li>
+            ))}
+            {Object.entries(DISH_PHOTO_CREDITS).map(([key, c]) => (
+              <li key={`d-${key}`}>
+                Dish · {key} — {c.author},{' '}
                 <a href={c.source} target="_blank" rel="noopener noreferrer">{c.license}</a>
               </li>
             ))}

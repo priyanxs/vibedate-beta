@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { MENU_CATEGORIES } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { MAX_QTY } from '../utils/plan'
-import { googlePhotosUrl, mapsDirectionsUrl, mapsEmbedUrl, mapsViewUrl, realMenuUrl, venueCredit, venuePhoto } from '../utils/links'
+import { dishPhoto, googlePhotosUrl, mapsDirectionsUrl, mapsEmbedUrl, mapsViewUrl, realMenuUrl, venueCredit, venuePhoto } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 import VenueBanner from './VenueBanner.jsx'
+import DishViewer from './DishViewer.jsx'
 import { burstHearts } from '../utils/fx'
 
 export default function MenuPanel({ venue }) {
@@ -15,6 +16,8 @@ export default function MenuPanel({ venue }) {
   const [onlyVeg, setOnlyVeg] = useState(false)
   const [fitsOnly, setFitsOnly] = useState(false)
   const [showMap, setShowMap] = useState(false)
+  const [viewing, setViewing] = useState(null) // { item, photo }
+  const closeViewer = useCallback(() => setViewing(null), [])
 
   const countIn = (cat) => cartLines.filter((l) => l.category === cat).reduce((acc, l) => acc + l.qty, 0)
 
@@ -91,6 +94,16 @@ export default function MenuPanel({ venue }) {
         </div>
       )}
 
+      {viewing && (
+        <DishViewer
+          item={viewing.item}
+          photo={viewing.photo}
+          qty={cart[viewing.item.id] || 0}
+          onAdd={() => changeQty(viewing.item.id, 1)}
+          onClose={closeViewer}
+        />
+      )}
+
       <div className="glass menu-panel">
         <div className="tabs" role="group" aria-label="Menu categories">
           {MENU_CATEGORIES.map(({ key, label }) => {
@@ -135,6 +148,22 @@ export default function MenuPanel({ venue }) {
                     role="img"
                     aria-label={item.veg ? 'Vegetarian' : 'Non-vegetarian'}
                   />
+                  {(() => {
+                    const photo = dishPhoto(item.name)
+                    return photo ? (
+                      <button
+                        type="button"
+                        className="dish-thumb"
+                        onClick={() => setViewing({ item, photo })}
+                        aria-label={`View photo of ${item.name}`}
+                        title="Tap to enlarge"
+                      >
+                        <img src={photo.url} alt="" loading="lazy" />
+                      </button>
+                    ) : (
+                      <span className="dish-thumb dish-thumb--empty" aria-hidden="true"><Icon name="utensils" size={16} /></span>
+                    )
+                  })()}
                   <div className="menu-item__body">
                     <p className="menu-item__name">
                       {item.name}

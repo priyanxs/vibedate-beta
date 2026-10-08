@@ -79,6 +79,15 @@ const TYPES = {
       [['Brownie Sundae', 380, T], ['Cheesecake', 420, T]],
     ],
   },
+  jain: {
+    cuisine: 'Pure Jain · No onion, no garlic', highlights: ['Jain food (no onion or garlic)', 'Pure vegetarian', 'Family friendly'], dress: 'Comfortable casual', after: 'A relaxed walk or a sweet nearby.',
+    menu: [
+      [['Jain Dahi Vada', 110, T], ['Jain Paneer Tikka', 300, T], ['Hara Bhara Kebab (Jain)', 260, T]],
+      [['Jain Dal Makhani', 280, T], ['Jain Paneer Butter Masala', 330, T], ['Jain Pav Bhaji', 240, T], ['Jain Khichdi', 220, T], ['Jain Thali', 330, T]],
+      [['Masala Chai', 40, T], ['Chaas', 50, T], ['Sweet Lassi', 90, T]],
+      [['Gulab Jamun', 90, T], ['Moong Dal Halwa', 120, T]],
+    ],
+  },
   chaat: {
     cuisine: 'Chaat · Fast food', highlights: ['Quick and tasty', 'Budget-friendly', 'Local favourite'], dress: 'Comfortable casual', after: 'Finish with a sweet nearby.',
     menu: [
@@ -114,5 +123,7 @@ const round10 = (n) => Math.max(10, Math.round(n / 10) * 10)
 export const quick = (city, kind, id, name, vibe, emoji, type, tagline, scale = 1) => {
   const t = TYPES[type]
   const menu = t.menu.map((cat) => cat.map(([n, p, veg, desc, alc]) => [n, round10(p * scale), veg, desc, alc]))
-  return { ...makeVenue(city, id, name, vibe, emoji, t.cuisine, tagline, t.highlights, t.dress, t.after, menu), kind }
+  const venue = { ...makeVenue(city, id, name, vibe, emoji, t.cuisine, tagline, t.highlights, t.dress, t.after, menu), kind }
+  if (type === 'jain') venue.jain = true
+  return venue
 }

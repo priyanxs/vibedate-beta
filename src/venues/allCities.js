@@ -1,0 +1,188 @@
+/* Many more real venues for every city, including Jain food. Names are real places found via web searches;
+   menus are illustrative templates (see quick.js). Row: [city, kind, id, name, vibe, emoji, menu type, tagline, price scale] */
+import { quick } from './quick'
+
+const ROWS = [
+  /* ------------------------------- Mumbai ------------------------------- */
+  ['mumbai', 'restaurant', 'mb-trishna', 'Trishna', 'Romantic', '🦀', 'fine', 'Famed Fort seafood, known for butter-garlic crab.', 1.9],
+  ['mumbai', 'restaurant', 'mb-khyber', 'Khyber', 'Romantic', '🕌', 'fine', 'Elegant North Indian dining with kebabs, biryanis and curries.', 1.8],
+  ['mumbai', 'restaurant', 'mb-americano', 'Americano', 'Vibrant', '🍕', 'pub', 'A hip Kala Ghoda spot for pizza, handmade pasta and tiramisu.', 1.5],
+  ['mumbai', 'street', 'mb-bademiya', 'Bademiya', 'Casual', '🍢', 'nonveg', 'The late-night Colaba kebab stop, open until the early hours.', 0.85],
+  ['mumbai', 'restaurant', 'mb-mondegar', 'Cafe Mondegar', 'Vibrant', '🎵', 'pub', 'Quirky decor, a jukebox and a lively Colaba crowd.', 0.95],
+  ['mumbai', 'restaurant', 'mb-canteen', 'The Bombay Canteen', 'Romantic', '🥂', 'fine', 'Playful, modern Indian cooking in Lower Parel.', 1.7],
+  ['mumbai', 'restaurant', 'mb-swati', 'Swati Snacks', 'Casual', '🥘', 'veg', 'Gujarati street food and snacks, loved by locals and visitors.', 1.1],
+  ['mumbai', 'cafe', 'mb-theobroma', 'Theobroma', 'Cozy', '🍰', 'cafe', 'A bakery-café famous for brownies, cakes and coffee.', 1.1],
+  ['mumbai', 'cafe', 'mb-kyani', 'Kyani & Co.', 'Cozy', '🫖', 'cafe', 'An old Irani café: bun maska, chai and caramel custard.', 0.8],
+  ['mumbai', 'restaurant', 'mb-madras', 'Cafe Madras', 'Casual', '🥞', 'south', 'A Matunga classic for idli, dosa and filter coffee.', 0.9],
+  ['mumbai', 'street', 'mb-sardar', 'Sardar Pav Bhaji', 'Casual', '🍞', 'chaat', 'The Tardeo pav bhaji everyone talks about.', 1],
+  ['mumbai', 'restaurant', 'mb-social', 'Social (Mumbai)', 'Vibrant', '🎧', 'pub', 'A buzzing café-bar hangout.', 1.2],
+  ['mumbai', 'restaurant', 'mb-jainsabkuch', 'Jain Sabkuchh Food Plaza (Malad)', 'Casual', '🥪', 'jain', 'Jain chaat, sandwiches, burgers, South Indian and pav bhaji.', 0.9],
+  ['mumbai', 'restaurant', 'mb-samrat', 'Samrat Restaurant (Churchgate)', 'Cozy', '🍛', 'jain', 'Long-time Jain favourite, known for Jain pav bhaji and dal khichdi.', 1.1],
+  ['mumbai', 'restaurant', 'mb-relish', 'Relish (Churchgate)', 'Cozy', '🥗', 'jain', 'Gujarati thali plus Italian and Mexican Jain dishes.', 1.2],
+  ['mumbai', 'restaurant', 'mb-allinone', 'All In One – Pure Jain', 'Casual', '🍕', 'jain', 'Jain food in fancy cuisines like Mexican and Italian.', 1],
+  ['mumbai', 'restaurant', 'mb-indigodeli', 'Indigo Deli (Jain menu)', 'Cozy', '🍕', 'jain', 'Chic deli known for Jain pizzas and a Jain menu.', 1.6],
+  ['mumbai', 'restaurant', 'mb-naminath', 'Naminath Jain Bhojanshala', 'Casual', '🍲', 'jain', 'A pure-veg Jain bhojanshala near Mumbai Central.', 0.8],
+
+  /* ------------------------------ Bengaluru ----------------------------- */
+  ['bengaluru', 'cafe', 'bl-thirdwave', 'Third Wave Coffee Roasters', 'Cozy', '☕', 'cafe', 'Artisanal brews and cold brews in Indiranagar.', 1.2],
+  ['bengaluru', 'cafe', 'bl-bcs', 'Bangalore Coffee Shop', 'Cozy', '🥐', 'cafe', 'Espresso, sandwiches and pastries in Indiranagar.', 1.2],
+  ['bengaluru', 'cafe', 'bl-yogisthaan', 'Yogisthaan', 'Cozy', '🌿', 'cafe', 'A bungalow garden café with a health-minded menu.', 1.1],
+  ['bengaluru', 'restaurant', 'bl-tayyabs', 'Tayyabs (Indiranagar)', 'Casual', '🌯', 'nonveg', 'A cosy spot for rolls, kebabs and beda rotis.', 1],
+  ['bengaluru', 'cafe', 'bl-truffles', 'Truffles', 'Vibrant', '🍔', 'cafe', 'Koramangala favourite for burgers, Italian and desserts.', 1.1],
+  ['bengaluru', 'restaurant', 'bl-chianti', 'Chianti', 'Romantic', '🍝', 'fine', 'Italian dining in Koramangala, loved for its cannelloni.', 1.1],
+  ['bengaluru', 'restaurant', 'bl-mtr', 'Mavalli Tiffin Rooms (MTR)', 'Casual', '🥘', 'south', 'A century-old Bengaluru breakfast institution.', 1.1],
+  ['bengaluru', 'restaurant', 'bl-ctr', 'Central Tiffin Room (CTR)', 'Casual', '🧈', 'south', 'Malleshwaram’s famous benne masala dosa.', 0.9],
+  ['bengaluru', 'restaurant', 'bl-windmills', 'Windmills Craftworks', 'Vibrant', '🎷', 'pub', 'Craft beer, live music and a big menu.', 1.4],
+  ['bengaluru', 'restaurant', 'bl-churchsocial', 'Church Street Social', 'Vibrant', '🎧', 'pub', 'A lively Church Street café-bar.', 1.2],
+  ['bengaluru', 'cafe', 'bl-bluetokai', 'Blue Tokai Coffee Roasters', 'Cozy', '☕', 'cafe', 'Specialty coffee roasted in India.', 1.1],
+  ['bengaluru', 'cafe', 'bl-smokehouse', 'Smoke House Deli (Bengaluru)', 'Cozy', '🥓', 'cafe', 'An all-day deli café.', 1.5],
+  ['bengaluru', 'restaurant', 'bl-empire', 'Empire Restaurant', 'Casual', '🍗', 'nonveg', 'Late-night kebabs, biryani and ghee rice.', 1],
+  ['bengaluru', 'cafe', 'bl-koshys', 'Koshy’s', 'Cozy', '☕', 'cafe', 'A classic St Marks Road café with old-world charm.', 1.1],
+  ['bengaluru', 'restaurant', 'bl-brahmins', 'Brahmin’s Coffee Bar', 'Casual', '🍩', 'south', 'A tiny Basavanagudi spot for idli-vada and filter coffee.', 0.6],
+  ['bengaluru', 'restaurant', 'bl-meghana', 'Meghana Foods', 'Casual', '🍛', 'nonveg', 'Andhra-style biryani, loved across Bengaluru.', 1.1],
+  ['bengaluru', 'restaurant', 'bl-higher', 'The Higher Taste (ISKCON)', 'Cozy', '🪷', 'jain', 'Pure vegetarian dining with Jain options at the ISKCON complex.', 1],
+  ['bengaluru', 'restaurant', 'bl-sante', 'Sante Spa Cuisine (Jayanagar)', 'Romantic', '🥗', 'jain', 'Wellness-minded vegetarian dining with Jain-friendly dishes.', 2],
+
+  /* ------------------------------ Hyderabad ----------------------------- */
+  ['hyderabad', 'restaurant', 'hy-bahar', 'Cafe Bahar', 'Casual', '🍚', 'nonveg', 'Basheerbagh biryani and haleem since 1973.', 0.9],
+  ['hyderabad', 'restaurant', 'hy-shah', 'Shah Ghouse Cafe & Restaurant', 'Casual', '🍖', 'nonveg', 'Old City biryani, haleem and juicy kebabs.', 0.85],
+  ['hyderabad', 'restaurant', 'hy-bawarchi', 'Bawarchi', 'Casual', '🍛', 'nonveg', 'RTC X Roads, famous for kachi gosht ki biryani.', 0.9],
+  ['hyderabad', 'restaurant', 'hy-chutneys', 'Chutneys', 'Casual', '🥥', 'south', 'Six chutneys with dosas, idlis and pesarattu.', 1],
+  ['hyderabad', 'cafe', 'hy-flurys', 'Flurys (Banjara Hills)', 'Cozy', '🧁', 'cafe', 'Pastries and tea in Banjara Hills.', 1.2],
+  ['hyderabad', 'cafe', 'hy-habitat', 'Habitat Cafe', 'Cozy', '🌿', 'cafe', 'A Banjara Hills café for coffee and light meals.', 1.1],
+  ['hyderabad', 'cafe', 'hy-gallery', 'The Gallery Cafe', 'Cozy', '🖼️', 'cafe', 'A relaxed Banjara Hills café.', 1.1],
+  ['hyderabad', 'cafe', 'hy-roastery', 'The Roastery Coffee House', 'Cozy', '☕', 'cafe', 'Freshly brewed coffee loved by coffee connoisseurs.', 1.2],
+  ['hyderabad', 'cafe', 'hy-concu', 'Conçu', 'Romantic', '🥐', 'cafe', 'A Parisian-style café in Jubilee Hills.', 1.5],
+  ['hyderabad', 'restaurant', 'hy-telangana', 'Telangana Spice Kitchen Bar & Grill', 'Vibrant', '🌶️', 'north', 'Telangana flavours with a bar and grill.', 1.3],
+  ['hyderabad', 'cafe', 'hy-belposto', 'Bel Posto The Cafe', 'Cozy', '🍝', 'cafe', 'A Road No. 36 café for Italian plates.', 1.3],
+  ['hyderabad', 'cafe', 'hy-karachi', 'Karachi Bakery', 'Casual', '🍪', 'cafe', 'Famous for fruit biscuits and bakery treats.', 0.8],
+  ['hyderabad', 'street', 'hy-pista', 'Pista House', 'Casual', '🥣', 'nonveg', 'Haleem, biryani and bakery treats.', 0.8],
+  ['hyderabad', 'cafe', 'hy-niloufer', 'Cafe Niloufer', 'Casual', '🍞', 'cafe', 'Irani chai and bun maska.', 0.6],
+  ['hyderabad', 'restaurant', 'hy-ohris', 'Ohri’s', 'Vibrant', '🎉', 'north', 'A big, buzzy multi-cuisine restaurant group.', 1.4],
+  ['hyderabad', 'restaurant', 'hy-bn', 'Barbeque Nation (Hyderabad)', 'Vibrant', '🔥', 'bbq', 'Live grills at your table.', 1],
+
+  /* ------------------------------- Chennai ------------------------------ */
+  ['chennai', 'restaurant', 'ch-saravana', 'Saravana Bhavan (Chennai)', 'Casual', '🥞', 'south', 'The vegetarian South Indian chain, from its home city.', 1.1],
+  ['chennai', 'restaurant', 'ch-rathna', 'Rathna Cafe', 'Casual', '🥘', 'south', 'Mylapore-Triplicane idli-sambar classic.', 0.8],
+  ['chennai', 'cafe', 'ch-qua', 'Qua', 'Cozy', '🍝', 'cafe', 'A Besant Nagar café with Continental and Italian plates.', 1.2],
+  ['chennai', 'restaurant', 'ch-rasanai', 'Rasanai', 'Cozy', '🌴', 'south', 'South Indian dishes near Elliot’s Beach.', 1.2],
+  ['chennai', 'cafe', 'ch-littleitaly', 'Little Italy', 'Cozy', '🍕', 'cafe', 'Coffee, Italian, Mexican and bakery items.', 1.2],
+  ['chennai', 'cafe', 'ch-filli', 'FiLLi Cafe', 'Cozy', '🥐', 'cafe', 'A bakery-café chain across the city.', 1],
+  ['chennai', 'cafe', 'ch-tummy', 'Tummy Tales', 'Cozy', '🍰', 'cafe', 'Desserts and Continental plates.', 1],
+  ['chennai', 'restaurant', 'ch-a2b', 'A2B – Adyar Ananda Bhavan', 'Casual', '🍮', 'south', 'Vegetarian meals and Tamil sweets.', 0.9],
+  ['chennai', 'restaurant', 'ch-kaidi', 'Kaidi Kitchen', 'Casual', '🍛', 'veg', 'A Mylapore vegetarian restaurant.', 1],
+  ['chennai', 'cafe', 'ch-novelty', 'Novelty Tea House', 'Casual', '🍵', 'cafe', 'A Mylapore tea house.', 0.7],
+  ['chennai', 'restaurant', 'ch-rayars', 'Rayar’s Mess', 'Casual', '🥞', 'veg', 'A Mylapore breakfast institution.', 0.6],
+  ['chennai', 'restaurant', 'ch-viswanathan', 'Viswanathan Chettinadu Hotel', 'Casual', '🍗', 'nonveg', 'Chettinad non-vegetarian meals in Mylapore.', 1],
+  ['chennai', 'restaurant', 'ch-kaaraikudi', 'Kaaraikudi Chettinad Restaurant', 'Casual', '🌶️', 'nonveg', 'Chettinad cooking in Mylapore.', 1.1],
+  ['chennai', 'cafe', 'ch-madbean', 'Mad Bean Cafe and Roastery', 'Cozy', '🫘', 'cafe', 'A Mylapore café and coffee roastery.', 1.1],
+  ['chennai', 'cafe', 'ch-ccd', 'Café Coffee Day (Mylapore)', 'Cozy', '☕', 'cafe', 'A familiar café for coffee and bites.', 1],
+
+  /* ------------------------------- Kolkata ------------------------------ */
+  ['kolkata', 'restaurant', 'kl-barbq', 'Bar-B-Q (Park Street)', 'Romantic', '🍷', 'fine', 'Vintage décor across three buildings, with Indian and Chinese sections.', 1.3],
+  ['kolkata', 'restaurant', 'kl-kewpies', 'Kewpie’s', 'Cozy', '🐟', 'nonveg', 'Authentic and affordable Bengali dishes.', 1],
+  ['kolkata', 'restaurant', 'kl-arsalan', 'Arsalan', 'Casual', '🍚', 'nonveg', 'Mughlai food with a famous biryani.', 1],
+  ['kolkata', 'restaurant', 'kl-ohc', 'Oh! Calcutta', 'Romantic', '🦐', 'fine', 'Modern Bengali classics like daab chingri and bhapa ilish.', 1.8],
+  ['kolkata', 'street', 'kl-nizams', 'Nizam’s (New Market)', 'Casual', '🌯', 'nonveg', 'Said to be the first to serve kathi rolls in Kolkata.', 0.8],
+  ['kolkata', 'restaurant', 'kl-aminia', 'Aminia', 'Casual', '🍛', 'nonveg', 'Mutton biryani and Mughlai classics.', 0.9],
+  ['kolkata', 'restaurant', 'kl-royal', 'Royal Indian Hotel', 'Casual', '🍖', 'nonveg', 'A Chitpur institution for biryani and kebabs.', 0.9],
+  ['kolkata', 'restaurant', 'kl-balwant', 'Balwant Singh’s Eating House', 'Casual', '🍛', 'north', 'A no-frills Punjabi eatery.', 0.8],
+  ['kolkata', 'cafe', 'kl-paramount', 'Paramount Sherbet', 'Casual', '🥤', 'cafe', 'A College Street sherbet and snack shop.', 0.5],
+
+  /* --------------------------------- Pune -------------------------------- */
+  ['pune', 'restaurant', 'pn-roopali', 'Roopali (FC Road)', 'Casual', '🥞', 'south', 'One of FC Road’s legendary South Indian restaurants.', 1.1],
+  ['pune', 'restaurant', 'pn-wadeshwar', 'Wadeshwar', 'Casual', '🥘', 'south', 'FC Road’s long-loved eatery for South Indian and Maharashtrian food.', 0.9],
+  ['pune', 'cafe', 'pn-goodluck', 'Cafe Goodluck', 'Cozy', '☕', 'cafe', 'An Irani café since 1935: chai, bun maska, bun omelette.', 0.8],
+  ['pune', 'cafe', 'pn-kayani', 'Kayani Bakery', 'Casual', '🍪', 'cafe', 'Famous Shrewsbury biscuits and mawa cakes since 1955.', 0.6],
+  ['pune', 'cafe', 'pn-dorab', 'Dorabjee & Sons', 'Casual', '🥧', 'cafe', 'A classic Parsi eatery in Camp.', 0.9],
+  ['pune', 'cafe', 'pn-marzorin', 'Marz-O-Rin', 'Casual', '🍨', 'cafe', 'A heritage Pune café for sandwiches and desserts.', 0.9],
+  ['pune', 'restaurant', 'pn-shabree', 'Shabree', 'Casual', '🍛', 'veg', 'A Maharashtrian thali favourite.', 1],
+  ['pune', 'restaurant', 'pn-shreyas', 'Hotel Shreyas', 'Casual', '🍲', 'veg', 'Known for its traditional Maharashtrian thali.', 1],
+
+  /* ------------------------------ Ahmedabad ----------------------------- */
+  ['ahmedabad', 'restaurant', 'ah-gordhan', 'Gordhan Thal', 'Casual', '🍽️', 'veg', 'Family-style Gujarati thali in Satellite.', 1],
+  ['ahmedabad', 'restaurant', 'ah-swati', 'Swati Snacks (Law Garden)', 'Casual', '🥘', 'veg', 'Authentic Gujarati snacks and street food.', 1],
+  ['ahmedabad', 'restaurant', 'ah-rajwadu', 'Rajwadu', 'Cozy', '🏺', 'veg', 'A Vejalpur restaurant for Gujarati meals, desserts and coffee.', 1.2],
+  ['ahmedabad', 'cafe', 'ah-mocha', 'Cafe Mocha (C G Road)', 'Cozy', '🪵', 'cafe', 'A cozy café with rustic wooden furniture and warm lighting.', 1],
+  ['ahmedabad', 'restaurant', 'ah-mirch', 'Mirch Masala', 'Vibrant', '🌶️', 'north', 'Ahmedabad’s first theme restaurant.', 1.2],
+  ['ahmedabad', 'cafe', 'ah-creamoholic', 'Creamoholic Café & Resto', 'Cozy', '🍦', 'cafe', 'A popular café near Law Garden.', 1],
+  ['ahmedabad', 'cafe', 'ah-williamjohns', 'William John’s Pizza', 'Vibrant', '🍕', 'cafe', 'A pizza-first café.', 1],
+  ['ahmedabad', 'cafe', 'ah-lucky', 'Lucky Restaurant', 'Cozy', '🍵', 'cafe', 'A famous tea stop in an unusual setting.', 0.6],
+  ['ahmedabad', 'street', 'ah-jagdish', 'Jagdish Farsan Mart', 'Casual', '🥨', 'sweets', 'Gujarati farsan and sweets.', 0.7],
+
+  /* -------------------------------- Jaipur ------------------------------ */
+  ['jaipur', 'restaurant', 'jp-niros', 'Niro’s', 'Casual', '🥘', 'north', 'A long-time MI Road favourite since 1949, loved for its gatte ki sabzi.', 1.2],
+  ['jaipur', 'restaurant', 'jp-spicecourt', 'Spice Court (Jacob Road)', 'Vibrant', '🌶️', 'north', 'Some of the spiciest Rajasthani dishes.', 1.1],
+  ['jaipur', 'restaurant', 'jp-chokhi', 'Chokhi Dhani', 'Vibrant', '🎪', 'veg', 'A village-fair-style Rajasthani thali experience outside the city.', 1.6],
+  ['jaipur', 'restaurant', 'jp-peacock', 'Peacock Rooftop Restaurant', 'Casual', '🦚', 'north', 'A multi-level rooftop at Hotel Pearl Palace.', 0.9],
+  ['jaipur', 'restaurant', 'jp-handi', 'Handi Restaurant', 'Casual', '🍲', 'nonveg', 'North Indian curries and kebabs.', 1],
+  ['jaipur', 'restaurant', 'jp-suvarna', 'Suvarna Mahal (Rambagh Palace)', 'Romantic', '👑', 'fine', 'Royal dining at Rambagh Palace.', 3],
+  ['jaipur', 'restaurant', 'jp-palladio', 'Bar Palladio', 'Romantic', '🍸', 'pub', 'A glamorous Italian-style bar and café.', 2],
+  ['jaipur', 'street', 'jp-lassi', 'Shreenath Lassiwala (MI Road)', 'Casual', '🥛', 'sweets', 'Thick lassi in terracotta cups.', 0.5],
+
+  /* ------------------------------- Lucknow ------------------------------ */
+  ['lucknow', 'restaurant', 'lk-wahid', 'Wahid Biryani', 'Casual', '🍚', 'nonveg', 'Aminabad dum biryani, serving since 1955.', 0.9],
+  ['lucknow', 'street', 'lk-prakash', 'Prakash Kulfi', 'Casual', '🍨', 'sweets', 'The famous Aminabad kulfi.', 0.6],
+  ['lucknow', 'restaurant', 'lk-naush', 'Naushijaan', 'Casual', '🍢', 'nonveg', 'Kebabs and Lucknowi biryani.', 1],
+  ['lucknow', 'restaurant', 'lk-moti', 'Moti Mahal (Lucknow)', 'Casual', '🍯', 'veg', 'Pure-desi-ghee poori breakfasts, sweets and chaat.', 1],
+  ['lucknow', 'cafe', 'lk-hons', 'Hons – All Day Dining', 'Cozy', '🥞', 'cafe', 'All-day dining in Hazratganj.', 1.1],
+  ['lucknow', 'cafe', 'lk-haloz', 'Haloz Cafe', 'Cozy', '☕', 'cafe', 'A highly rated Hazratganj café.', 1],
+  ['lucknow', 'cafe', 'lk-choco', 'The Chocolate Room', 'Cozy', '🍫', 'cafe', 'A dessert café in Hazratganj.', 1.1],
+  ['lucknow', 'cafe', 'lk-truccos', 'Truccos', 'Cozy', '🍔', 'cafe', 'A Hazratganj café.', 1.2],
+  ['lucknow', 'cafe', 'lk-mantar', 'Mantar', 'Cozy', '🥗', 'cafe', 'A Hazratganj café.', 1],
+  ['lucknow', 'cafe', 'lk-buttercup', 'Buttercup Bungalow', 'Cozy', '🧁', 'cafe', 'An artisan bakery and deli in Gomti Nagar.', 1.2],
+  ['lucknow', 'cafe', 'lk-nosugar', 'Cafe Hons – House of No Sugar', 'Cozy', '🍵', 'cafe', 'A sugar-free menu made with stevia.', 1.1],
+  ['lucknow', 'cafe', 'lk-capoor', 'Capoor & Sons', 'Cozy', '🥐', 'cafe', 'An all-in-one café, restaurant and bakery.', 1.2],
+  ['lucknow', 'restaurant', 'lk-mochabar', 'Mocha Cafe & Bar', 'Vibrant', '🍕', 'pub', 'A Gomti Nagar rooftop café with customisable pasta and pizza.', 1.1],
+  ['lucknow', 'restaurant', 'lk-montana', 'Montana Cafe and Lounge', 'Romantic', '🌃', 'pub', 'Often called the best rooftop café in Gomti Nagar.', 1.2],
+
+  /* ------------------------------ Chandigarh ---------------------------- */
+  ['chandigarh', 'restaurant', 'cd-flavours', 'Flavours', 'Casual', '🍛', 'north', 'Sector 17: biryani, Chinese, Italian and North Indian.', 1.2],
+  ['chandigarh', 'cafe', 'cd-b2s', 'Back To Source', 'Cozy', '🥗', 'cafe', 'Sector 17: desserts, fast food and Continental.', 1],
+  ['chandigarh', 'cafe', 'cd-winnis', 'Winnis Resto Bar', 'Vibrant', '🥂', 'cafe', 'A Sector 17 bakery and bar.', 1],
+  ['chandigarh', 'restaurant', 'cd-space', 'Space', 'Vibrant', '🚀', 'nonveg', 'Mughlai, North Indian and kebabs in Sector 17.', 1.3],
+  ['chandigarh', 'restaurant', 'cd-pal', 'Pal Dhaba', 'Casual', '🍖', 'nonveg', 'A Sector 28 legend since 1972 for tandoori platters.', 0.9],
+  ['chandigarh', 'street', 'cd-sindhi', 'Sindhi Sweets (Sector 17)', 'Casual', '🍯', 'sweets', 'Crisp jalebi, samosa and rabri.', 0.8],
+  ['chandigarh', 'cafe', 'cd-backpackers', 'Backpackers Café (Elante)', 'Vibrant', '🎒', 'cafe', 'A café at Elante Mall.', 1],
+  ['chandigarh', 'restaurant', 'cd-barrels', 'Barrels & Grills (Elante)', 'Vibrant', '🍺', 'pub', 'Grills and drinks at Elante Mall.', 1.2],
+  ['chandigarh', 'restaurant', 'cd-brooklyn', 'Brooklyn Central (Elante)', 'Vibrant', '🗽', 'pub', 'A mall bar and kitchen.', 1.2],
+  ['chandigarh', 'cafe', 'cd-chaayos', 'Chaayos (Elante)', 'Casual', '🫖', 'cafe', 'Chai and snacks.', 0.9],
+  ['chandigarh', 'restaurant', 'cd-nandos', 'Nando’s (Elante)', 'Vibrant', '🍗', 'nonveg', 'Peri-peri chicken.', 1.3],
+  ['chandigarh', 'restaurant', 'cd-beercafe', 'The Beer Café (Elante)', 'Vibrant', '🍻', 'pub', 'A mall beer café.', 1.1],
+  ['chandigarh', 'restaurant', 'cd-swagath', 'Swagath (Elante)', 'Casual', '🍤', 'nonveg', 'Coastal and South Indian seafood.', 1.2],
+  ['chandigarh', 'restaurant', 'cd-elantesocial', 'Elante Social', 'Vibrant', '🎧', 'pub', 'The Social café-bar at Elante Mall.', 1.2],
+  ['chandigarh', 'restaurant', 'cd-kulcha', 'Amritsari Kulcha Hub', 'Casual', '🫓', 'veg', 'Authentic Amritsari kulchas in Sector 9.', 0.8],
+
+  /* ------------------------------- Nagpur ------------------------------- */
+  ['nagpur', 'restaurant', 'ng-prachand', 'Prachand Saoji', 'Casual', '🌶️', 'nonveg', 'Saoji cuisine at Telephone Exchange Square.', 0.9],
+  ['nagpur', 'cafe', 'ng-aragma', 'Café Aragma', 'Cozy', '☕', 'cafe', 'A Sitabuldi café.', 1],
+  ['nagpur', 'cafe', 'ng-allthats', 'All That’s Coffee', 'Cozy', '☕', 'cafe', 'A Dharampeth coffee shop.', 1],
+  ['nagpur', 'cafe', 'ng-pablo', 'Pablo', 'Vibrant', '🍰', 'cafe', 'A Civil Lines café with desserts, Italian and Asian dishes.', 1.1],
+  ['nagpur', 'cafe', 'ng-eataly', 'Eataly Cafe', 'Cozy', '🍕', 'cafe', 'A Civil Lines café.', 1.1],
+
+  /* -------------------------------- Kochi -------------------------------- */
+  ['kochi', 'restaurant', 'kc-ginger', 'Ginger House', 'Romantic', '🫚', 'fine', 'A waterfront restaurant hidden behind a warehouse.', 1.5],
+  ['kochi', 'restaurant', 'kc-grandpavilion', 'Grand Pavilion (Grand Hotel)', 'Romantic', '🏨', 'fine', 'Elegant, retro-styled hotel dining on MG Road.', 1.6],
+  ['kochi', 'restaurant', 'kc-oceanos', 'Oceanos', 'Casual', '🦞', 'nonveg', 'A locally popular seafood restaurant.', 1.3],
+  ['kochi', 'restaurant', 'kc-paragon', 'Paragon (Lulu Mall)', 'Casual', '🐟', 'nonveg', 'Kerala seafood and meals.', 1.2],
+  ['kochi', 'cafe', 'kc-cocoa', 'Cocoa Tree (MG Road)', 'Cozy', '🍫', 'cafe', 'A well-liked MG Road café.', 1],
+  ['kochi', 'cafe', 'kc-bubble', 'Bubble Café (Vivanta)', 'Cozy', '🫧', 'cafe', 'Hotel café on Marine Drive.', 1.4],
+
+  /* ------------------- Jain food in the Madhya Pradesh cities ------------------- */
+  ['indore', 'restaurant', 'in-jainbhoj', 'Jain Bhojnalya', 'Casual', '🪷', 'jain', 'Pure Jain food without onion or garlic, prepared on demand.', 0.8],
+  ['jabalpur', 'restaurant', 'jb-digamber', 'Digamber Restaurant', 'Casual', '🪷', 'jain', 'Tasty Jain meals; onion- and garlic-free dishes.', 1],
+  ['jabalpur', 'restaurant', 'jb-jaindelight', 'Food of Indians by Jain Delight', 'Casual', '🪷', 'jain', 'A Napier Town restaurant serving Jain food.', 1],
+
+  /* ---------------------------- Jain food in Delhi ---------------------------- */
+  ['delhi', 'restaurant', 'dl-rajasthali', 'Rajasthali (Select Citywalk)', 'Cozy', '🏜️', 'jain', 'Rajasthani dishes with Jain options at Select Citywalk.', 1.4],
+  ['delhi', 'restaurant', 'dl-saatvik', 'Saatvik Restaurant (Green Park)', 'Cozy', '🪷', 'jain', 'Satvik, Jain-friendly vegetarian dining.', 1],
+  ['delhi', 'restaurant', 'dl-veggulati', 'Veg Gulati (Karol Bagh)', 'Casual', '🍽️', 'jain', 'Gujarati and Rajasthani thalis, Jain-friendly.', 1],
+  ['delhi', 'restaurant', 'dl-eleven', 'Eleven Course (Kamla Nagar)', 'Casual', '🥞', 'jain', 'Vegetarian North and South Indian with Jain options.', 0.95],
+  ['delhi', 'restaurant', 'dl-baa', 'Baa Bistro', 'Cozy', '🪷', 'jain', 'Pure veg with pure Jain and satvik dishes.', 1.4],
+  ['delhi', 'restaurant', 'dl-bhagat', 'Bhagat Tarachand', 'Casual', '🥘', 'jain', 'A long-standing favourite for Jain foodies.', 1],
+]
+
+export const ALL_CITY_VENUES = ROWS.map(([city, kind, id, name, vibe, emoji, type, tagline, scale]) => quick(city, kind, id, name, vibe, emoji, type, tagline, scale))
+
+// Existing venues that serve Jain food (from the same searches).
+export const JAIN_FRIENDLY_IDS = ['dl-saravana']

@@ -10,6 +10,7 @@ import { METRO_VENUES } from './venues/metros'
 import { TIER2_VENUES } from './venues/tier2'
 import { MORE_VENUES } from './venues/moreCities'
 import { DELHI_VENUES } from './venues/delhi'
+import { ALL_CITY_VENUES, JAIN_FRIENDLY_IDS } from './venues/allCities'
 
 export const BUDGET = { min: 500, max: 10000, step: 100, default: 3000 }
 
@@ -441,7 +442,15 @@ export const CITY_GROUPS = ['Madhya Pradesh', 'Tier 1 metros', 'Tier 2 cities']
 export const DEFAULT_CITY = 'bhopal'
 export const CITY_BY_ID = Object.fromEntries(CITIES.map((c) => [c.id, c]))
 
-export const VENUES = [...BHOPAL_VENUES, ...BHOPAL_MORE, ...METRO_VENUES, ...TIER2_VENUES, ...MORE_VENUES, ...DELHI_VENUES]
+export const VENUES = [...BHOPAL_VENUES, ...BHOPAL_MORE, ...METRO_VENUES, ...TIER2_VENUES, ...MORE_VENUES, ...DELHI_VENUES, ...ALL_CITY_VENUES]
+
+VENUES.forEach((v) => {
+  if (JAIN_FRIENDLY_IDS.includes(v.id)) v.jain = true
+})
+
+/** 'veg' = pure vegetarian (every dish is veg) · 'nonveg' = serves non-vegetarian dishes. A venue can also be Jain-friendly (`jain`). */
+export const dietOf = (v) => (MENU_CATEGORIES.every(({ key }) => (v.menu[key] || []).every((i) => i.veg)) ? 'veg' : 'nonveg')
+export const DIET_LABELS = { veg: 'Pure veg', nonveg: 'Non-veg', jain: 'Jain food' }
 
 /** 'cafe' | 'restaurant' | 'street' — explicit on newer venues, inferred for the rest. */
 export const KIND_LABELS = { cafe: 'Cafés', restaurant: 'Restaurants', street: 'Street food' }
