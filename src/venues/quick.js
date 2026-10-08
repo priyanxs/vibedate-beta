@@ -61,6 +61,24 @@ const TYPES = {
       [['Rasmalai Tart', 340, T], ['Chocolate Fondant', 400, T]],
     ],
   },
+  south: {
+    cuisine: 'South Indian · Vegetarian', highlights: ['Dosas and idlis', 'Filter coffee', 'Quick and filling'], dress: 'Comfortable casual', after: 'Finish with filter coffee and a short walk.',
+    menu: [
+      [['Medu Vada', 120, T], ['Idli Sambar', 120, T], ['Rava Idli', 140, T]],
+      [['Masala Dosa', 220, T], ['Uttapam', 220, T], ['Mysore Masala Dosa', 250, T], ['Veg Thali', 320, T]],
+      [['Buttermilk', 60, T], ['Fresh Lime Soda', 90, T], ['Filter Coffee', 80, T]],
+      [['Payasam', 110, T], ['Gulab Jamun', 90, T]],
+    ],
+  },
+  pub: {
+    cuisine: 'Gastropub · Bar bites', highlights: ['Craft drinks', 'Lively crowd', 'Great for groups'], dress: 'Smart casual', after: 'Keep the evening going with a late walk.',
+    menu: [
+      [['Loaded Nachos', 380, T], ['Peri-Peri Fries', 280, T], ['Chicken Wings', 480, F]],
+      [['Margherita Pizza', 520, T], ['Pasta Alfredo', 560, T], ['Gourmet Burger', 480, F], ['Butter Chicken & Naan', 620, F]],
+      [['Virgin Mojito', 320, T], ['Iced Tea', 240, T], ['Craft Beer (pint)', 450, T, '', T], ['Cocktail of the Day', 620, T, '', T]],
+      [['Brownie Sundae', 380, T], ['Cheesecake', 420, T]],
+    ],
+  },
   chaat: {
     cuisine: 'Chaat · Fast food', highlights: ['Quick and tasty', 'Budget-friendly', 'Local favourite'], dress: 'Comfortable casual', after: 'Finish with a sweet nearby.',
     menu: [

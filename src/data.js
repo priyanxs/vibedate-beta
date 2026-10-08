@@ -9,6 +9,7 @@ import { BHOPAL_MORE } from './venues/bhopalMore'
 import { METRO_VENUES } from './venues/metros'
 import { TIER2_VENUES } from './venues/tier2'
 import { MORE_VENUES } from './venues/moreCities'
+import { DELHI_VENUES } from './venues/delhi'
 
 export const BUDGET = { min: 500, max: 10000, step: 100, default: 3000 }
 
@@ -440,7 +441,7 @@ export const CITY_GROUPS = ['Madhya Pradesh', 'Tier 1 metros', 'Tier 2 cities']
 export const DEFAULT_CITY = 'bhopal'
 export const CITY_BY_ID = Object.fromEntries(CITIES.map((c) => [c.id, c]))
 
-export const VENUES = [...BHOPAL_VENUES, ...BHOPAL_MORE, ...METRO_VENUES, ...TIER2_VENUES, ...MORE_VENUES]
+export const VENUES = [...BHOPAL_VENUES, ...BHOPAL_MORE, ...METRO_VENUES, ...TIER2_VENUES, ...MORE_VENUES, ...DELHI_VENUES]
 
 /** 'cafe' | 'restaurant' | 'street' — explicit on newer venues, inferred for the rest. */
 export const KIND_LABELS = { cafe: 'Cafés', restaurant: 'Restaurants', street: 'Street food' }

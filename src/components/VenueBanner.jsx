@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CITY_BY_ID, VIBES } from '../data'
-import { cityPhoto, venuePhoto } from '../utils/links'
+import { cityPhoto, venueCredit, venuePhoto } from '../utils/links'
 
 // Venue photo when one exists (and loads); otherwise the city's landmark photo under the vibe colour
 // (or just the vibe gradient with the venue emoji if there is no photo at all).
@@ -21,7 +21,7 @@ export default function VenueBanner({ venue, className = '', children }) {
         <>
           <img src={photo} alt={`${venue.name}`} loading="lazy" onError={() => setFailed(true)} />
           <span className="venue-banner__shade" aria-hidden="true" />
-          <span className="venue-banner__flag">Illustrative photo</span>
+          <span className="venue-banner__flag">{(venueCredit(venue) || {}).real ? 'Photo of this place' : 'Illustrative photo'}</span>
         </>
       ) : (
         <>
