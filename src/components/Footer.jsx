@@ -4,7 +4,6 @@ import { PHOTO_CREDITS } from '../photoCredits'
 import { GIFT_PHOTO_CREDITS } from '../giftPhotos'
 import { DISH_PHOTO_CREDITS } from '../dishPhotos'
 import { GIFT_BY_ID } from '../data'
-import { MUSIC_TRACKS } from '../musicConfig'
 import { useDate } from '../context/DateContext.jsx'
 
 const EXPLORE = [
@@ -96,7 +95,6 @@ export default function Footer() {
         <p>
           Venue details, menus and prices are illustrative sample data — please confirm with the venue before you go.
           Photos are from Wikimedia Commons contributors under their licences (credited in the app).
-          Music (via Wikimedia Commons): {MUSIC_TRACKS.map((t) => `${t.title} — ${t.artist} (${t.license})`).join('; ')}.
           Be kind, be honest and respect boundaries. Plans are saved only on this device.
         </p>
       </div>

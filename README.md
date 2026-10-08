@@ -11,7 +11,6 @@ Kolkata, Pune, Ahmedabad, Jaipur, Lucknow, Chandigarh, Nagpur and Kochi — buil
 - **500 venues** across 16 cities (cafés, restaurants, street-food spots, Jain-food restaurants) with menus, a diet filter (pure veg / non-veg / Jain), dish photos you can tap to enlarge, budget tracker, gifts, itinerary, outfits, messages, conversation deck.
 - **Venue links:** Google Maps, directions, an embedded map with reviews, "Photos on Google" and "Check the real menu".
 - **Smarter Wingman:** the built-in assistant recommends venues, menus and gifts from the app's own data, offline.
-- **Music panel:** public-domain piano, plus a field to play any YouTube link in YouTube's own player.
 
 ## Run locally
 
@@ -37,12 +36,6 @@ A website that runs in the browser **cannot hide a key**: anything shipped to th
 - Visitors may also paste **their own** key in the chat settings; it stays in their browser only.
 - If a key was ever pasted anywhere public, revoke it and create a new one.
 
-## Music
-
-Built-in tracks are public-domain recordings (Chopin nocturnes, Satie) from Wikimedia Commons — see `src/musicConfig.js`.
-Popular songs (for example Bollywood tracks) and their covers are copyrighted and are **not** bundled. To use one legally, open
-the music panel (⌄ next to the music button) and paste its YouTube link: it plays in YouTube's official embedded player.
-You can also set a default in `src/musicConfig.js` (`DEFAULT_YOUTUBE`).
 
 ## Photos and menus
 
@@ -75,8 +68,3 @@ Menus start as illustrative templates (their prices follow each place's rough co
 [`src/realMenus.js`](src/realMenus.js) — the file explains the format. Those venues then display "Menu and prices from <source>".
 Only add menus you have the right to publish (your own photos of a menu card, or the venue's permission).
 
-## Music
-
-Besides the built-in free-licence tracks, the music panel has a **Bollywood love instrumentals** list (`BOLLYWOOD_PICKS` in
-`src/musicConfig.js`). These play inside YouTube's own embedded player, so no copyrighted audio is bundled. If an uploader removes a
-video, swap its id in that list.

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Icon from './Icon.jsx'
-import MusicPlayer from './MusicPlayer.jsx'
 import ThemeSwitcher from './ThemeSwitcher.jsx'
 import { useDate } from '../context/DateContext.jsx'
 
@@ -80,7 +79,6 @@ export default function Navbar() {
         </div>
 
         <ThemeSwitcher />
-        <MusicPlayer />
 
         <button
           type="button"
