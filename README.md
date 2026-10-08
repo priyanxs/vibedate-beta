@@ -8,7 +8,7 @@ Kolkata, Pune, Ahmedabad, Jaipur, Lucknow, Chandigarh, Nagpur and Kochi — buil
 - **3D everywhere:** a glossy 3D heart scene (three.js, loaded on demand), a 3D city ring carousel, depth-layered venue cards,
   3D section reveals. Falls back gracefully if WebGL is unavailable and respects reduced-motion settings.
 - **New design:** Fraunces + Manrope typography and four themes — Rose Noir (default), Sapphire Night, Emerald Velvet, Ivory Day (light).
-- **300+ venues** across 16 cities (cafés, restaurants, street-food spots, Jain-food restaurants) with menus, a diet filter (pure veg / non-veg / Jain), dish photos you can tap to enlarge, budget tracker, gifts, itinerary, outfits, messages, conversation deck.
+- **500 venues** across 16 cities (cafés, restaurants, street-food spots, Jain-food restaurants) with menus, a diet filter (pure veg / non-veg / Jain), dish photos you can tap to enlarge, budget tracker, gifts, itinerary, outfits, messages, conversation deck.
 - **Venue links:** Google Maps, directions, an embedded map with reviews, "Photos on Google" and "Check the real menu".
 - **Smarter Wingman:** the built-in assistant recommends venues, menus and gifts from the app's own data, offline.
 - **Music panel:** public-domain piano, plus a field to play any YouTube link in YouTube's own player.
