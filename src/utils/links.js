@@ -18,6 +18,17 @@ const mapsQuery = (venue) => {
   return encodeURIComponent(venue.mapsQuery || `${venue.name}${city ? `, ${city.name}` : ''}`)
 }
 
+const placeText = (venue) => decodeURIComponent(mapsQuery(venue))
+
+/** Google Maps embed (no API key needed) — shows the place, its photos and reviews in a frame. */
+export const mapsEmbedUrl = (venue) => `https://www.google.com/maps?q=${mapsQuery(venue)}&output=embed`
+
+/** Opens Google's photo results for the place — real, current photos from the web. */
+export const googlePhotosUrl = (venue) => `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(placeText(venue))}`
+
+/** Opens a search for the venue's current menu (menus and prices change, so we link out instead of copying). */
+export const realMenuUrl = (venue) => `https://www.google.com/search?q=${encodeURIComponent(`${placeText(venue)} menu`)}`
+
 export const mapsViewUrl = (venue) =>
   safeUrl(venue.mapsUrl) || `https://www.google.com/maps/search/?api=1&query=${mapsQuery(venue)}`
 

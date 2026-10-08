@@ -19,7 +19,8 @@ export default function Section({ id, eyebrow, title, subtitle, children, action
           io.disconnect()
         }
       },
-      { threshold: 0.05, rootMargin: '0px 0px -6% 0px' },
+      // threshold 0 = reveal on first contact (a % threshold never triggers early on very tall sections)
+      { threshold: 0, rootMargin: '0px 0px -8% 0px' },
     )
     io.observe(el)
     return () => io.disconnect()

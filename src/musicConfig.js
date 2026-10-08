@@ -28,3 +28,8 @@ export const MUSIC_TRACKS = [
     license: 'Public domain',
   },
 ]
+
+/* Optional default YouTube track (an 11-character video id or a full link). When set, the music panel offers it
+   as "Play this song" and plays it in YouTube's own embedded player (YouTube handles the licensing, so no audio
+   file is bundled). Visitors can also paste their own link in the panel. */
+export const DEFAULT_YOUTUBE = ''

@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { WINGMAN_PROMPTS } from '../data'
 import { useDate } from '../context/DateContext.jsx'
-import { askWingman, getApiKey, getStoredKey, storeKey } from '../services/ai'
+import { askWingman, getAiMode, getStoredKey, storeKey } from '../services/ai'
 import Icon from './Icon.jsx'
 
 const GREETING = {
@@ -31,7 +31,7 @@ export default function WingmanChat() {
   const [busy, setBusy] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [keyInput, setKeyInput] = useState('')
-  const [hasKey, setHasKey] = useState(() => Boolean(getApiKey()))
+  const [mode, setMode] = useState(getAiMode)
   const endRef = useRef(null)
   const inputRef = useRef(null)
   const fabRef = useRef(null)
@@ -64,7 +64,7 @@ export default function WingmanChat() {
     setBusy(true)
     // A short pause makes mock replies feel conversational; real API calls take longer anyway.
     await new Promise((r) => setTimeout(r, 450))
-    const reply = await askWingman(history, { vibe, venue, budget, total, remaining, city: cityInfo.name })
+    const reply = await askWingman(history, { vibe, venue, budget, total, remaining, city: cityInfo.name, cityId: cityInfo.id })
     setMessages((m) => [...m, { role: 'assistant', text: reply.text }])
     setBusy(false)
   }
@@ -77,13 +77,13 @@ export default function WingmanChat() {
   const saveKey = () => {
     storeKey(keyInput.trim())
     setKeyInput('')
-    setHasKey(Boolean(getApiKey()))
+    setMode(getAiMode())
     setShowSettings(false)
   }
 
   const removeKey = () => {
     storeKey('')
-    setHasKey(Boolean(getApiKey()))
+    setMode(getAiMode())
   }
 
   return (
@@ -102,7 +102,7 @@ export default function WingmanChat() {
               <span className="chat__avatar"><Icon name="sparkles" size={18} /></span>
               <div>
                 <p className="chat__name">AI Wingman</p>
-                <p className="chat__status">{hasKey ? 'Powered by Gemini' : 'Built-in advice mode'}</p>
+                <p className="chat__status">{mode === 'builtin' ? 'Built-in assistant · works offline' : 'Live AI (Gemini)'}</p>
               </div>
             </div>
             <div className="chat__head-actions">
@@ -118,7 +118,7 @@ export default function WingmanChat() {
           {showSettings && (
             <div className="chat__settings">
               <p>
-                Optional: paste a <strong>Gemini API key</strong> for live AI answers. It is stored only in this browser and sent only to Google.
+                The assistant works with no setup. For live AI you can paste your own <strong>Gemini API key</strong> — it stays in this browser and is sent only to Google. (Site owners: use the proxy in <code>/worker</code> so no key is ever exposed.)
               </p>
               <div className="chat__key-row">
                 <input

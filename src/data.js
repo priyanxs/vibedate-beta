@@ -595,10 +595,10 @@ export const START_TIMES = Array.from({ length: 26 }, (_, i) => 600 + i * 30)
 /* ------------------------ Wingman quick asks ----------------------- */
 
 export const WINGMAN_PROMPTS = [
+  'Best café under ₹500',
+  'Romantic dinner spot',
+  'What should we order?',
+  'Gift ideas for my budget',
   'Give me conversation starters',
-  'How do I make them feel special?',
-  'Date etiquette tips',
-  'What should I wear?',
   "I'm nervous — help!",
-  'How do I end the night well?',
 ]

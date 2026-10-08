@@ -12,6 +12,7 @@ import MobileSummaryBar from './components/MobileSummaryBar.jsx'
 import WingmanChat from './components/WingmanChat.jsx'
 import Footer from './components/Footer.jsx'
 import HowItWorks from './components/HowItWorks.jsx'
+import CityRing from './components/CityRing.jsx'
 import BackToTop from './components/BackToTop.jsx'
 import IntroSplash from './components/IntroSplash.jsx'
 import { ToastProvider } from './components/Toast.jsx'
@@ -37,6 +38,7 @@ export default function App() {
       <Hero />
       <Marquee />
       <div className="container">
+        <CityRing />
         <HowItWorks />
       </div>
       <div className="container layout">

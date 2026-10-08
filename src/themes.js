@@ -1,12 +1,12 @@
 // Colour themes. The actual colours live in index.css under [data-theme="..."].
 export const THEMES = [
-  { id: 'golden', name: 'Golden Hour', note: 'Warm saffron and gold', swatch: ['#110b09', '#c2410c', '#ffa05c', '#fbbf24'], meta: '#110b09' },
-  { id: 'midnight', name: 'Midnight Velvet', note: 'Crimson, pink and lime', swatch: ['#0d0812', '#e11d48', '#ff5c7c', '#a3e635'], meta: '#0d0812' },
-  { id: 'lavender', name: 'Lavender Dusk', note: 'Violet night with rose', swatch: ['#0b0a1c', '#7c3aed', '#b794ff', '#f472b6'], meta: '#0b0a1c' },
-  { id: 'blush', name: 'Blush Day', note: 'Light, soft pink', swatch: ['#fff5f8', '#c8102e', '#e94a78', '#a3e635'], meta: '#fff5f8' },
+  { id: 'rose', name: 'Rose Noir', note: 'Ruby, rose-gold and champagne', swatch: ['#0b0709', '#c0153f', '#f4b5a3', '#e8c872'], meta: '#0b0709' },
+  { id: 'sapphire', name: 'Sapphire Night', note: 'Deep navy with aqua', swatch: ['#070a14', '#2f56e0', '#8fb4ff', '#5eead4'], meta: '#070a14' },
+  { id: 'emerald', name: 'Emerald Velvet', note: 'Forest black with gold', swatch: ['#050d0b', '#047857', '#6ee7b7', '#f0c75e'], meta: '#050d0b' },
+  { id: 'ivory', name: 'Ivory Day', note: 'Light, warm ivory', swatch: ['#faf5ee', '#b3123f', '#d6456f', '#e5b83c'], meta: '#faf5ee' },
 ]
 
-export const DEFAULT_THEME = 'golden'
+export const DEFAULT_THEME = 'rose'
 export const THEME_KEY = 'vibedate:theme'
 
 export const applyTheme = (id) => {

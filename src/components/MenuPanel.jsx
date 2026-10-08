@@ -3,7 +3,7 @@ import { MENU_CATEGORIES } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { MAX_QTY } from '../utils/plan'
-import { mapsDirectionsUrl, mapsViewUrl, venueCredit, venuePhoto } from '../utils/links'
+import { googlePhotosUrl, mapsDirectionsUrl, mapsEmbedUrl, mapsViewUrl, realMenuUrl, venueCredit, venuePhoto } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 import VenueBanner from './VenueBanner.jsx'
@@ -14,6 +14,7 @@ export default function MenuPanel({ venue }) {
   const [tab, setTab] = useState('appetizers')
   const [onlyVeg, setOnlyVeg] = useState(false)
   const [fitsOnly, setFitsOnly] = useState(false)
+  const [showMap, setShowMap] = useState(false)
 
   const countIn = (cat) => cartLines.filter((l) => l.category === cat).reduce((acc, l) => acc + l.qty, 0)
 
@@ -64,9 +65,31 @@ export default function MenuPanel({ venue }) {
             <a className="btn btn--ghost btn--sm" href={mapsDirectionsUrl(venue)} target="_blank" rel="noopener noreferrer">
               <Icon name="navigation" size={16} /> Directions
             </a>
+            <a className="btn btn--ghost btn--sm" href={googlePhotosUrl(venue)} target="_blank" rel="noopener noreferrer">
+              <Icon name="external" size={16} /> Photos on Google
+            </a>
+            <a className="btn btn--ghost btn--sm" href={realMenuUrl(venue)} target="_blank" rel="noopener noreferrer">
+              <Icon name="utensils" size={16} /> Check the real menu
+            </a>
+            <button type="button" className="btn btn--soft btn--sm" aria-expanded={showMap} onClick={() => setShowMap((s) => !s)}>
+              <Icon name="pin" size={16} /> {showMap ? 'Hide map' : 'Show map & reviews'}
+            </button>
           </div>
         </div>
       </div>
+
+      {showMap && (
+        <div className="glass map-embed">
+          <iframe
+            key={venue.id}
+            title={`Google Map of ${venue.name}`}
+            src={mapsEmbedUrl(venue)}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        </div>
+      )}
 
       <div className="glass menu-panel">
         <div className="tabs" role="group" aria-label="Menu categories">
@@ -153,7 +176,7 @@ export default function MenuPanel({ venue }) {
         )}
 
         <p className="fine-print">
-          Prices are illustrative and assumed to include taxes. Please confirm with the venue.
+          Sample menu: dishes and prices are illustrative and assumed to include taxes. Use “Check the real menu” above for the current one.
           {hasAlcohol && ' Items marked 21+ are for adults only — please drink responsibly.'}
         </p>
       </div>

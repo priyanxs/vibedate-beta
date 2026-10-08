@@ -5,6 +5,7 @@ import ThemeSwitcher from './ThemeSwitcher.jsx'
 import { useDate } from '../context/DateContext.jsx'
 
 const LINKS = [
+  { href: '#cities', label: 'Cities' },
   { href: '#venues', label: 'Venues' },
   { href: '#gifts', label: 'Gifts' },
   { href: '#itinerary', label: 'Itinerary' },

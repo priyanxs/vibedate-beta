@@ -1,7 +1,7 @@
 {
-  "name": "vibedate",
+  "name": "vibedate-beta",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0-beta",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "three": "0.160.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",

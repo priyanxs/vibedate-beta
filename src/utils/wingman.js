@@ -1,4 +1,6 @@
+import { CITIES, CITY_BY_ID, GIFTS, KIND_LABELS, VENUES, kindOf } from '../data'
 import { formatINR } from './format'
+import { buildCartLines, minDateCost, suggestMenu } from './plan'
 
 /* Mock "AI" for VibeDate's Wingman. A topic is chosen by keyword score and
    its reply is filled in from the user's current plan. The real Gemini call
@@ -127,8 +129,104 @@ const TOPICS = [
 const FALLBACK = (ctx) =>
   `I'm your date-night wingman! Try asking me about:\n- **Conversation starters**\n- **Etiquette** and who pays\n- **What to wear**${ctx.venue ? ` at ${ctx.venue.name}` : ''}\n- How to make them feel **special**\n- Calming your **nerves**\n- How to **end the night** well`
 
+/* ---------------- data-aware answers (venues, menus, gifts) ---------------- */
+
+const parseBudget = (t) => {
+  const m =
+    t.match(/(?:₹|rs\.?\s*|inr\s*|under\s*|below\s*|within\s*|upto\s*|up to\s*|budget(?: of| is)?\s*|for\s*)\s*([0-9][0-9,]{2,5})/i) ||
+    t.match(/\b([0-9]{3,5})\b/)
+  if (!m) return null
+  const n = parseInt(m[1].replace(/,/g, ''), 10)
+  return Number.isFinite(n) && n >= 100 ? n : null
+}
+
+const findCity = (t) => CITIES.find((c) => new RegExp(`(^|[^a-z])${c.name.toLowerCase()}($|[^a-z])`).test(t))
+
+const findKind = (t) => {
+  if (/caf[eé]s?(?![a-z])|coffee|brunch|bakery/.test(t)) return 'cafe'
+  if (/street|chaat|stalls?|night market/.test(t)) return 'street'
+  if (/restaurants?|dinner|lunch|biryani|thali|kebabs?/.test(t)) return 'restaurant'
+  return null
+}
+
+const findVibe = (t) => {
+  if (/romantic|candle|anniversary|propose|special occasion|fine dining/.test(t)) return 'Romantic'
+  if (/cozy|cosy|quiet|calm|chill|relax/.test(t)) return 'Cozy'
+  if (/vibrant|lively|party|energetic|buzz|fun/.test(t)) return 'Vibrant'
+  if (/casual|cheap|simple|first meet|low[- ]key/.test(t)) return 'Casual'
+  return null
+}
+
+const shortList = (items) => items.map((x) => `- **${x.v.name}** — ${x.v.cuisine}, from ${formatINR(x.min)} for two. ${x.v.tagline}`).join('\n')
+
+// Recommends venues from the app's own data.
+const recommendReply = (t, ctx) => {
+  const city = findCity(t) || CITY_BY_ID[ctx.cityId] || CITIES[0]
+  const kind = findKind(t)
+  const vibe = findVibe(t)
+  const budget = parseBudget(t)
+  const pool = VENUES.filter((v) => v.city === city.id && (!kind || kindOf(v) === kind) && (!vibe || v.vibe === vibe)).map((v) => ({ v, min: minDateCost(v) }))
+  const label = [vibe ? vibe.toLowerCase() : null, kind ? (KIND_LABELS[kind] || kind).toLowerCase().replace(/s$/, '') : 'place', budget ? `under ${formatINR(budget)}` : null].filter(Boolean).join(' ')
+  if (!pool.length) {
+    const any = VENUES.filter((v) => v.city === city.id).length
+    return `I couldn't find a ${label} in **${city.name}** (${any} venues listed there). Try a different vibe or type, or ask about another city.`
+  }
+  const fits = budget ? pool.filter((x) => x.min <= budget) : pool
+  if (!fits.length) {
+    const cheapest = [...pool].sort((a, b) => a.min - b.min)[0]
+    return `Nothing in **${city.name}** matches a ${label} for two. The most affordable is **${cheapest.v.name}** at about ${formatINR(cheapest.min)} for two — try raising your budget a little.`
+  }
+  const ranked = [...fits].sort((a, b) => b.min - a.min).slice(0, 3)
+  return `Top ${label} picks in **${city.name}**:\n${shortList(ranked)}\n\nOpen the **Venues** section, tap **Choose**, and I'll help you plan the menu.`
+}
+
+// Suggests dishes for two that fit a budget, from the chosen (or best-fit) venue.
+const menuReply = (t, ctx) => {
+  const budget = parseBudget(t) || ctx.budget
+  const city = findCity(t) || CITY_BY_ID[ctx.cityId] || CITIES[0]
+  let venue = ctx.venue && ctx.venue.city === city.id ? ctx.venue : null
+  if (!venue) {
+    const kind = findKind(t)
+    const vibe = findVibe(t)
+    const options = VENUES.filter((v) => v.city === city.id && (!kind || kindOf(v) === kind) && (!vibe || v.vibe === vibe) && minDateCost(v) <= budget)
+    venue = options.sort((a, b) => minDateCost(b) - minDateCost(a))[0] || null
+  }
+  if (!venue) return `I couldn't find a venue in **${city.name}** that fits ${formatINR(budget)} for two. Try a bigger budget or another city.`
+  const cart = suggestMenu(venue, budget * 0.8)
+  const lines = buildCartLines(venue, cart)
+  const total = lines.reduce((a, l) => a + l.item.price * l.qty, 0)
+  const dishes = lines.map((l) => `- ${l.qty > 1 ? `${l.qty} × ` : ''}${l.item.name} (${formatINR(l.item.price * l.qty)})`).join('\n')
+  return `For two at **${venue.name}** (${city.name}) with a ${formatINR(budget)} budget, I'd order:\n${dishes}\n\nThat's about **${formatINR(total)}**, leaving ${formatINR(Math.max(budget - total, 0))} for a gift. In the menu panel, tap **AI: suggest a menu** to add it automatically.`
+}
+
+// Suggests gifts that fit an amount.
+const giftReply = (t, ctx) => {
+  const amount = parseBudget(t) || (ctx.remaining > 0 ? ctx.remaining : 600)
+  const vibe = findVibe(t) || ctx.vibe
+  const pool = GIFTS.filter((g) => g.price <= amount).sort((a, b) => (b.vibes.includes(vibe) ? 1 : 0) - (a.vibes.includes(vibe) ? 1 : 0) || b.price - a.price).slice(0, 3)
+  if (!pool.length) return `Nothing in the gift list is under ${formatINR(amount)} — a handwritten note is free and always lands well. 💌`
+  return `Gift ideas up to ${formatINR(amount)} that suit a **${vibe}** evening:\n${pool.map((g) => `- ${g.emoji} **${g.name}** (${formatINR(g.price)}) — ${g.note}`).join('\n')}\n\nAdd any of them in the **Gift suggester**.`
+}
+
+const smartReply = (t, ctx) => {
+  // Questions about clothes, nerves or manners are answered by the topic engine below, not the venue finder.
+  if (/(wear|outfit|dress code|clothes|nervous|etiquette|manners|split the bill|who pays)/.test(t)) return null
+  const asksRecommend = /(recommend|suggest|best|where|which|find|show me|top|good|nice|any )/.test(t)
+  const namesPlace = /(place|spot|venue|restaurants?|caf[eé]s?(?![a-z])|coffee shop|brunch|street food|dinner)/.test(t)
+  const asksMenu = /(what (should|do|can) (we|i) (order|eat|get|have)|order|menu|combo|plan (a )?date|plan my)/.test(t)
+  const asksGift = /(gift|present|flowers?|bouquet|chocolates?|jewel)/.test(t)
+  if (asksGift && (parseBudget(t) || /(idea|suggest|what|which|under|best)/.test(t))) return giftReply(t, ctx)
+  if (asksMenu && (parseBudget(t) || ctx.venue)) return menuReply(t, ctx)
+  // "Romantic dinner spot in Jaipur", "best café under 500", "cozy places in Pune" ...
+  if (namesPlace && (asksRecommend || findCity(t) || findVibe(t) || parseBudget(t))) return recommendReply(t, ctx)
+  if (asksRecommend && (findKind(t) || findCity(t))) return recommendReply(t, ctx)
+  return null
+}
+
 export const getMockReply = (input, ctx, turn = 0) => {
   const text = input.toLowerCase().trim()
+  const smart = smartReply(text, ctx)
+  if (smart) return smart
   let best = null
   let bestScore = 0
 
