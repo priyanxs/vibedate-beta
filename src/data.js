@@ -451,18 +451,6 @@ export const GIFTS = [
   { id: 'g-solitaire', name: 'Solitaire-style Diamond Pendant', category: 'jewelry', price: 7500, emoji: '💍', vibes: ['Romantic'], note: 'Reserved for a truly special occasion.' },
 ]
 
-/* ---- YOUR GIFT LINKS ----------------------------------------------------
-   Paste your own product / affiliate link for any gift id below. The gift card
-   then shows a "Buy" button that opens your link in a new tab. Gifts without a
-   link show "Find online", which opens a web search for that gift.
-   Example:  'g-rose': 'https://www.yourshop.com/red-rose',
---------------------------------------------------------------------------- */
-export const GIFT_LINKS = {
-  // 'g-rose': '',
-  // 'g-rbq': '',
-  // 'g-silk': '',
-}
-
 export const GIFT_BY_ID = Object.fromEntries(GIFTS.map((g) => [g.id, g]))
 
 /* --------------------------- Outfits ------------------------------ */

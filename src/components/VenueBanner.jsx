@@ -11,7 +11,11 @@ export default function VenueBanner({ venue, className = '', children }) {
   return (
     <div className={`venue-banner ${className}`} style={{ background: VIBES[venue.vibe].gradient }}>
       {showPhoto ? (
-        <img src={photo} alt={`${venue.name}`} loading="lazy" onError={() => setFailed(true)} />
+        <>
+          <img src={photo} alt={`${venue.name}`} loading="lazy" onError={() => setFailed(true)} />
+          <span className="venue-banner__shade" aria-hidden="true" />
+          <span className="venue-banner__flag">Illustrative photo</span>
+        </>
       ) : (
         <span className="venue-banner__emoji" aria-hidden="true">{venue.emoji}</span>
       )}

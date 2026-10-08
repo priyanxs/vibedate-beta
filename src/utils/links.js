@@ -1,4 +1,5 @@
-import { GIFT_LINKS } from '../data'
+import { GIFT_LINKS } from '../giftLinks'
+import { PHOTO_CREDITS } from '../photoCredits'
 
 /** Only http(s) URLs are ever used as links (blocks javascript: and other schemes). */
 export const safeUrl = (value) => {
@@ -34,6 +35,8 @@ const photoFiles = import.meta.glob('../assets/venues/*.{jpg,jpeg,png,webp}', {
   query: '?url',
   import: 'default',
 })
+
+export const venueCredit = (venue) => PHOTO_CREDITS[venue.id] || null
 
 export const venuePhoto = (venue) => {
   if (safeUrl(venue.photo)) return venue.photo

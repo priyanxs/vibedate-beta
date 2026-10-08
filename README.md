@@ -29,9 +29,10 @@ real menus and prices with each venue.
 
 ## Customising
 
-- **Gift links:** in `src/data.js`, add entries to `GIFT_LINKS` (gift id → your full `https://` link). That gift's card then shows a
-  **Buy** button opening your link; gifts without one show **Find online** (a web search).
-- **Venue photos:** drop `<venue-id>.jpg` (or png/webp) into `src/assets/venues/` — see the README there for the id list.
+- **Gift links:** open `src/giftLinks.js`, paste your `https://` link between the quotes next to a gift. That gift then shows a
+  green **Buy** button; gifts left as `''` show **Find online** (a web search).
+- **Venue photos:** `src/assets/venues/<venue-id>.jpg`. The bundled photos are freely licensed Wikimedia Commons images, all
+  illustrative; credits are in `src/photoCredits.js` and shown in the app. Replace a file with your own photo and update or delete its credit entry.
 - **Google Maps:** venues link to a Google Maps search automatically. For an exact pin, add `mapsUrl: 'https://maps.app.goo.gl/…'` to the venue.
 - **Logo:** `public/logo.png` (navbar/footer), `public/favicon.png`, `public/apple-touch-icon.png`.
 

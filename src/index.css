@@ -2647,3 +2647,44 @@ a {
     animation: none !important;
   }
 }
+
+/* ---------- venue photos ---------- */
+
+.venue-banner img {
+  transition: transform 0.8s var(--ease);
+}
+
+.venue-card:hover .venue-banner img,
+.venue-head:hover .venue-banner img {
+  transform: scale(1.07);
+}
+
+.venue-banner__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(13, 8, 18, 0.35) 0%, transparent 38%, rgba(13, 8, 18, 0.55) 100%);
+}
+
+.venue-banner__flag {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(13, 8, 18, 0.62);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-weight: 600;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.venue-head__credit {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.venue-head__credit a {
+  color: var(--muted);
+}

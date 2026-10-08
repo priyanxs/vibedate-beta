@@ -3,7 +3,7 @@ import { MENU_CATEGORIES } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { MAX_QTY } from '../utils/plan'
-import { mapsDirectionsUrl, mapsViewUrl } from '../utils/links'
+import { mapsDirectionsUrl, mapsViewUrl, venueCredit, venuePhoto } from '../utils/links'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 import VenueBanner from './VenueBanner.jsx'
@@ -49,6 +49,14 @@ export default function MenuPanel({ venue }) {
             <p className="venue-head__meta">{venue.vibe} · {venue.cuisine}</p>
             <p className="venue-head__meta">Dress code: {venue.dressCode}</p>
           </div>
+          {venuePhoto(venue) && venueCredit(venue) && (
+            <p className="venue-head__credit">
+              Photo: {venueCredit(venue).note}. By {venueCredit(venue).author} ·{' '}
+              <a href={venueCredit(venue).source} target="_blank" rel="noopener noreferrer">
+                {venueCredit(venue).license}, Wikimedia Commons
+              </a>
+            </p>
+          )}
           <div className="venue-head__actions">
             <a className="btn btn--primary btn--sm" href={mapsViewUrl(venue)} target="_blank" rel="noopener noreferrer">
               <Icon name="pin" size={16} /> Open in Google Maps
