@@ -57,14 +57,9 @@ You can also set a default in `src/musicConfig.js` (`DEFAULT_YOUTUBE`).
 The site is fully static, so Vercel serves it from its global CDN — it scales to tens of thousands of visitors without a server.
 
 1. Import the repository in Vercel (framework: Vite, build `npm run build`, output `dist` — [`vercel.json`](vercel.json) already says so).
-2. Optional live AI: add the environment variables below, then redeploy. Without them the built-in assistant still works for everyone.
-   | Variable | Value |
-   | --- | --- |
-   | `GEMINI_API_KEY` | your Gemini key (mark it *Sensitive*; it stays on the server in [`api/wingman.js`](api/wingman.js)) |
-   | `ALLOWED_ORIGINS` | your site, e.g. `https://vibedate.vercel.app` |
-   | `VITE_AI_PROXY_URL` | `/api/wingman` |
-   | `WINGMAN_PER_MIN` / `WINGMAN_PER_DAY` | optional per-visitor limits (default 10 / 80) |
-3. Set a spending cap on your Google key, and add a Vercel Firewall rate-limit rule for `/api/wingman` (the in-function limit is per warm instance).
+2. The Wingman works for everyone with no setup (built-in assistant). The Vercel serverless proxy was removed from this repository, so
+   live Gemini answers come only from a visitor pasting their own key (kept in their browser) or from the Cloudflare worker in [`worker/`](worker/gemini-proxy.js)
+   (`AI_PROXY_URL` in `src/aiConfig.js`). Never put a key in the repository or in a `VITE_*` variable.
 
 ### Security
 
