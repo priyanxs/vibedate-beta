@@ -1,4 +1,7 @@
-import { CITIES } from '../data'
+import { CITIES, VENUE_BY_ID } from '../data'
+import { CITY_PHOTO_CREDITS } from '../cityPhotos'
+import { PHOTO_CREDITS } from '../photoCredits'
+import { MUSIC_TRACKS } from '../musicConfig'
 import { useDate } from '../context/DateContext.jsx'
 
 const EXPLORE = [
@@ -58,10 +61,27 @@ export default function Footer() {
       </div>
 
       <div className="container footer__legal">
+        <details className="credits">
+          <summary>Photo credits</summary>
+          <ul>
+            {Object.entries(CITY_PHOTO_CREDITS).map(([id, c]) => (
+              <li key={`c-${id}`}>
+                {(CITIES.find((x) => x.id === id) || {}).name}: {c.landmark} — {c.author},{' '}
+                <a href={c.source} target="_blank" rel="noopener noreferrer">{c.license}</a>
+              </li>
+            ))}
+            {Object.entries(PHOTO_CREDITS).map(([id, c]) => (
+              <li key={`v-${id}`}>
+                {(VENUE_BY_ID[id] || {}).name || id}: {c.note} — {c.author},{' '}
+                <a href={c.source} target="_blank" rel="noopener noreferrer">{c.license}</a>
+              </li>
+            ))}
+          </ul>
+        </details>
         <p>
           Venue details, menus and prices are illustrative sample data — please confirm with the venue before you go.
           Photos are from Wikimedia Commons contributors under their licences (credited in the app).
-          Music: Erik Satie’s Gymnopédie No. 1 and No. 3, classical-guitar recordings by Michael Laucke (public domain, via Wikimedia Commons).
+          Music (public domain, via Wikimedia Commons): {MUSIC_TRACKS.map((t) => `${t.title} — ${t.artist}`).join('; ')}.
           Be kind, be honest and respect boundaries. Plans are saved only on this device.
         </p>
       </div>

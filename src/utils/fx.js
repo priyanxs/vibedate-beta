@@ -23,7 +23,9 @@ export const burstHearts = (el) => {
     heart.style.setProperty('--dy', `${Math.sin(angle) * dist - 26}px`)
     heart.style.setProperty('--rot', `${(Math.random() - 0.5) * 90}deg`)
     heart.style.setProperty('--size', `${12 + Math.random() * 10}px`)
-    heart.style.color = i % 3 === 0 ? '#a3e635' : i % 3 === 1 ? '#ff5c7c' : '#ff8fb1'
+    const css = getComputedStyle(document.documentElement)
+    const palette = ['--lime', '--crimson', '--pink-400'].map((v) => css.getPropertyValue(v).trim() || '#ff5c7c')
+    heart.style.color = palette[i % 3]
     document.body.appendChild(heart)
     setTimeout(() => heart.remove(), 1000)
   }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Icon from './Icon.jsx'
 import MusicPlayer from './MusicPlayer.jsx'
+import ThemeSwitcher from './ThemeSwitcher.jsx'
 import { useDate } from '../context/DateContext.jsx'
 
 const LINKS = [
@@ -77,6 +78,7 @@ export default function Navbar() {
           <a className="btn btn--primary btn--sm navbar__cta" href="#venues">Plan my date</a>
         </div>
 
+        <ThemeSwitcher />
         <MusicPlayer />
 
         <button

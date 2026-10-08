@@ -7,6 +7,7 @@
 import { items } from './venueHelpers'
 import { BHOPAL_MORE } from './venues/bhopalMore'
 import { METRO_VENUES } from './venues/metros'
+import { TIER2_VENUES } from './venues/tier2'
 
 export const BUDGET = { min: 500, max: 10000, step: 100, default: 3000 }
 
@@ -415,20 +416,34 @@ const BHOPAL_VENUES = [
 /* ---------------------------- Cities ------------------------------ */
 
 export const CITIES = [
-  { id: 'bhopal', name: 'Bhopal', emoji: '🏞️' },
-  { id: 'delhi', name: 'Delhi', emoji: '🏛️' },
-  { id: 'mumbai', name: 'Mumbai', emoji: '🌊' },
-  { id: 'bengaluru', name: 'Bengaluru', emoji: '🌳' },
-  { id: 'hyderabad', name: 'Hyderabad', emoji: '🕌' },
-  { id: 'chennai', name: 'Chennai', emoji: '🏖️' },
-  { id: 'kolkata', name: 'Kolkata', emoji: '🌉' },
-  { id: 'pune', name: 'Pune', emoji: '⛰️' },
+  { id: 'bhopal', name: 'Bhopal', emoji: '🏞️', group: 'Madhya Pradesh', blurb: 'The City of Lakes — lakeside dinners and old-city flavours.' },
+  { id: 'indore', name: 'Indore', emoji: '🍬', group: 'Madhya Pradesh', blurb: 'A street-food capital: night markets, chaat and sweets.' },
+  { id: 'jabalpur', name: 'Jabalpur', emoji: '⛰️', group: 'Madhya Pradesh', blurb: 'Marble Rocks, the Narmada and a growing café scene.' },
+  { id: 'delhi', name: 'Delhi', emoji: '🏛️', group: 'Tier 1 metros', blurb: 'From Old Delhi kebabs to Khan Market cafés.' },
+  { id: 'mumbai', name: 'Mumbai', emoji: '🌊', group: 'Tier 1 metros', blurb: 'Sea-facing evenings, Irani cafés and Colaba classics.' },
+  { id: 'bengaluru', name: 'Bengaluru', emoji: '🌳', group: 'Tier 1 metros', blurb: 'Brewpubs, filter coffee and leafy brunch cafés.' },
+  { id: 'hyderabad', name: 'Hyderabad', emoji: '🕌', group: 'Tier 1 metros', blurb: 'Biryani, Irani chai and palace dining.' },
+  { id: 'chennai', name: 'Chennai', emoji: '🏖️', group: 'Tier 1 metros', blurb: 'Filter coffee, idlis and heritage-bungalow cafés.' },
+  { id: 'kolkata', name: 'Kolkata', emoji: '🌉', group: 'Tier 1 metros', blurb: 'Park Street tearooms, adda and old-world dining.' },
+  { id: 'pune', name: 'Pune', emoji: '🏰', group: 'Tier 1 metros', blurb: 'Koregaon Park cafés, brewpubs and bakeries.' },
+  { id: 'ahmedabad', name: 'Ahmedabad', emoji: '🪔', group: 'Tier 1 metros', blurb: 'Heritage rooftops, Gujarati thalis and night food markets.' },
+  { id: 'jaipur', name: 'Jaipur', emoji: '🏯', group: 'Tier 2 cities', blurb: 'Pink City flavours: kachori, ghewar and rooftop tea.' },
+  { id: 'lucknow', name: 'Lucknow', emoji: '🍢', group: 'Tier 2 cities', blurb: 'Awadhi kebabs, biryani and kulhad chai.' },
+  { id: 'chandigarh', name: 'Chandigarh', emoji: '🌿', group: 'Tier 2 cities', blurb: 'A planned city with Sector 17 cafés and lakeside walks.' },
+  { id: 'nagpur', name: 'Nagpur', emoji: '🍊', group: 'Tier 2 cities', blurb: 'Fiery Saoji cuisine and a rising café culture.' },
+  { id: 'kochi', name: 'Kochi', emoji: '⚓', group: 'Tier 2 cities', blurb: 'Fort Kochi art cafés and waterfront Kerala cooking.' },
 ]
+
+export const CITY_GROUPS = ['Madhya Pradesh', 'Tier 1 metros', 'Tier 2 cities']
 
 export const DEFAULT_CITY = 'bhopal'
 export const CITY_BY_ID = Object.fromEntries(CITIES.map((c) => [c.id, c]))
 
-export const VENUES = [...BHOPAL_VENUES, ...BHOPAL_MORE, ...METRO_VENUES]
+export const VENUES = [...BHOPAL_VENUES, ...BHOPAL_MORE, ...METRO_VENUES, ...TIER2_VENUES]
+
+/** 'cafe' | 'restaurant' | 'street' — explicit on newer venues, inferred for the rest. */
+export const KIND_LABELS = { cafe: 'Cafés', restaurant: 'Restaurants', street: 'Street food' }
+export const kindOf = (v) => v.kind || (/caf[eé]|coffee|bakery|tearoom|\btea\b/i.test(`${v.cuisine} ${v.name}`) ? 'cafe' : 'restaurant')
 
 export const VENUE_BY_ID = Object.fromEntries(VENUES.map((v) => [v.id, v]))
 

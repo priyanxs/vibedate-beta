@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { VIBES, VIBE_LIST } from '../data'
+import { KIND_LABELS, VIBES, VIBE_LIST, kindOf } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { minDateCost } from '../utils/plan'
@@ -8,6 +8,7 @@ import Section from './Section.jsx'
 import Icon from './Icon.jsx'
 import MenuPanel from './MenuPanel.jsx'
 import VenueBanner from './VenueBanner.jsx'
+import CityBanner from './CityBanner.jsx'
 import { burstHearts } from '../utils/fx'
 import { useToast } from './Toast.jsx'
 
@@ -17,14 +18,20 @@ const priceTier = (min) => (min < 600 ? 1 : min < 1500 ? 2 : min < 3000 ? 3 : 4)
 export default function VenueExplorer() {
   const { budget, vibeFilter, setVibeFilter, venueId, selectVenue, venue, cityInfo, cityVenues } = useDate()
   const [showStretch, setShowStretch] = useState(false)
+  const [kind, setKind] = useState('all')
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState('best')
   const toast = useToast()
 
+  const kinds = useMemo(() => Object.keys(KIND_LABELS).filter((k) => cityVenues.some((v) => kindOf(v) === k)), [cityVenues])
+
+  // If the chosen type does not exist in the new city, fall back to "all".
+  const activeKind = kind === 'all' || kinds.includes(kind) ? kind : 'all'
+
   const { visible, hiddenCount } = useMemo(() => {
     const needle = query.trim().toLowerCase()
     const matches = (v) => !needle || `${v.name} ${v.cuisine} ${v.tagline}`.toLowerCase().includes(needle)
-    const all = cityVenues.filter((v) => (vibeFilter === 'All' || v.vibe === vibeFilter) && matches(v)).map((v) => ({
+    const all = cityVenues.filter((v) => (vibeFilter === 'All' || v.vibe === vibeFilter) && (activeKind === 'all' || kindOf(v) === activeKind) && matches(v)).map((v) => ({
       venue: v,
       min: minDateCost(v),
     }))
@@ -36,7 +43,7 @@ export default function VenueExplorer() {
       visible: showStretch ? [...fits, ...stretch] : [...fits, ...keepSelected],
       hiddenCount: stretch.length - (showStretch ? 0 : keepSelected.length),
     }
-  }, [cityVenues, budget, vibeFilter, venueId, showStretch, query, sort])
+  }, [cityVenues, budget, vibeFilter, activeKind, venueId, showStretch, query, sort])
 
   const choose = (v) => {
     selectVenue(v.id)
@@ -55,6 +62,8 @@ export default function VenueExplorer() {
         title={`${cityInfo.name} venues for your vibe`}
         subtitle={`Showing places where dinner for two can fit within ${formatINR(budget)}.`}
       >
+        <CityBanner />
+
         <div className="chips" role="group" aria-label="Filter by vibe">
           {['All', ...VIBE_LIST].map((v) => (
             <button
@@ -65,6 +74,20 @@ export default function VenueExplorer() {
               onClick={() => setVibeFilter(v)}
             >
               {v !== 'All' && <span aria-hidden="true">{VIBES[v].emoji}</span>} {v}
+            </button>
+          ))}
+        </div>
+
+        <div className="chips chips--kind" role="group" aria-label="Filter by type">
+          {['all', ...kinds].map((k) => (
+            <button
+              key={k}
+              type="button"
+              className={`chip chip--sm ${activeKind === k ? 'is-active' : ''}`}
+              aria-pressed={activeKind === k}
+              onClick={() => setKind(k)}
+            >
+              {k === 'all' ? 'All types' : KIND_LABELS[k]}
             </button>
           ))}
         </div>

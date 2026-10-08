@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { BUDGET, CITIES, GIFTS, VIBES, VIBE_LIST, budgetTier } from '../data'
+import { BUDGET, CITIES, CITY_GROUPS, GIFTS, VIBES, VIBE_LIST, budgetTier } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { minDateCost } from '../utils/plan'
@@ -80,8 +80,12 @@ export default function Hero() {
                 const picked = CITIES.find((c) => c.id === e.target.value)
                 if (picked) toast(`Showing ${picked.name} venues`)
               }}>
-              {CITIES.map((c) => (
-                <option key={c.id} value={c.id}>{c.emoji} {c.name}</option>
+              {CITY_GROUPS.map((g) => (
+                <optgroup key={g} label={g}>
+                  {CITIES.filter((c) => c.group === g).map((c) => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </label>

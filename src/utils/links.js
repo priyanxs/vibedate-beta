@@ -1,6 +1,7 @@
 import { CITY_BY_ID } from '../data'
 import { GIFT_LINKS } from '../giftLinks'
 import { PHOTO_CREDITS } from '../photoCredits'
+import { CITY_PHOTO_CREDITS } from '../cityPhotos'
 
 /** Only http(s) URLs are ever used as links (blocks javascript: and other schemes). */
 export const safeUrl = (value) => {
@@ -39,6 +40,15 @@ const photoFiles = import.meta.glob('../assets/venues/*.{jpg,jpeg,png,webp}', {
   query: '?url',
   import: 'default',
 })
+
+const cityFiles = import.meta.glob('../assets/cities/*.jpg', { eager: true, query: '?url', import: 'default' })
+
+export const cityPhoto = (cityId) => {
+  const hit = Object.entries(cityFiles).find(([path]) => path.split('/').pop().replace(/\.[^.]+$/, '') === cityId)
+  return hit ? hit[1] : ''
+}
+
+export const cityCredit = (cityId) => CITY_PHOTO_CREDITS[cityId] || null
 
 export const venueCredit = (venue) => PHOTO_CREDITS[venue.id] || null
 

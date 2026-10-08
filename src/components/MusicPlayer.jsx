@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon.jsx'
+import { MUSIC_TRACKS } from '../musicConfig'
 
-/* Soothing background music: Erik Satie's Gymnopédies (public domain), classical-guitar recordings by Michael Laucke
-   via Wikimedia Commons. Browsers block sound until the visitor interacts with the page, so playback starts on the
-   first click, tap or key press — unless they switched the music off (remembered on this device). */
+/* Soothing background music — a looping playlist (see ../musicConfig.js; all public-domain piano and guitar).
+   Browsers block sound until the visitor interacts with the page, so playback starts on the first click, tap or
+   key press — unless they switched the music off (remembered on this device). */
 
 const KEY = 'vibedate:music'
 const VOLUME = 0.35
-const TRACKS = [
-  { title: 'Gymnopédie No. 1', src: 'audio/gymnopedie-1.m4a' },
-  { title: 'Gymnopédie No. 3', src: 'audio/gymnopedie-3.m4a' },
-]
+const TRACKS = MUSIC_TRACKS
 
 export default function MusicPlayer() {
   const [enabled, setEnabled] = useState(() => {
@@ -139,7 +137,7 @@ export default function MusicPlayer() {
       onClick={toggle}
       aria-pressed={playing}
       aria-label={playing ? 'Pause background music' : 'Play background music'}
-      title={`${TRACKS[track].title} — Erik Satie`}
+      title={`${TRACKS[track].title} — ${TRACKS[track].artist}`}
     >
       {playing ? (
         <span className="eq" aria-hidden="true"><i /><i /><i /><i /></span>

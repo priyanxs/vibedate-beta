@@ -1,6 +1,6 @@
 # VibeDate v2
 
-A budget-aware date planner for Bhopal and India's metro cities (Delhi, Mumbai, Bengaluru, Hyderabad, Chennai, Kolkata, Pune) — React + Vite single-page app, deployable to GitHub Pages.
+A budget-aware date planner for 16 Indian cities: Bhopal, Indore, Jabalpur; Tier 1 metros Delhi, Mumbai, Bengaluru, Hyderabad, Chennai, Kolkata, Pune, Ahmedabad; and Tier 2 cities Jaipur, Lucknow, Chandigarh, Nagpur, Kochi — React + Vite single-page app, deployable to GitHub Pages.
 
 **Features:** budget slider that drives venue/menu/gift suggestions · 9 Bhopal venues by vibe with menus · live cost calculator
 with budget meter and over-budget warning · gift suggester · itinerary builder · outfit coordinator · message writer (4 tones) ·
@@ -8,12 +8,15 @@ conversation deck · AI Wingman chat (built-in answers, optional Gemini).
 
 ## What's in v2
 
-- 20 Bhopal venues plus 28 in Delhi, Mumbai, Bengaluru, Hyderabad, Chennai, Kolkata and Pune, each with a menu
+- 99 venues in 16 cities (cafés, restaurants and street-food spots), each with a menu; landmark photos for every city and
+  real photos for a few venues (all Wikimedia Commons, credited in the footer)
+- Four colour themes (Golden Hour, Midnight Velvet, Lavender Dusk, Blush Day) — palette button in the navbar
 - Search and sort venues, price-level badges, Google Maps links, venue photos with credits
 - Polished dark design: intro splash, scroll reveals, parallax, card tilt and spotlight, toasts, back-to-top, animated stats
-- Soothing background music (toggle in the navbar): Erik Satie's Gymnopédie No. 1 and No. 3, classical-guitar recordings by
-  Michael Laucke, public domain, via Wikimedia Commons (`public/audio/`). Browsers only allow sound after the first click or tap,
-  so it starts on your first interaction; your on/off choice is remembered.
+- Soothing background music (toggle in the navbar): public-domain Chopin nocturnes (piano) and Satie's Gymnopédie No. 1 (guitar),
+  via Wikimedia Commons. The playlist is `src/musicConfig.js`; files are in `public/audio/`. Browsers only allow sound after
+  the first click or tap, so it starts on your first interaction; your on/off choice is remembered. To use a different song,
+  add a file you have the rights to publish — popular songs and their covers are copyrighted.
 
 ## Run locally
 
@@ -33,7 +36,7 @@ npm run build    # outputs to dist/
 
 ## Data
 
-Venues, menus, gifts, outfits, cards and message templates live in `src/data.js` (Bhopal) and `src/venues/metros.js` (other cities). They are **illustrative sample data** — confirm
+Venues, menus, gifts, outfits, cards and message templates live in `src/data.js` (+ `src/venues/*.js` for other cities). Themes: `src/themes.js` and the THEMES block of `src/index.css`. They are **illustrative sample data** — confirm
 real menus and prices with each venue.
 
 ## Customising

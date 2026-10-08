@@ -14,4 +14,8 @@ export const PHOTO_CREDITS = {
   bn: { note: "A Barbeque Nation table grill (another city's outlet)", author: "Kritzolina", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Skewers_at_Barbeque_Nation_01.jpg" },
   sg: { note: "Papri chaat, a street-food favourite (illustrative)", author: "Biswarup Ganguly", license: "CC BY 3.0", source: "https://commons.wikimedia.org/wiki/File:Papri_Chaat_-_Alipore_-_Kolkata_2013-02-10_4941.JPG" },
   md: { note: "Jalebis being fried at a sweet shop (illustrative)", author: "Billjones94", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Jalebis_are_being_fried_at_a_local_sweet_shop_4.jpg" },
+  "in-sarafa": { note: "Street food at Sarafa Bazaar, Indore", author: "आर्या जोशी", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Sarafa_Bajar_street_food.jpg" },
+  "in-chappan": { note: "Sweets and snacks at Chappan Dukan, Indore", author: "आर्या जोशी", license: "CC BY-SA 4.0", source: "https://commons.wikimedia.org/wiki/File:Chappan_Dukan_street_Food.jpg" },
+  "ah-manek": { note: "Manek Chowk night food market, Ahmedabad", author: "Pravega", license: "CC0", source: "https://commons.wikimedia.org/wiki/File:Manek_Chowk_(Ahmedabad)_01.jpg" },
+  "lk-tunday": { note: "The Tunday Kababi signboard, Lucknow", author: "Matt Stabile", license: "CC BY 2.0", source: "https://commons.wikimedia.org/wiki/File:Tunday_Kebabi,_Lucknow.jpg" },
 }
