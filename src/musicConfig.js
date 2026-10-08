@@ -47,3 +47,15 @@ export const MUSIC_TRACKS = [
    as "Play this song" and plays it in YouTube's own embedded player (YouTube handles the licensing, so no audio
    file is bundled). Visitors can also paste their own link in the panel. */
 export const DEFAULT_YOUTUBE = ''
+
+/* Bollywood love instrumentals. These are NOT bundled audio: they play inside YouTube's own embedded player (YouTube
+   handles the licensing with the uploader). Each id was checked to be public and embeddable when it was added; if an
+   uploader later removes a video, that button simply stops working — replace its id here. */
+export const BOLLYWOOD_PICKS = [
+  { id: 'zTqadO7V1TM', title: 'Kesariya — instrumental', note: 'Brahmāstra' },
+  { id: 'Kb54juoXQvQ', title: 'Apna Bana Le — instrumental', note: 'Bhediya' },
+  { id: 'Yut1hsMzHe4', title: 'Raataan Lambiyan — piano', note: 'Shershaah' },
+  { id: 'nDAZ7WuWxm0', title: 'Tere Vaaste — instrumental', note: 'Zara Hatke Zara Bachke' },
+  { id: 'BKMtuRY2plQ', title: 'Tum Hi Ho — piano', note: 'Aashiqui 2' },
+  { id: '6mg6npBiCaM', title: 'Best of Arijit Singh — instrumentals', note: 'Long mix' },
+]

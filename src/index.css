@@ -4236,6 +4236,9 @@ h1, h2, h3,
   display: grid;
   gap: 10px;
   width: 360px;
+  max-width: calc(100vw - 24px);
+  max-height: min(78vh, 640px);
+  overflow-y: auto;
   padding: 18px;
   background: rgba(var(--surface-rgb), 0.97);
   animation: pop-in 0.25s var(--ease);
@@ -4657,3 +4660,18 @@ h1, h2, h3,
     grid-column: 3 / -1;
   }
 }
+
+
+/* Bollywood instrumental picks in the music panel */
+.music-picks { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.music-pick {
+  display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 12px; border-radius: 12px; text-align: left;
+  color: var(--text); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.music-pick:hover { transform: translateX(3px); border-color: var(--brand); }
+.music-pick.is-active { border-color: var(--brand); background: rgba(var(--brand-rgb, 195, 23, 79), 0.16); }
+.music-pick span { display: grid; min-width: 0; }
+.music-pick strong { font-size: 0.86rem; font-weight: 700; }
+.music-pick small { font-size: 0.72rem; color: var(--muted); }
+.music-pick .icon { flex: none; color: var(--brand); }

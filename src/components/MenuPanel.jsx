@@ -205,7 +205,9 @@ export default function MenuPanel({ venue }) {
         )}
 
         <p className="fine-print">
-          Sample menu: dishes and prices are illustrative and assumed to include taxes. Use “Check the real menu” above for the current one.
+          {venue.menuSource
+            ? `Menu and prices from ${venue.menuSource}. Prices can change — confirm with the venue.`
+            : 'Sample menu: dishes and prices are illustrative and assumed to include taxes. Use “Check the real menu” above for the current one.'}
           {hasAlcohol && ' Items marked 21+ are for adults only — please drink responsibly.'}
         </p>
       </div>

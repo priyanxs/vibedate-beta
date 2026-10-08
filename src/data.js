@@ -11,6 +11,7 @@ import { TIER2_VENUES } from './venues/tier2'
 import { MORE_VENUES } from './venues/moreCities'
 import { DELHI_VENUES } from './venues/delhi'
 import { ALL_CITY_VENUES, JAIN_FRIENDLY_IDS } from './venues/allCities'
+import { REAL_MENUS } from './realMenus'
 
 export const BUDGET = { min: 500, max: 10000, step: 100, default: 3000 }
 
@@ -446,6 +447,22 @@ export const VENUES = [...BHOPAL_VENUES, ...BHOPAL_MORE, ...METRO_VENUES, ...TIE
 
 VENUES.forEach((v) => {
   if (JAIN_FRIENDLY_IDS.includes(v.id)) v.jain = true
+})
+
+// Real menus (src/realMenus.js) replace the illustrative template for those venues. Bad rows are skipped, never crash the app.
+const validRow = (r) => Array.isArray(r) && typeof r[0] === 'string' && r[0].trim() && Number.isFinite(r[1]) && r[1] > 0 && typeof r[2] === 'boolean'
+VENUES.forEach((v) => {
+  const real = REAL_MENUS[v.id]
+  if (!real || !Array.isArray(real.menu) || real.menu.length !== 4) return
+  const rows = real.menu.map((cat) => (Array.isArray(cat) ? cat.filter(validRow) : []))
+  if (rows.every((r) => r.length === 0)) return
+  v.menu = {
+    appetizers: items(`${v.id}-a`, rows[0]),
+    mains: items(`${v.id}-m`, rows[1]),
+    drinks: items(`${v.id}-d`, rows[2]),
+    desserts: items(`${v.id}-s`, rows[3]),
+  }
+  v.menuSource = String(real.source || 'the venue').slice(0, 120)
 })
 
 /** 'veg' = pure vegetarian (every dish is veg) · 'nonveg' = serves non-vegetarian dishes. A venue can also be Jain-friendly (`jain`). */

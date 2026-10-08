@@ -50,3 +50,38 @@ You can also set a default in `src/musicConfig.js` (`DEFAULT_YOUTUBE`).
   Photos are **not** copied from Google Maps or Google Images (copyrighted); use the "Photos on Google" link or the embedded map instead.
 - Menus and prices are **illustrative sample data**. They are not copied from delivery or dining apps; use "Check the real menu" for the current menu.
 - Add your own photo: put `<venue-id>.jpg` in `src/assets/venues/`. Add gift links in `src/giftLinks.js`.
+
+
+## Hosting on Vercel (for many visitors)
+
+The site is fully static, so Vercel serves it from its global CDN — it scales to tens of thousands of visitors without a server.
+
+1. Import the repository in Vercel (framework: Vite, build `npm run build`, output `dist` — [`vercel.json`](vercel.json) already says so).
+2. Optional live AI: add the environment variables below, then redeploy. Without them the built-in assistant still works for everyone.
+   | Variable | Value |
+   | --- | --- |
+   | `GEMINI_API_KEY` | your Gemini key (mark it *Sensitive*; it stays on the server in [`api/wingman.js`](api/wingman.js)) |
+   | `ALLOWED_ORIGINS` | your site, e.g. `https://vibedate.vercel.app` |
+   | `VITE_AI_PROXY_URL` | `/api/wingman` |
+   | `WINGMAN_PER_MIN` / `WINGMAN_PER_DAY` | optional per-visitor limits (default 10 / 80) |
+3. Set a spending cap on your Google key, and add a Vercel Firewall rate-limit rule for `/api/wingman` (the in-function limit is per warm instance).
+
+### Security
+
+[`vercel.json`](vercel.json) sends a strict Content-Security-Policy (no inline scripts; only YouTube's player, Google Maps embeds and fonts are
+allowed), HSTS, `X-Frame-Options: DENY`, `nosniff`, a locked-down Permissions-Policy and long-lived caching for hashed assets.
+In the code: all text is rendered as text (no `innerHTML`), outbound links allow only http(s) with `rel="noopener"`, saved browser data is
+validated on load, pasted YouTube links are parsed to an 11-character id (other hosts are rejected), and no API key is stored in the repository.
+The one thing a browser site cannot hide is a key a visitor pastes themselves — that stays in their own browser only.
+
+## Real menus
+
+Menus start as illustrative templates (their prices follow each place's rough cost for two). To show a venue's real menu, add it to
+[`src/realMenus.js`](src/realMenus.js) — the file explains the format. Those venues then display "Menu and prices from <source>".
+Only add menus you have the right to publish (your own photos of a menu card, or the venue's permission).
+
+## Music
+
+Besides the built-in free-licence tracks, the music panel has a **Bollywood love instrumentals** list (`BOLLYWOOD_PICKS` in
+`src/musicConfig.js`). These play inside YouTube's own embedded player, so no copyrighted audio is bundled. If an uploader removes a
+video, swap its id in that list.

@@ -180,6 +180,52 @@ const ROWS = [
   ['delhi', 'restaurant', 'dl-eleven', 'Eleven Course (Kamla Nagar)', 'Casual', '🥞', 'jain', 'Vegetarian North and South Indian with Jain options.', 0.95],
   ['delhi', 'restaurant', 'dl-baa', 'Baa Bistro', 'Cozy', '🪷', 'jain', 'Pure veg with pure Jain and satvik dishes.', 1.4],
   ['delhi', 'restaurant', 'dl-bhagat', 'Bhagat Tarachand', 'Casual', '🥘', 'jain', 'A long-standing favourite for Jain foodies.', 1],
+
+  /* ---- More places for the smaller cities (names from web searches; scale roughly follows the typical cost for two) ---- */
+  ['kolkata', 'restaurant', 'kl-6bp', '6 Ballygunge Place', 'Romantic', '🐟', 'fine', 'Authentic Bengali cuisine in an elegant, intimate Ballygunge setting.', 1.5],
+  ['kolkata', 'cafe', 'kl-sienna', 'Sienna Store & Café', 'Cozy', '🎨', 'cafe', 'Quirky decor, mosaic art and good coffee.', 1.1],
+  ['kolkata', 'restaurant', 'kl-olterra', 'Olterra', 'Romantic', '🌇', 'fine', 'A Park Street area rooftop setting made for date nights.', 1.5],
+  ['kolkata', 'cafe', 'kl-pssocial', 'Park Street SOCIAL', 'Vibrant', '🎧', 'pub', 'Contemporary café with a creative all-day menu.', 1.2],
+  ['kolkata', 'cafe', 'kl-franziska', 'Patisserie by Franziska', 'Romantic', '🍰', 'cafe', 'Decadent desserts and fine pastry work on Park Street.', 1.3],
+  ['kolkata', 'restaurant', 'kl-oudh', 'Oudh 1590', 'Romantic', '👑', 'nonveg', 'Royal Awadhi dining with Mughal-inspired decor.', 1.7],
+  ['kolkata', 'restaurant', 'kl-spicekraft', 'Spice Kraft', 'Cozy', '🌶️', 'fine', 'Asian, Lebanese and Continental dishes in eye-catching decor.', 1.4],
+  ['kolkata', 'restaurant', 'kl-zucca', 'Zucca Lounge', 'Vibrant', '🛋️', 'pub', 'Pretty cabanas you can book for a private evening.', 1.5],
+
+  ['pune', 'restaurant', 'pn-boteco', 'Boteco (Koregaon Park)', 'Romantic', '🥩', 'pub', 'Cosy Brazilian spot for churrasco, pão de queijo and beer.', 1.5],
+  ['pune', 'restaurant', 'pn-darios', 'Dario’s (Koregaon Park)', 'Romantic', '🍝', 'pub', 'Italian, Mexican and vegan dishes with indoor and outdoor seating.', 1.4],
+  ['pune', 'cafe', 'pn-pagdandi', 'Pagdandi Books Chai Cafe', 'Cozy', '📚', 'cafe', 'Sip chai surrounded by shelves of books.', 0.85],
+  ['pune', 'cafe', 'pn-chafa', 'Chafa Café and Studio', 'Cozy', '🌸', 'cafe', 'A calm Koregaon Park café with wholesome, varied dishes.', 1],
+  ['pune', 'cafe', 'pn-108', 'One O Eight Cafe', 'Casual', '🥣', 'cafe', 'Smoothie and acai bowls for a lighter date.', 1],
+  ['pune', 'cafe', 'pn-vohuman', 'Vohuman Café', 'Casual', '🫖', 'cafe', 'An old Irani café for bun maska, chai and omelettes.', 0.75],
+
+  ['jaipur', 'cafe', 'jp-poppin', 'Café Poppin (C-Scheme)', 'Romantic', '⛲', 'cafe', 'Patio furniture, a fountain and a garden-like feel.', 1.1],
+  ['jaipur', 'cafe', 'jp-bae', 'Café Bae', 'Vibrant', '☕', 'cafe', 'Modern interiors and cosy seating in C-Scheme.', 1],
+  ['jaipur', 'cafe', 'jp-stepout', 'Stepout Cafe & Book Lounge', 'Cozy', '📖', 'cafe', 'A book lounge with Lebanese, Mexican and Italian options.', 1],
+  ['jaipur', 'cafe', 'jp-taruveda', 'Taruveda', 'Romantic', '🌿', 'cafe', 'A home-like, earthy café set amid lush greens.', 1.1],
+  ['jaipur', 'restaurant', 'jp-miroh', 'Miroh (C-Scheme)', 'Vibrant', '🍗', 'nonveg', 'Non-veg favourites with good vibes.', 1.3],
+  ['jaipur', 'cafe', 'jp-jaies', 'Jaies Cafe (MI Road)', 'Casual', '🥤', 'cafe', 'A relaxed MI Road café, around ₹650 for two.', 0.8],
+  ['jaipur', 'cafe', 'jp-ich', 'Indian Coffee House (MI Road)', 'Cozy', '☕', 'south', 'A heritage cooperative café with filter coffee and classics.', 0.7],
+
+  ['kochi', 'cafe', 'kc-loafers', 'Loafers Corner Cafe', 'Vibrant', '🥪', 'cafe', 'A lively Fort Kochi café in a 200-year-old building.', 1],
+  ['kochi', 'cafe', 'kc-qissa', 'Qissa Café', 'Cozy', '🍫', 'cafe', 'Chocolate cakes and omelettes near Fort Kochi, about ₹600 for two.', 0.75],
+  ['kochi', 'cafe', 'kc-pepper', 'Pepper House Cafe', 'Romantic', '🌳', 'cafe', 'Wooden benches and a lush garden by the harbour.', 1.4],
+  ['kochi', 'cafe', 'kc-deli', 'Deli Cafe (Kaloor)', 'Cozy', '🥐', 'cafe', 'A couple-friendly café in Kaloor.', 0.95],
+  ['kochi', 'cafe', 'kc-cafe17', 'Cafe 17', 'Cozy', '☕', 'cafe', 'A trendy, modern café in the heart of Kochi.', 0.9],
+  ['kochi', 'cafe', 'kc-tonicos', 'Tonico’s Cafe', 'Romantic', '🥩', 'cafe', 'Good coffee, steaks and soothing music.', 1.1],
+
+  ['nagpur', 'cafe', 'ng-illusions', 'Café Illusions (Dharampeth)', 'Cozy', '☕', 'cafe', 'A Dharampeth café on Ambazari Road.', 1],
+  ['nagpur', 'cafe', 'ng-mocha', 'Mocha (Dharampeth)', 'Romantic', '💡', 'pub', 'Beautiful lighting; known for peri peri pizza and grilled fish.', 1.1],
+  ['nagpur', 'cafe', 'ng-villa167', 'Villa 167 Cafe', 'Romantic', '🌇', 'cafe', 'Cosy seating and scenic rooftop views.', 1.1],
+  ['nagpur', 'restaurant', 'ng-uptown', 'Uptown501 Cafe-lounge', 'Vibrant', '🍸', 'pub', 'A Dharampeth multicuisine café-lounge.', 1.5],
+  ['nagpur', 'restaurant', 'ng-naivedhyam', 'Naivedhyam Restaurant', 'Casual', '🍛', 'north', 'Chinese and North Indian in Sitabuldi.', 1.2],
+
+  ['ahmedabad', 'cafe', 'ah-zen', 'Zen Cafe (Satellite)', 'Cozy', '🪷', 'pub', 'Tranquil, modern café with Asian, Mediterranean and American dishes.', 1.3],
+  ['ahmedabad', 'restaurant', 'ah-momo', 'MoMo Cafe (Courtyard by Marriott)', 'Romantic', '🍽️', 'fine', 'Hotel dining with Asian, Indian and Continental cuisines.', 1.9],
+  ['ahmedabad', 'cafe', 'ah-project', 'Project Cafe', 'Romantic', '💞', 'cafe', 'Cosy corners and aesthetic walls popular with couples.', 1.1],
+  ['ahmedabad', 'restaurant', 'ah-mexicano', 'Mexicano By The Bay', 'Vibrant', '🌮', 'pub', 'Authentic Mexican food, around ₹800 for two.', 1],
+  ['ahmedabad', 'cafe', 'ah-bluetokai', 'Blue Tokai Coffee Roasters (CG Square)', 'Cozy', '☕', 'cafe', 'Single-estate arabica and pour-overs.', 1.1],
+  ['ahmedabad', 'cafe', 'ah-danny', 'Danny’s Coffee Bar', 'Cozy', '☕', 'cafe', 'A C G Road coffee bar.', 0.9],
+  ['ahmedabad', 'cafe', 'ah-coffeestand', 'Coffee Stand', 'Casual', '🥤', 'cafe', 'A casual C G Road coffee stop.', 0.8],
 ]
 
 export const ALL_CITY_VENUES = ROWS.map(([city, kind, id, name, vibe, emoji, type, tagline, scale]) => quick(city, kind, id, name, vibe, emoji, type, tagline, scale))

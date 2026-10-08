@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon.jsx'
-import { DEFAULT_YOUTUBE, MUSIC_TRACKS } from '../musicConfig'
+import { BOLLYWOOD_PICKS, DEFAULT_YOUTUBE, MUSIC_TRACKS } from '../musicConfig'
 
 /* Background music.
    1) Built-in playlist: public-domain piano and guitar (see ../musicConfig.js). Browsers block sound until the
@@ -240,7 +240,7 @@ export default function MusicPlayer() {
         onClick={togglePlaylist}
         aria-pressed={active}
         aria-label={playing ? 'Pause background music' : 'Play background music'}
-        title={ytOn ? 'YouTube song playing — click for the built-in piano' : `${TRACKS[track].title} — ${TRACKS[track].artist}`}
+        title={ytOn ? 'YouTube song playing — click for the built-in music' : `${TRACKS[track].title} — ${TRACKS[track].artist}`}
       >
         {active ? (
           <span className="eq" aria-hidden="true"><i /><i /><i /><i /></span>
@@ -261,7 +261,7 @@ export default function MusicPlayer() {
 
       {open && (
         <div className="music-panel glass" role="group" aria-label="Music options">
-          <p className="music-panel__h">Built-in piano</p>
+          <p className="music-panel__h">Built-in instrumentals</p>
           <p className="music-panel__now">
             <strong>{TRACKS[track].title}</strong>
             <span>{TRACKS[track].artist}</span>
@@ -274,6 +274,23 @@ export default function MusicPlayer() {
               Next track <Icon name="chevronRight" size={14} />
             </button>
           </div>
+
+          <p className="music-panel__h">Bollywood love instrumentals</p>
+          <ul className="music-picks">
+            {BOLLYWOOD_PICKS.map((p) => (
+              <li key={p.id}>
+                <button
+                  type="button"
+                  className={`music-pick ${ytOn && ytId === p.id ? 'is-active' : ''}`}
+                  onClick={() => playYouTube(p.id)}
+                  aria-pressed={ytOn && ytId === p.id}
+                >
+                  <Icon name="music" size={14} />
+                  <span><strong>{p.title}</strong><small>{p.note}</small></span>
+                </button>
+              </li>
+            ))}
+          </ul>
 
           <p className="music-panel__h">Play a song from YouTube</p>
           <form className="music-panel__form" onSubmit={submitYouTube}>
@@ -308,7 +325,7 @@ export default function MusicPlayer() {
                 />
               </div>
               <div className="music-panel__row">
-                <button type="button" className="btn btn--ghost btn--sm" onClick={togglePlaylist}>Back to built-in piano</button>
+                <button type="button" className="btn btn--ghost btn--sm" onClick={togglePlaylist}>Back to built-in music</button>
                 <button type="button" className="btn btn--ghost btn--sm" onClick={removeYouTube}>Remove song</button>
               </div>
             </>
