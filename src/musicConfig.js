@@ -7,6 +7,20 @@
 
 export const MUSIC_TRACKS = [
   {
+    title: 'Indian Folk Classical Flute Music (2)',
+    artist: 'Bansuri · MayankSingh33',
+    src: 'audio/hindustani-flute.m4a',
+    source: 'https://commons.wikimedia.org/wiki/File:Indian_Folk_Classical_Flute_Music_(2).wav',
+    license: 'CC BY-SA 4.0',
+  },
+  {
+    title: 'Raag Yaman',
+    artist: 'Hindustani classical · ज्ञानदा गद्रे-फडके',
+    src: 'audio/raga-yaman.m4a',
+    source: 'https://commons.wikimedia.org/wiki/File:RagaYaman.wav',
+    license: 'CC BY-SA 4.0',
+  },
+  {
     title: 'Nocturne in E-flat major, Op. 9 No. 2',
     artist: 'Frédéric Chopin · piano: Frank Lévy',
     src: 'audio/chopin-nocturne-op9-no2.m4a',

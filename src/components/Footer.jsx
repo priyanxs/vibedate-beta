@@ -96,7 +96,7 @@ export default function Footer() {
         <p>
           Venue details, menus and prices are illustrative sample data — please confirm with the venue before you go.
           Photos are from Wikimedia Commons contributors under their licences (credited in the app).
-          Music (public domain, via Wikimedia Commons): {MUSIC_TRACKS.map((t) => `${t.title} — ${t.artist}`).join('; ')}.
+          Music (via Wikimedia Commons): {MUSIC_TRACKS.map((t) => `${t.title} — ${t.artist} (${t.license})`).join('; ')}.
           Be kind, be honest and respect boundaries. Plans are saved only on this device.
         </p>
       </div>
