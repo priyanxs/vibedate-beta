@@ -33,6 +33,8 @@ export const formatDay = (iso) => {
   return d.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' })
 }
 
+export const todayISO = () => toISODate(new Date())
+
 // Next Saturday (never today), as an ISO date string.
 export const nextSaturdayISO = () => {
   const d = new Date()

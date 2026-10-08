@@ -1,4 +1,4 @@
-import { MENU_CATEGORIES } from '../data'
+import { CITY_BY_ID, MENU_CATEGORIES } from '../data'
 import { formatDay, formatINR, minutesToLabel } from './format'
 
 export const MAX_QTY = 6
@@ -164,7 +164,7 @@ export const buildItinerary = ({ venue, cartLines, giftLines, startMin, total })
 export const buildPlanText = ({ venue, cartLines, giftLines, budget, foodTotal, giftTotal, total, dateISO, startMin }) => {
   const lines = ['VibeDate plan', '']
   lines.push(`When: ${formatDay(dateISO) || 'TBD'} at ${minutesToLabel(startMin)}`)
-  lines.push(`Where: ${venue ? venue.name : 'TBD'}`)
+  lines.push(`Where: ${venue ? `${venue.name}, ${(CITY_BY_ID[venue.city] || {}).name || ''}` : 'TBD'}`)
   lines.push(`Budget: ${formatINR(budget)}`)
   lines.push('')
   if (cartLines.length) {

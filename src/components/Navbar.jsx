@@ -16,6 +16,13 @@ export default function Navbar() {
   const [active, setActive] = useState('')
 
   useEffect(() => {
+    if (!open) return undefined
+    const onKey = (e) => e.key === 'Escape' && setOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
+
+  useEffect(() => {
     let frame = 0
     const update = () => {
       frame = 0

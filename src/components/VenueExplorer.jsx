@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { VENUES, VIBES, VIBE_LIST } from '../data'
+import { VIBES, VIBE_LIST } from '../data'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR } from '../utils/format'
 import { minDateCost } from '../utils/plan'
@@ -11,11 +11,11 @@ import VenueBanner from './VenueBanner.jsx'
 import { burstHearts } from '../utils/fx'
 
 export default function VenueExplorer() {
-  const { budget, vibeFilter, setVibeFilter, venueId, selectVenue, venue } = useDate()
+  const { budget, vibeFilter, setVibeFilter, venueId, selectVenue, venue, cityInfo, cityVenues } = useDate()
   const [showStretch, setShowStretch] = useState(false)
 
   const { visible, hiddenCount } = useMemo(() => {
-    const all = VENUES.filter((v) => vibeFilter === 'All' || v.vibe === vibeFilter).map((v) => ({
+    const all = cityVenues.filter((v) => vibeFilter === 'All' || v.vibe === vibeFilter).map((v) => ({
       venue: v,
       min: minDateCost(v),
     }))
@@ -26,7 +26,7 @@ export default function VenueExplorer() {
       visible: showStretch ? [...fits, ...stretch] : [...fits, ...keepSelected],
       hiddenCount: stretch.length - (showStretch ? 0 : keepSelected.length),
     }
-  }, [budget, vibeFilter, venueId, showStretch])
+  }, [cityVenues, budget, vibeFilter, venueId, showStretch])
 
   const choose = (id) => {
     selectVenue(id)
@@ -41,7 +41,7 @@ export default function VenueExplorer() {
       <Section
         id="venues"
         eyebrow="Step 1 · Choose the setting"
-        title="Bhopal venues for your vibe"
+        title={`${cityInfo.name} venues for your vibe`}
         subtitle={`Showing places where dinner for two can fit within ${formatINR(budget)}.`}
       >
         <div className="chips" role="group" aria-label="Filter by vibe">
@@ -61,7 +61,7 @@ export default function VenueExplorer() {
         {visible.length === 0 ? (
           <div className="empty glass">
             <p><strong>No venues fit this vibe and budget yet.</strong></p>
-            <p>Try raising your budget, or peek at the stretch picks.</p>
+            <p>Try another vibe, raise your budget, or peek at the stretch picks below.</p>
           </div>
         ) : (
           <div className="venue-grid">

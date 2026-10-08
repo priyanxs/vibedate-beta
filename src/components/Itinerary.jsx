@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { START_TIMES } from '../data'
 import { useDate } from '../context/DateContext.jsx'
-import { formatDay, minutesToLabel, useCopy } from '../utils/format'
+import { formatDay, minutesToLabel, todayISO, useCopy } from '../utils/format'
 import { buildItinerary } from '../utils/plan'
 import Section from './Section.jsx'
 import Icon from './Icon.jsx'
@@ -34,7 +34,7 @@ export default function Itinerary() {
         <div className="planner__fields">
           <label className="field">
             <span>Date</span>
-            <input type="date" value={dateISO} onChange={(e) => setDateISO(e.target.value)} />
+            <input type="date" value={dateISO} min={todayISO()} onChange={(e) => setDateISO(e.target.value)} />
           </label>
           <label className="field">
             <span>Start time</span>

@@ -10,7 +10,8 @@ import { formatINR } from '../utils/format'
      2. VITE_GEMINI_API_KEY — local dev only; Vite inlines it into the public bundle. */
 
 const KEY_STORAGE = 'vibedate:gemini-key'
-const MODEL = import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash'
+// 'gemini-flash-latest' always points at the current Flash model (older fixed names get retired).
+const MODEL = import.meta.env.VITE_GEMINI_MODEL || 'gemini-flash-latest'
 
 export const getStoredKey = () => {
   try {
@@ -33,10 +34,10 @@ export const getApiKey = () => getStoredKey() || import.meta.env.VITE_GEMINI_API
 
 const systemPrompt = (ctx) =>
   [
-    'You are "Wingman", the friendly dating coach inside VibeDate, a date-planning app for Bhopal, India.',
+    'You are "Wingman", the friendly dating coach inside VibeDate, a date-planning app for Indian cities.',
     'Give warm, practical, respectful advice on etiquette, conversation starters, outfits, gifts and pleasing your date.',
     'Always respect consent and boundaries. Keep answers under 150 words, use short bullet points, and use **bold** for key phrases.',
-    `Current plan — vibe: ${ctx.vibe}; venue: ${ctx.venue ? ctx.venue.name : 'not chosen yet'}; budget: ${formatINR(ctx.budget)}; planned spend: ${formatINR(ctx.total)}; remaining: ${formatINR(ctx.remaining)}.`,
+    `Current plan — city: ${ctx.city || 'not chosen'}; vibe: ${ctx.vibe}; venue: ${ctx.venue ? ctx.venue.name : 'not chosen yet'}; budget: ${formatINR(ctx.budget)}; planned spend: ${formatINR(ctx.total)}; remaining: ${formatINR(ctx.remaining)}.`,
   ].join('\n')
 
 /**

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { BUDGET, GIFT_BY_ID, VENUE_BY_ID, VIBE_LIST } from '../data'
-import { nextSaturdayISO, parseISODate } from '../utils/format'
+import { BUDGET, CITY_BY_ID, DEFAULT_CITY, GIFT_BY_ID, VENUES, VENUE_BY_ID, VIBE_LIST } from '../data'
+import { nextSaturdayISO, parseISODate, todayISO } from '../utils/format'
 import { MAX_QTY, buildCartLines, flattenMenu, suggestMenu } from '../utils/plan'
 
 const STORAGE_KEY = 'vibedate:plan:v1'
@@ -24,6 +24,8 @@ const loadInitialState = () => {
       : BUDGET.default
 
   const venueId = VENUE_BY_ID[saved.venueId] ? saved.venueId : null
+  // A saved venue decides the city; otherwise use the saved city (or the default).
+  const city = venueId ? VENUE_BY_ID[venueId].city : CITY_BY_ID[saved.city] ? saved.city : DEFAULT_CITY
 
   const cart = {}
   if (venueId && saved.cart && typeof saved.cart === 'object') {
@@ -35,22 +37,26 @@ const loadInitialState = () => {
 
   const giftIds = Array.isArray(saved.giftIds) ? saved.giftIds.filter((id) => GIFT_BY_ID[id]) : []
 
+  // A saved date in the past is replaced with the next Saturday.
+  const dateOk = parseISODate(saved.dateISO) && saved.dateISO >= todayISO()
+
   return {
     budget,
+    city,
     vibeFilter: saved.vibeFilter === 'All' || VIBE_LIST.includes(saved.vibeFilter) ? saved.vibeFilter : 'All',
     venueId,
     cart,
     giftIds,
     yourName: typeof saved.yourName === 'string' ? saved.yourName.slice(0, 40) : '',
     theirName: typeof saved.theirName === 'string' ? saved.theirName.slice(0, 40) : '',
-    dateISO: parseISODate(saved.dateISO) ? saved.dateISO : nextSaturdayISO(),
+    dateISO: dateOk ? saved.dateISO : nextSaturdayISO(),
     startMin: Number.isInteger(saved.startMin) && saved.startMin >= 0 && saved.startMin < 1440 ? saved.startMin : 18 * 60,
   }
 }
 
 export function DateProvider({ children }) {
   const [state, setState] = useState(loadInitialState)
-  const { budget, vibeFilter, venueId, cart, giftIds, yourName, theirName, dateISO, startMin } = state
+  const { budget, city, vibeFilter, venueId, cart, giftIds, yourName, theirName, dateISO, startMin } = state
 
   // Persist the plan on this device only.
   useEffect(() => {
@@ -65,6 +71,8 @@ export function DateProvider({ children }) {
 
   /* ---- derived values ---- */
   const venue = venueId ? VENUE_BY_ID[venueId] : null
+  const cityInfo = CITY_BY_ID[city] || CITY_BY_ID[DEFAULT_CITY]
+  const cityVenues = useMemo(() => VENUES.filter((v) => v.city === cityInfo.id), [cityInfo.id])
   const vibe = venue ? venue.vibe : vibeFilter !== 'All' ? vibeFilter : 'Romantic'
 
   const cartLines = useMemo(() => buildCartLines(venue, cart), [venue, cart])
@@ -84,6 +92,12 @@ export function DateProvider({ children }) {
   }, [patch])
 
   const setVibeFilter = useCallback((value) => patch({ vibeFilter: value }), [patch])
+
+  // Switching city clears the venue and menu (they belong to the old city).
+  const setCity = useCallback((id) => {
+    if (!CITY_BY_ID[id]) return
+    setState((prev) => (prev.city === id ? prev : { ...prev, city: id, venueId: null, cart: {} }))
+  }, [])
 
   const selectVenue = useCallback((id) => {
     setState((prev) => (prev.venueId === id ? prev : { ...prev, venueId: id, cart: {} }))
@@ -121,6 +135,7 @@ export function DateProvider({ children }) {
     () => ({
       // state
       budget,
+      city,
       vibeFilter,
       venueId,
       cart,
@@ -130,6 +145,8 @@ export function DateProvider({ children }) {
       dateISO,
       startMin,
       // derived
+      cityInfo,
+      cityVenues,
       venue,
       vibe,
       cartLines,
@@ -143,6 +160,7 @@ export function DateProvider({ children }) {
       // actions
       setBudget,
       setVibeFilter,
+      setCity,
       selectVenue,
       changeQty,
       clearCart,
@@ -155,9 +173,9 @@ export function DateProvider({ children }) {
       setStartMin: (v) => patch({ startMin: Number(v) }),
     }),
     [
-      budget, vibeFilter, venueId, cart, giftIds, yourName, theirName, dateISO, startMin,
-      venue, vibe, cartLines, giftLines, foodTotal, giftTotal, total, remaining, usedPct, overBudget,
-      setBudget, setVibeFilter, selectVenue, changeQty, clearCart, toggleGift, autoPlanMenu, resetPlan, patch,
+      budget, city, vibeFilter, venueId, cart, giftIds, yourName, theirName, dateISO, startMin,
+      cityInfo, cityVenues, venue, vibe, cartLines, giftLines, foodTotal, giftTotal, total, remaining, usedPct, overBudget,
+      setBudget, setVibeFilter, setCity, selectVenue, changeQty, clearCart, toggleGift, autoPlanMenu, resetPlan, patch,
     ],
   )
 

@@ -1,3 +1,4 @@
+import { CITY_BY_ID } from '../data'
 import { GIFT_LINKS } from '../giftLinks'
 import { PHOTO_CREDITS } from '../photoCredits'
 
@@ -11,7 +12,10 @@ export const safeUrl = (value) => {
   }
 }
 
-const mapsQuery = (venue) => encodeURIComponent(venue.mapsQuery || `${venue.name}, Bhopal`)
+const mapsQuery = (venue) => {
+  const city = CITY_BY_ID[venue.city]
+  return encodeURIComponent(venue.mapsQuery || `${venue.name}${city ? `, ${city.name}` : ''}`)
+}
 
 export const mapsViewUrl = (venue) =>
   safeUrl(venue.mapsUrl) || `https://www.google.com/maps/search/?api=1&query=${mapsQuery(venue)}`

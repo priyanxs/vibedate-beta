@@ -24,7 +24,7 @@ function MessageBody({ text }) {
 }
 
 export default function WingmanChat() {
-  const { vibe, venue, budget, total, remaining } = useDate()
+  const { vibe, venue, budget, total, remaining, cityInfo } = useDate()
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([GREETING])
   const [input, setInput] = useState('')
@@ -34,6 +34,8 @@ export default function WingmanChat() {
   const [hasKey, setHasKey] = useState(() => Boolean(getApiKey()))
   const endRef = useRef(null)
   const inputRef = useRef(null)
+  const fabRef = useRef(null)
+  const wasOpen = useRef(false)
 
   useEffect(() => {
     if (open && endRef.current) endRef.current.scrollIntoView({ block: 'end' })
@@ -41,6 +43,16 @@ export default function WingmanChat() {
 
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus()
+    // Give focus back to the launcher button when the chat closes.
+    if (!open && wasOpen.current && fabRef.current) fabRef.current.focus()
+    wasOpen.current = open
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return undefined
+    const onKey = (e) => e.key === 'Escape' && setOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
   const send = async (raw) => {
@@ -52,7 +64,7 @@ export default function WingmanChat() {
     setBusy(true)
     // A short pause makes mock replies feel conversational; real API calls take longer anyway.
     await new Promise((r) => setTimeout(r, 450))
-    const reply = await askWingman(history, { vibe, venue, budget, total, remaining })
+    const reply = await askWingman(history, { vibe, venue, budget, total, remaining, city: cityInfo.name })
     setMessages((m) => [...m, { role: 'assistant', text: reply.text }])
     setBusy(false)
   }
@@ -77,7 +89,7 @@ export default function WingmanChat() {
   return (
     <>
       {!open && (
-        <button type="button" className="fab" onClick={() => setOpen(true)} aria-label="Open AI Wingman chat">
+        <button ref={fabRef} type="button" className="fab" onClick={() => setOpen(true)} aria-label="Open AI Wingman chat">
           <Icon name="sparkles" size={22} />
           <span className="fab__label">Ask Wingman</span>
         </button>

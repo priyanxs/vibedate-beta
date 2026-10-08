@@ -1,16 +1,20 @@
-import { VENUES, VIBE_LIST } from '../data'
+import { VIBE_LIST } from '../data'
+import { useDate } from '../context/DateContext.jsx'
 
-const WORDS = [...VIBE_LIST, ...VENUES.map((v) => v.name)]
-
-// Endless scrolling strip of vibes and venue names. Content is duplicated for a seamless loop.
+// Endless scrolling strip of vibes and the current city's venues. Content is repeated so the loop never shows a gap.
 export default function Marquee() {
+  const { cityVenues } = useDate()
+  const base = [...VIBE_LIST, ...cityVenues.map((v) => v.name)]
+  const words = []
+  while (words.length < 16) words.push(...base)
+
   return (
     <div className="marquee" aria-hidden="true">
       <div className="marquee__track">
         {[0, 1].map((copy) => (
           <ul key={copy} className="marquee__group">
-            {WORDS.map((w) => (
-              <li key={`${copy}-${w}`}>
+            {words.map((w, i) => (
+              <li key={`${copy}-${i}`}>
                 <span className="marquee__dot" /> {w}
               </li>
             ))}

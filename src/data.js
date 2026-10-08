@@ -1,8 +1,11 @@
 /* ------------------------------------------------------------------
-   VibeDate — mock "backend" data.
+   VibeDate — mock "backend" data (Bhopal venues here; metro-city venues in ./venues/metros.js).
    Venue details, menus and prices are ILLUSTRATIVE. Please confirm
    current menus and prices with the venue before you go.
 ------------------------------------------------------------------- */
+
+import { items } from './venueHelpers'
+import { METRO_VENUES } from './venues/metros'
 
 export const BUDGET = { min: 500, max: 10000, step: 100, default: 3000 }
 
@@ -50,22 +53,12 @@ export const MENU_CATEGORIES = [
   { key: 'desserts', label: 'Desserts' },
 ]
 
-// rows: [name, price (₹), isVeg, description?, isAlcohol?]
-const items = (prefix, rows) =>
-  rows.map(([name, price, veg, desc, alc], i) => ({
-    id: `${prefix}-${i + 1}`,
-    name,
-    price,
-    veg,
-    desc: desc || '',
-    alc: Boolean(alc),
-  }))
-
 /* --------------------------- Venues ------------------------------- */
 
-export const VENUES = [
+const BHOPAL_VENUES = [
   {
     id: 'umt',
+    city: 'bhopal',
     mapsQuery: "Under the Mango Tree restaurant, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Under the Mango Tree',
     vibe: 'Romantic',
@@ -105,6 +98,7 @@ export const VENUES = [
   },
   {
     id: 'ww',
+    city: 'bhopal',
     mapsQuery: "Wind and Waves restaurant, Upper Lake, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Wind & Waves',
     vibe: 'Romantic',
@@ -143,6 +137,7 @@ export const VENUES = [
   },
   {
     id: 'jnp',
+    city: 'bhopal',
     mapsQuery: "Jehan Numa Palace Hotel, Shamla Hills, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Jehan Numa Palace',
     vibe: 'Romantic',
@@ -183,6 +178,7 @@ export const VENUES = [
   },
   {
     id: 'oliver',
+    city: 'bhopal',
     mapsQuery: "Oliver's cafe, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: "Oliver's",
     vibe: 'Cozy',
@@ -221,6 +217,7 @@ export const VENUES = [
   },
   {
     id: 'ich',
+    city: 'bhopal',
     mapsQuery: "Indian Coffee House, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Indian Coffee House',
     vibe: 'Cozy',
@@ -259,6 +256,7 @@ export const VENUES = [
   },
   {
     id: 'gfb',
+    city: 'bhopal',
     mapsQuery: "Greek Food and Brewery, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Greek Food & Brewery',
     vibe: 'Vibrant',
@@ -298,6 +296,7 @@ export const VENUES = [
   },
   {
     id: 'bn',
+    city: 'bhopal',
     mapsQuery: "Barbeque Nation, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Barbeque Nation',
     vibe: 'Vibrant',
@@ -334,6 +333,7 @@ export const VENUES = [
   },
   {
     id: 'sg',
+    city: 'bhopal',
     mapsQuery: "Sagar Gaire, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Sagar Gaire',
     vibe: 'Casual',
@@ -372,6 +372,7 @@ export const VENUES = [
   },
   {
     id: 'md',
+    city: 'bhopal',
     mapsQuery: "Manohar Dairy and Restaurant, Bhopal", // Google Maps search text. Optional: add mapsUrl: 'https://maps.app.goo.gl/…' for an exact pin.
     name: 'Manohar Dairy & Restaurant',
     vibe: 'Casual',
@@ -409,6 +410,24 @@ export const VENUES = [
     },
   },
 ]
+
+/* ---------------------------- Cities ------------------------------ */
+
+export const CITIES = [
+  { id: 'bhopal', name: 'Bhopal', emoji: '🏞️' },
+  { id: 'delhi', name: 'Delhi', emoji: '🏛️' },
+  { id: 'mumbai', name: 'Mumbai', emoji: '🌊' },
+  { id: 'bengaluru', name: 'Bengaluru', emoji: '🌳' },
+  { id: 'hyderabad', name: 'Hyderabad', emoji: '🕌' },
+  { id: 'chennai', name: 'Chennai', emoji: '🏖️' },
+  { id: 'kolkata', name: 'Kolkata', emoji: '🌉' },
+  { id: 'pune', name: 'Pune', emoji: '⛰️' },
+]
+
+export const DEFAULT_CITY = 'bhopal'
+export const CITY_BY_ID = Object.fromEntries(CITIES.map((c) => [c.id, c]))
+
+export const VENUES = [...BHOPAL_VENUES, ...METRO_VENUES]
 
 export const VENUE_BY_ID = Object.fromEntries(VENUES.map((v) => [v.id, v]))
 

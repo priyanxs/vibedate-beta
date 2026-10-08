@@ -1,6 +1,6 @@
 # VibeDate
 
-A budget-aware date planner for Bhopal — React + Vite single-page app, deployable to GitHub Pages.
+A budget-aware date planner for Bhopal and India's metro cities (Delhi, Mumbai, Bengaluru, Hyderabad, Chennai, Kolkata, Pune) — React + Vite single-page app, deployable to GitHub Pages.
 
 **Features:** budget slider that drives venue/menu/gift suggestions · 9 Bhopal venues by vibe with menus · live cost calculator
 with budget meter and over-budget warning · gift suggester · itinerary builder · outfit coordinator · message writer (4 tones) ·
@@ -24,7 +24,7 @@ npm run build    # outputs to dist/
 
 ## Data
 
-All venues, menus, gifts, outfits, cards and message templates live in `src/data.js`. They are **illustrative sample data** — confirm
+Venues, menus, gifts, outfits, cards and message templates live in `src/data.js` (Bhopal) and `src/venues/metros.js` (other cities). They are **illustrative sample data** — confirm
 real menus and prices with each venue.
 
 ## Customising

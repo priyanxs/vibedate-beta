@@ -16,7 +16,8 @@ export default function AnimatedNumber({ value, format, duration = 450 }) {
     const start = performance.now()
     let frame = 0
     const tick = (now) => {
-      const t = Math.min(1, (now - start) / duration)
+      // rAF timestamps can be a hair earlier than `start`, so clamp to [0, 1] (a negative t would overshoot wildly)
+      const t = Math.max(0, Math.min(1, (now - start) / duration))
       const eased = 1 - (1 - t) ** 3
       current.current = from + (value - from) * eased
       setShown(current.current)

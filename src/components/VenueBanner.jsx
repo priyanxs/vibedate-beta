@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { VIBES } from '../data'
 import { venuePhoto } from '../utils/links'
 
@@ -6,6 +6,10 @@ import { venuePhoto } from '../utils/links'
 export default function VenueBanner({ venue, className = '', children }) {
   const [failed, setFailed] = useState(false)
   const photo = venuePhoto(venue)
+
+  // A previous photo failing to load must not hide the next venue's photo.
+  useEffect(() => setFailed(false), [photo])
+
   const showPhoto = Boolean(photo) && !failed
 
   return (

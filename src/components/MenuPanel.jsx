@@ -69,15 +69,14 @@ export default function MenuPanel({ venue }) {
       </div>
 
       <div className="glass menu-panel">
-        <div className="tabs" role="tablist" aria-label="Menu categories">
+        <div className="tabs" role="group" aria-label="Menu categories">
           {MENU_CATEGORIES.map(({ key, label }) => {
             const n = countIn(key)
             return (
               <button
                 key={key}
                 type="button"
-                role="tab"
-                aria-selected={tab === key}
+                aria-pressed={tab === key}
                 className={`tab ${tab === key ? 'is-active' : ''}`}
                 onClick={() => setTab(key)}
               >
