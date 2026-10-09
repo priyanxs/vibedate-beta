@@ -16,7 +16,7 @@ import { useToast } from './Toast.jsx'
 const priceTier = (min) => (min < 600 ? 1 : min < 1500 ? 2 : min < 3000 ? 3 : 4)
 
 export default function VenueExplorer() {
-  const { budget, vibeFilter, setVibeFilter, venueId, selectVenue, venue, cityInfo, cityVenues } = useDate()
+  const { budget, vibeFilter, setVibeFilter, venueId, selectVenue, planVenue, venue, cityInfo, cityVenues } = useDate()
   const [showStretch, setShowStretch] = useState(false)
   const [kind, setKind] = useState('all')
   const [diet, setDiet] = useState('all')
@@ -45,6 +45,22 @@ export default function VenueExplorer() {
       hiddenCount: stretch.length - (showStretch ? 0 : keepSelected.length),
     }
   }, [cityVenues, budget, vibeFilter, activeKind, diet, venueId, showStretch, query, sort])
+
+  // Picks a random venue from what is on screen that fits the budget, with a ready-made menu.
+  const surprise = () => {
+    const pool = visible.filter((x) => x.min <= budget && x.venue.id !== venueId)
+    const pick = pool[Math.floor(Math.random() * pool.length)]
+    if (!pick) {
+      toast('No other venue fits right now — try a different filter or a bigger budget', 'warn')
+      return
+    }
+    planVenue(pick.venue.id)
+    toast(`Surprise! ${pick.venue.name} — menu ready, tweak it below`)
+    setTimeout(() => {
+      const el = document.getElementById('menu')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 120)
+  }
 
   const choose = (v) => {
     selectVenue(v.id)
@@ -128,6 +144,9 @@ export default function VenueExplorer() {
               <option value="low">Price: low to high</option>
             </select>
           </label>
+          <button type="button" className="btn btn--ghost btn--sm" onClick={surprise}>
+            <Icon name="sparkles" size={16} /> Surprise me
+          </button>
           <span className="toolbar__count" aria-live="polite">{visible.length} {visible.length === 1 ? 'venue' : 'venues'}</span>
         </div>
 

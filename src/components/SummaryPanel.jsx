@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import { useDate } from '../context/DateContext.jsx'
 import { formatINR, useCopy } from '../utils/format'
 import { MAX_QTY, MAX_SPLIT, TIP_OPTIONS, buildPlanText } from '../utils/plan'
@@ -6,8 +7,11 @@ import AnimatedNumber from './AnimatedNumber.jsx'
 
 export default function SummaryPanel() {
   const d = useDate()
+  const peopleLabelId = useId()
+  const tipLabelId = useId()
   const { budget, venue, cartLines, giftLines, foodTotal, giftTotal, total, remaining, usedPct, overBudget } = d
   const [copied, copy] = useCopy()
+  const [linkCopied, copyLink] = useCopy()
 
   const empty = cartLines.length === 0 && giftLines.length === 0
   const status = overBudget ? 'over' : 'ok'
@@ -125,8 +129,8 @@ export default function SummaryPanel() {
         {d.splitOn && (
           <div className="split__body">
             <div className="split__row">
-              <span id="split-people-label">People</span>
-              <span className="mini-stepper" role="group" aria-labelledby="split-people-label">
+              <span id={peopleLabelId}>People</span>
+              <span className="mini-stepper" role="group" aria-labelledby={peopleLabelId}>
                 <button type="button" onClick={() => d.setSplitCount(d.splitCount - 1)} disabled={d.splitCount <= 2} aria-label="Fewer people">
                   <Icon name="minus" size={12} />
                 </button>
@@ -137,8 +141,8 @@ export default function SummaryPanel() {
               </span>
             </div>
             <div className="split__row">
-              <span id="split-tip-label">Tip</span>
-              <span className="chips split__tips" role="group" aria-labelledby="split-tip-label">
+              <span id={tipLabelId}>Tip</span>
+              <span className="chips split__tips" role="group" aria-labelledby={tipLabelId}>
                 {TIP_OPTIONS.map((t) => (
                   <button key={t} type="button" className={`chip chip--sm ${d.tipPct === t ? 'is-active' : ''}`} aria-pressed={d.tipPct === t} onClick={() => d.setTipPct(t)}>
                     {t === 0 ? 'None' : `${t}%`}
@@ -159,6 +163,9 @@ export default function SummaryPanel() {
       <div className="summary__actions">
         <button type="button" className="btn btn--primary btn--block" onClick={onCopy}>
           <Icon name={copied ? 'check' : 'copy'} size={16} /> {copied ? 'Copied!' : 'Copy plan'}
+        </button>
+        <button type="button" className="btn btn--soft btn--block" onClick={() => copyLink(d.sharePlanLink())} disabled={!venue && empty}>
+          <Icon name={linkCopied ? 'check' : 'external'} size={16} /> {linkCopied ? 'Link copied!' : 'Copy shareable link'}
         </button>
         <button type="button" className="btn btn--ghost btn--block" onClick={d.resetPlan} disabled={!venue && empty}>
           <Icon name="refresh" size={16} /> Reset plan

@@ -25,7 +25,8 @@ const sizeFor = (width) => {
 export default function CityRing() {
   const { city, setCity, cityInfo, cityVenues } = useDate()
   const n = CITIES.length
-  const idx = CITIES.findIndex((c) => c.id === city)
+  const rawIdx = CITIES.findIndex((c) => c.id === city)
+  const idx = rawIdx >= 0 ? rawIdx : 0
   const [pos, setPos] = useState(idx)
   const [dims, setDims] = useState(() => sizeFor(typeof window === 'undefined' ? 1200 : window.innerWidth))
   const drag = useRef(null)

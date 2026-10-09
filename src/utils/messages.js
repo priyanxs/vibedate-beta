@@ -81,6 +81,7 @@ const TEMPLATES = {
 
 export const generateMessage = ({ purpose, tone, variant, ...plan }) => {
   const list = (TEMPLATES[purpose] && TEMPLATES[purpose][tone]) || TEMPLATES.ask.Casual
-  const fn = list[((variant % list.length) + list.length) % list.length]
-  return fn(buildCtx(plan))
+  const v = Number.isFinite(variant) ? Math.round(variant) : 0
+  const fn = list[((v % list.length) + list.length) % list.length] || list[0]
+  return typeof fn === 'function' ? fn(buildCtx(plan)) : ''
 }

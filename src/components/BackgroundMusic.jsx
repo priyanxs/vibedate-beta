@@ -116,9 +116,10 @@ export default function BackgroundMusic() {
     )
   }
 
+  const origin = typeof window !== 'undefined' && window.location ? window.location.origin : ''
   const src =
     `https://www.youtube-nocookie.com/embed/${BG_MUSIC.id}?autoplay=1&mute=1&loop=1&playlist=${BG_MUSIC.id}` +
-    `&controls=0&disablekb=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`
+    `&controls=0&disablekb=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1${origin ? `&origin=${encodeURIComponent(origin)}` : ''}`
 
   return (
     <aside className="bgm glass" aria-label="Background music">

@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { BUDGET, CITY_BY_ID, DEFAULT_CITY, GIFT_BY_ID, VENUES, VENUE_BY_ID, VIBE_LIST } from '../data'
 import { nextSaturdayISO, parseISODate, todayISO } from '../utils/format'
 import { MAX_QTY, MAX_SPLIT, TIP_OPTIONS, buildCartLines, flattenMenu, splitBill, suggestMenu } from '../utils/plan'
+import { encodeSharedPlan, decodeSharedPlan, sanitizeName } from '../utils/share'
 
 const STORAGE_KEY = 'vibedate:plan:v1'
 
@@ -9,33 +10,36 @@ const DateContext = createContext(null)
 
 const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n))
 
-/** Reads the saved plan and validates every field, so bad/old data can never crash the app. */
+export { encodeSharedPlan }
+
+/** Reads the shared link or the saved plan and validates every field, so bad/old data can never crash the app. */
 const loadInitialState = () => {
   let saved = {}
   try {
-    saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}
+    saved = decodeSharedPlan() || JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}
   } catch {
     saved = {}
   }
+  if (typeof saved !== 'object' || Array.isArray(saved) || saved === null) saved = {}
 
   const budget =
     typeof saved.budget === 'number' && Number.isFinite(saved.budget)
       ? clamp(Math.round(saved.budget / BUDGET.step) * BUDGET.step, BUDGET.min, BUDGET.max)
       : BUDGET.default
 
-  const venueId = VENUE_BY_ID[saved.venueId] ? saved.venueId : null
+  const venueId = saved.venueId && VENUE_BY_ID[saved.venueId] ? saved.venueId : null
   // A saved venue decides the city; otherwise use the saved city (or the default).
-  const city = venueId ? VENUE_BY_ID[venueId].city : CITY_BY_ID[saved.city] ? saved.city : DEFAULT_CITY
+  const city = venueId ? VENUE_BY_ID[venueId].city : saved.city && CITY_BY_ID[saved.city] ? saved.city : DEFAULT_CITY
 
   const cart = {}
-  if (venueId && saved.cart && typeof saved.cart === 'object') {
+  if (venueId && saved.cart && typeof saved.cart === 'object' && !Array.isArray(saved.cart)) {
     flattenMenu(VENUE_BY_ID[venueId]).forEach((item) => {
       const qty = Number(saved.cart[item.id])
       if (Number.isInteger(qty) && qty > 0) cart[item.id] = Math.min(qty, MAX_QTY)
     })
   }
 
-  const giftIds = Array.isArray(saved.giftIds) ? saved.giftIds.filter((id) => GIFT_BY_ID[id]) : []
+  const giftIds = Array.isArray(saved.giftIds) ? [...new Set(saved.giftIds)].filter((id) => GIFT_BY_ID[id]) : []
 
   // A saved date in the past is replaced with the next Saturday.
   const dateOk = parseISODate(saved.dateISO) && saved.dateISO >= todayISO()
@@ -47,8 +51,8 @@ const loadInitialState = () => {
     venueId,
     cart,
     giftIds,
-    yourName: typeof saved.yourName === 'string' ? saved.yourName.slice(0, 40) : '',
-    theirName: typeof saved.theirName === 'string' ? saved.theirName.slice(0, 40) : '',
+    yourName: sanitizeName(saved.yourName),
+    theirName: sanitizeName(saved.theirName),
     dateISO: dateOk ? saved.dateISO : nextSaturdayISO(),
     startMin: Number.isInteger(saved.startMin) && saved.startMin >= 0 && saved.startMin < 1440 ? saved.startMin : 18 * 60,
     splitOn: saved.splitOn === true,
@@ -69,6 +73,16 @@ export function DateProvider({ children }) {
       /* storage may be unavailable (private mode) — the app still works */
     }
   }, [state])
+
+  // Dynamically load shared plans if the URL hash changes
+  useEffect(() => {
+    const onHash = () => {
+      const shared = decodeSharedPlan()
+      if (shared) setState((prev) => ({ ...prev, ...shared }))
+    }
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
 
   const patch = useCallback((changes) => setState((prev) => ({ ...prev, ...changes })), [])
 
@@ -105,6 +119,17 @@ export function DateProvider({ children }) {
 
   const selectVenue = useCallback((id) => {
     setState((prev) => (prev.venueId === id ? prev : { ...prev, venueId: id, cart: {} }))
+  }, [])
+
+  // "Surprise me": pick a venue and fill in a sensible menu that fits the budget (after gifts) in one step.
+  const planVenue = useCallback((id) => {
+    const v = VENUE_BY_ID[id]
+    if (!v) return
+    setState((prev) => {
+      const gifts = prev.giftIds.map((g) => GIFT_BY_ID[g]).filter(Boolean).reduce((acc, g) => acc + g.price, 0)
+      const reserve = gifts > 0 ? gifts : prev.budget * 0.2
+      return { ...prev, city: v.city, venueId: id, cart: suggestMenu(v, Math.max(0, prev.budget - reserve)) }
+    })
   }, [])
 
   const changeQty = useCallback((itemId, delta) => {
@@ -169,11 +194,13 @@ export function DateProvider({ children }) {
       usedPct,
       overBudget,
       split,
+      sharePlanLink: () => encodeSharedPlan(state),
       // actions
       setBudget,
       setVibeFilter,
       setCity,
       selectVenue,
+      planVenue,
       changeQty,
       clearCart,
       toggleGift,
@@ -182,15 +209,24 @@ export function DateProvider({ children }) {
       setSplitOn,
       setSplitCount,
       setTipPct,
-      setYourName: (v) => patch({ yourName: v.slice(0, 40) }),
-      setTheirName: (v) => patch({ theirName: v.slice(0, 40) }),
-      setDateISO: (v) => patch({ dateISO: v }),
-      setStartMin: (v) => patch({ startMin: Number(v) }),
+      setYourName: (v) => patch({ yourName: sanitizeName(v) }),
+      setTheirName: (v) => patch({ theirName: sanitizeName(v) }),
+      setDateISO: (v) => {
+        if (typeof v === 'string') {
+          patch({ dateISO: v })
+        }
+      },
+      setStartMin: (v) => {
+        const n = Math.round(Number(v))
+        if (Number.isFinite(n)) {
+          patch({ startMin: ((n % 1440) + 1440) % 1440 })
+        }
+      },
     }),
     [
       budget, city, vibeFilter, venueId, cart, giftIds, yourName, theirName, dateISO, startMin, splitOn, splitCount, tipPct, split,
       cityInfo, cityVenues, venue, vibe, cartLines, giftLines, foodTotal, giftTotal, total, remaining, usedPct, overBudget,
-      setBudget, setVibeFilter, setCity, selectVenue, changeQty, clearCart, toggleGift, autoPlanMenu, resetPlan, setSplitOn, setSplitCount, setTipPct, patch,
+      setBudget, setVibeFilter, setCity, selectVenue, planVenue, changeQty, clearCart, toggleGift, autoPlanMenu, resetPlan, setSplitOn, setSplitCount, setTipPct, patch,
     ],
   )
 

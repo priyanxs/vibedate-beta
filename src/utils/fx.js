@@ -59,10 +59,12 @@ export const usePointerFx = () => {
         const tilt = target.closest('.tilt')
         if (tilt) {
           const r = tilt.getBoundingClientRect()
-          const px = (clientX - r.left) / r.width - 0.5
-          const py = (clientY - r.top) / r.height - 0.5
-          tilt.style.setProperty('--ry', `${(px * 7).toFixed(2)}deg`)
-          tilt.style.setProperty('--rx', `${(-py * 7).toFixed(2)}deg`)
+          if (r.width > 0 && r.height > 0) {
+            const px = (clientX - r.left) / r.width - 0.5
+            const py = (clientY - r.top) / r.height - 0.5
+            tilt.style.setProperty('--ry', `${(px * 7).toFixed(2)}deg`)
+            tilt.style.setProperty('--rx', `${(-py * 7).toFixed(2)}deg`)
+          }
         }
       })
     }

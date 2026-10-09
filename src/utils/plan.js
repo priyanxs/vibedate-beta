@@ -12,15 +12,17 @@ export const flattenMenu = (venue) =>
  * bread/rice baskets don't count as a meal) + 2 × the cheapest drink.
  */
 export const minDateCost = (venue) => {
+  if (!venue || !venue.menu) return 0
   const mains = (venue.menu.mains || []).map((i) => i.price).sort((a, b) => a - b)
   const drinks = (venue.menu.drinks || []).map((i) => i.price).sort((a, b) => a - b)
-  const main = mains[Math.min(1, mains.length - 1)] || 0
-  return main * 2 + (drinks[0] || 0) * 2
+  const main = mains.length ? mains[Math.min(1, mains.length - 1)] : 0
+  const drink = drinks.length ? drinks[0] : 0
+  return main * 2 + drink * 2
 }
 
 /** Cart lines [{item, category, qty}] for the venue, ignoring stale ids. */
 export const buildCartLines = (venue, cart) => {
-  if (!venue) return []
+  if (!venue || !cart || typeof cart !== 'object') return []
   return flattenMenu(venue)
     .filter((item) => cart[item.id] > 0)
     .map((item) => ({ item, category: item.category, qty: cart[item.id] }))
@@ -31,6 +33,7 @@ export const buildCartLines = (venue, cart) => {
  * 1 shared starter, 2 mains, 2 drinks, 1 shared dessert.
  */
 export const suggestMenu = (venue, target) => {
+  if (!venue || !venue.menu) return {}
   const slots = [
     ['appetizers', 1],
     ['mains', 2],
@@ -47,12 +50,13 @@ export const suggestMenu = (venue, target) => {
     let cost = 0
     slots.forEach(([cat, count]) => {
       const list = sorted[cat]
-      if (!list.length) return
+      if (!list || !list.length) return
       const base = Math.round(t * (list.length - 1))
       for (let k = 0; k < count; k += 1) {
         let idx = base
         if (k === 1) idx = base > 0 ? base - 1 : Math.min(1, list.length - 1)
         const item = list[idx]
+        if (!item || !item.id) continue
         cart[item.id] = (cart[item.id] || 0) + 1
         cost += item.price
       }

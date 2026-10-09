@@ -223,9 +223,10 @@ const smartReply = (t, ctx) => {
   return null
 }
 
-export const getMockReply = (input, ctx, turn = 0) => {
-  const text = input.toLowerCase().trim()
-  const smart = smartReply(text, ctx)
+export const getMockReply = (input, ctx = {}, turn = 0) => {
+  const text = String(input || '').toLowerCase().trim()
+  const safeCtx = ctx && typeof ctx === 'object' ? ctx : {}
+  const smart = smartReply(text, safeCtx)
   if (smart) return smart
   let best = null
   let bestScore = 0
@@ -238,5 +239,5 @@ export const getMockReply = (input, ctx, turn = 0) => {
     }
   })
 
-  return best ? best.reply(ctx, turn) : FALLBACK(ctx)
+  return best ? best.reply(safeCtx, turn) : FALLBACK(safeCtx)
 }

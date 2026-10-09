@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { formatINR } from '../utils/format'
+import { MAX_QTY } from '../utils/plan'
 import { DISH_PHOTO_CREDITS } from '../dishPhotos'
 import Icon from './Icon.jsx'
 
@@ -45,8 +46,8 @@ export default function DishViewer({ item, photo, qty, onAdd, onClose }) {
               </>
             )}
           </p>
-          <button type="button" className="btn btn--primary btn--sm" onClick={onAdd}>
-            <Icon name="plus" size={14} /> {qty > 0 ? `Add another (${qty} in plan)` : 'Add to plan'}
+          <button type="button" className="btn btn--primary btn--sm" onClick={onAdd} disabled={qty >= MAX_QTY}>
+            <Icon name="plus" size={14} /> {qty >= MAX_QTY ? `Max reached (${MAX_QTY})` : qty > 0 ? `Add another (${qty} in plan)` : 'Add to plan'}
           </button>
         </figcaption>
       </figure>

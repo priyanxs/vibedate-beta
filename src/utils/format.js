@@ -3,12 +3,15 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 const inr = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 })
 
 export const formatINR = (n) => {
-  const v = Math.round(Number(n) || 0)
+  const num = Number(n)
+  const v = Number.isFinite(num) ? Math.round(num) : 0
   return `${v < 0 ? '-' : ''}₹${inr.format(Math.abs(v))}`
 }
 
 export const minutesToLabel = (min) => {
-  const m = ((min % 1440) + 1440) % 1440
+  const raw = Math.round(Number(min))
+  const safe = Number.isFinite(raw) ? raw : 0
+  const m = ((safe % 1440) + 1440) % 1440
   const h24 = Math.floor(m / 60)
   const mm = m % 60
   const suffix = h24 >= 12 ? 'PM' : 'AM'
@@ -24,7 +27,9 @@ export const parseISODate = (s) => {
   if (typeof s !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return null
   const [y, m, d] = s.split('-').map(Number)
   const date = new Date(y, m - 1, d)
-  return Number.isNaN(date.getTime()) ? null : date
+  if (Number.isNaN(date.getTime())) return null
+  if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) return null
+  return date
 }
 
 export const formatDay = (iso) => {

@@ -11,13 +11,26 @@ export default class ErrorBoundary extends Component {
     return { failed: true }
   }
 
+  handleResetAndReload = () => {
+    try {
+      localStorage.removeItem('vibedate:plan:v1')
+      if (window.location.hash) {
+        window.history.replaceState(null, '', window.location.pathname)
+      }
+    } catch {}
+    window.location.reload()
+  }
+
   render() {
     if (!this.state.failed) return this.props.children
     return (
       <main className="crash" role="alert">
         <h1>Something went wrong</h1>
-        <p>Sorry — VibeDate hit a problem. Your plan is saved on this device.</p>
-        <button type="button" className="btn btn--primary" onClick={() => window.location.reload()}>Reload the page</button>
+        <p>Sorry — VibeDate hit a problem. You can reload or reset your plan.</p>
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '16px' }}>
+          <button type="button" className="btn btn--primary" onClick={() => window.location.reload()}>Reload the page</button>
+          <button type="button" className="btn btn--ghost" onClick={this.handleResetAndReload}>Reset plan & restart</button>
+        </div>
       </main>
     )
   }

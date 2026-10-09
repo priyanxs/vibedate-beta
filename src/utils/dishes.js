@@ -87,7 +87,7 @@ const RULES = [
 ]
 
 export const dishKey = (name) => {
-  const n = ` ${String(name).toLowerCase()} `
+  const n = ` ${String(name || '').toLowerCase()} `
   const hit = RULES.find(([re]) => re.test(n.trim()) || re.test(n))
   return hit ? hit[1] : ''
 }

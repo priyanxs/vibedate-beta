@@ -23,9 +23,10 @@ export default function ConversationDeck() {
     return order.map((id) => byId[id]).filter((c) => category === 'All' || c.category === category)
   }, [order, category])
 
-  const card = deck[index] || deck[0]
+  const card = deck[index] || deck[0] || { category: 'Fun', q: 'What is your idea of a perfect date?' }
 
   const go = (delta) => {
+    if (deck.length <= 1) return
     setFlipped(false)
     setIndex((i) => (i + delta + deck.length) % deck.length)
   }
